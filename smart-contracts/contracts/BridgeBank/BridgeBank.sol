@@ -63,7 +63,7 @@ contract BridgeBank is
         _initialized = true;
 
         // hardcode since this is the first token
-        lowerToUpperTokens["erowan"] = "erowan";
+        lowerToUpperTokens["eaku"] = "eaku";
         lowerToUpperTokens["eth"] = "eth";
     }
 

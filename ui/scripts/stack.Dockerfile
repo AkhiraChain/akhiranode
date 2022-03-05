@@ -38,8 +38,8 @@ RUN apk update && apk add curl jq bash
 
 # Copy the compiled binaires over.
 COPY --from=build-go /go/bin/ebrelayer /usr/bin/ebrelayer
-COPY --from=build-go /go/bin/sifnoded /usr/bin/sifnoded
-COPY --from=build-go /go/bin/sifgen /usr/bin/sifgen
+COPY --from=build-go /go/bin/akiranoded /usr/bin/akiranoded
+COPY --from=build-go /go/bin/akhgen /usr/bin/akhgen
 
 # Required for ebrelayer
 COPY --from=build-go /sif/cmd/ebrelayer /sif/cmd/ebrelayer

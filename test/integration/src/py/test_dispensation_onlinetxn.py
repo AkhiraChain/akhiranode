@@ -3,7 +3,7 @@ import os
 import time
 import json
 import pytest
-from dispensation_envutils import create_online_singlekey_txn, create_new_sifaddr_and_key, send_sample_rowan, balance_check, \
+from dispensation_envutils import create_online_singlekey_txn, create_new_sifaddr_and_key, send_sample_aku, balance_check, \
 query_block_claim, create_online_singlekey_txn_with_runner, run_dispensation
 
 # AUTOMATED TEST TO VALIDATE ONLINE TXN
@@ -18,22 +18,22 @@ def test_create_online_singlekey_txn(claimType):
     from_address = 'sifnodeadmin'
     keyring_backend = 'test'
     chain_id = 'localnet'
-    amount = '100000000000000000rowan'
-    sampleamount = '1000rowan'
+    amount = '100000000000000000aku'
+    sampleamount = '1000aku'
 
     # THESE 4 TXNS ARE TO REGISTER NEW ACCOUNTS ON CHAIN
-    send_sample_rowan(from_address, runner_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, runner_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, distributor_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, distributor_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
 
     # CREATING TEST DATA HERE MIMICKING OUTPUT.JSON TO BE SUPPLIED BY NIKO'S API
-    dict1 = {"denom": "rowan", "amount": "5000"}
-    dict2 = {"denom": "rowan", "amount": "7000"}
+    dict1 = {"denom": "aku", "amount": "5000"}
+    dict2 = {"denom": "aku", "amount": "7000"}
     dict3 = {"address": destaddress1, "coins": [dict1]}
     dict4 = {"address": destaddress2, "coins": [dict2]}
     dict5 = {"Output": [dict3, dict4]}
@@ -94,22 +94,22 @@ def test_insufficient_funds_dispensation_txn(claimType):
     from_address = 'sifnodeadmin'
     keyring_backend = 'test'
     chain_id = 'localnet'
-    amount = '70000rowan'
-    sampleamount = '1000rowan'
+    amount = '70000aku'
+    sampleamount = '1000aku'
 
     # THESE 4 TXNS ARE TO REGISTER NEW ACCOUNTS ON CHAIN
-    send_sample_rowan(from_address, runner_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, runner_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, distributor_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, distributor_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
 
     # CREATING TEST DATA HERE MIMICKING OUTPUT.JSON TO BE SUPPLIED BY NIKO'S API
-    dict1 = {"denom": "rowan", "amount": "5000"}
-    dict2 = {"denom": "rowan", "amount": "19000"}
+    dict1 = {"denom": "aku", "amount": "5000"}
+    dict2 = {"denom": "aku", "amount": "19000"}
     dict3 = {"address": destaddress1, "coins": [dict1]}
     dict4 = {"address": destaddress2, "coins": [dict2]}
     dict5 = {"Output": [dict3, dict4]}
@@ -146,27 +146,27 @@ def test_run_online_singlekey_txn(claimType):
     from_address = 'sifnodeadmin'
     keyring_backend = 'test'
     chain_id = 'localnet'
-    amount = '100000000000000000rowan'
+    amount = '100000000000000000aku'
     fee = '150000'
-    currency = 'rowan'
-    sampleamount = '1000rowan'
+    currency = 'aku'
+    sampleamount = '1000aku'
 
     # THESE 4 TXNS ARE TO REGISTER NEW ACCOUNTS ON CHAIN
-    send_sample_rowan(from_address, runner_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, runner_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, distributor_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, distributor_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
 
     sorted_dest_address_list = sorted([destaddress1,destaddress2])
     logging.info(f"sorted_dest_address_list = {sorted_dest_address_list}")
 
     # CREATING TEST DATA HERE MIMICKING OUTPUT.JSON TO BE SUPPLIED BY NIKO'S API
-    dict1 = {"denom": "rowan", "amount": "5000"}
-    dict2 = {"denom": "rowan", "amount": "7000"}
+    dict1 = {"denom": "aku", "amount": "5000"}
+    dict2 = {"denom": "aku", "amount": "7000"}
     dict3 = {"address": destaddress1, "coins": [dict1]}
     dict4 = {"address": destaddress2, "coins": [dict2]}
     dict5 = {"Output": [dict3, dict4]}

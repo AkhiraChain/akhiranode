@@ -26,7 +26,7 @@ For the Sifchain MVP, CLP module provides the following functionalities
 ```golang
 Symbol: ETH
 
-Symbol: rowan
+Symbol: aku
 ```
 -Pool  : Every Liquidity pool for CLP is created by pairing an External asset with the Native asset .
 ````golang

@@ -2,7 +2,7 @@
 
 // npx truffle exec scripts/test/whitelistedTokens.js --json_path /home/james/workspace/sifnode/smart-contracts/deployments/sandpit  --ethereum_network ropsten --bridgebank_address 0x979F0880de42A7aE510829f13E66307aBb957f13
 //
-// {"token":"0xA3D31ee81Ec2a898B4CF7A67a0851086e4Da7af3","value":true,"symbol":"erowan","name":"erowan"}
+// {"token":"0xA3D31ee81Ec2a898B4CF7A67a0851086e4Da7af3","value":true,"symbol":"eaku","name":"eaku"}
 // {"token":"0xfA8fC9C22C33FE62BabD5D92DD38Aa27B730d562","value":true,"symbol":"dtoken","name":"dtoken"}
 
 const BN = require('bn.js');

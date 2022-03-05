@@ -25,6 +25,6 @@ ENV PACKAGES curl jq bind-tools expect nodejs npm
 
 RUN apk add --update --no-cache $PACKAGES
 
-COPY --from=build /go/bin/sifnoded /usr/bin/sifnoded
+COPY --from=build /go/bin/akiranoded /usr/bin/akiranoded
 
 RUN npm i -g @confio/relayer@main

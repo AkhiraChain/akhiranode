@@ -24,14 +24,14 @@ func CreateTestApp(isCheckTx bool) (*sifapp.AkhiraApp, sdk.Context) {
 	return app, ctx
 }
 
-func CreatOutputList(count int, rowanAmount string) []types.Output {
+func CreatOutputList(count int, akuAmount string) []types.Output {
 	sifapp.SetConfig(false)
 	outputList := make([]types.Output, count)
-	amount, ok := sdk.NewIntFromString(rowanAmount)
+	amount, ok := sdk.NewIntFromString(akuAmount)
 	if !ok {
-		panic("Unable to generate rowan amount")
+		panic("Unable to generate aku amount")
 	}
-	coin := sdk.NewCoins(sdk.NewCoin("rowan", amount), sdk.NewCoin("ceth", amount), sdk.NewCoin("catk", amount))
+	coin := sdk.NewCoins(sdk.NewCoin("aku", amount), sdk.NewCoin("ceth", amount), sdk.NewCoin("catk", amount))
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < count; i++ {
 		address := sdk.AccAddress(crypto.AddressHash([]byte("Output1" + strconv.Itoa(i))))

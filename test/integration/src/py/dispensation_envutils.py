@@ -12,7 +12,7 @@ import test_utilities
 from pytest_utilities import generate_test_account
 from integration_env_credentials import sifchain_cli_credentials_for_test
 from test_utilities import get_required_env_var, SifchaincliCredentials, get_optional_env_var, ganache_owner_account, \
-    get_shell_output_json, get_shell_output, detect_errors_in_sifnoded_output, get_transaction_result, amount_in_wei
+    get_shell_output_json, get_shell_output, detect_errors_in_akiranoded_output, get_transaction_result, amount_in_wei
 
 
 # CODE TO GENERATE RANDOM STRING FOR DISPENSATION NAME AS DISPENSATION NAME IS A UNIQUE KEY
@@ -29,12 +29,12 @@ def create_new_sifaddr_and_key():
 
 
 # CODE TO SEND SOME SAMPLE TOKEN TO NEW ADDRESS
-def send_sample_rowan(from_address, to_address, amount, keyring_backend, chain_id, offline):
-    logging.debug(f"transfer_rowan")
-    sifchain_fees_entry = f"--fees 100000000000000000rowan"
+def send_sample_aku(from_address, to_address, amount, keyring_backend, chain_id, offline):
+    logging.debug(f"transfer_aku")
+    sifchain_fees_entry = f"--fees 100000000000000000aku"
     keyring_backend_entry = f"--keyring-backend {keyring_backend}"
     cmd = " ".join([
-        "sifnoded tx bank send",
+        "akiranoded tx bank send",
         f"{from_address}",
         f"{to_address}",
         f"{amount}",
@@ -51,7 +51,7 @@ def send_sample_rowan(from_address, to_address, amount, keyring_backend, chain_i
 # CODE TO QUERY BLOCK FOR NEW DISPENSATION TXN
 def query_block_claim(txn_hash):
     cmd = " ".join([
-        "sifnoded query tx",
+        "akiranoded query tx",
         f"{txn_hash}",
         "--chain-id localnet",
         "-o json"
@@ -64,7 +64,7 @@ def query_block_claim(txn_hash):
 def balance_check(address, currency):
     logging.debug(f"check_balance")
     cmd = " ".join([
-        "sifnoded query bank balances",
+        "akiranoded query bank balances",
         f"{address}",
         f"--denom {currency}",
         f"-o json"
@@ -82,11 +82,11 @@ def create_online_singlekey_txn(
 ):
     logging.debug(f"create_online_dispensation")
     sifchain_gas_entry = f"--gas auto"
-    sifchain_fees_entry = f"--fees 50000rowan"
+    sifchain_fees_entry = f"--fees 50000aku"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
-        "sifnoded tx dispensation create",
+        "akiranoded tx dispensation create",
         f"{claimType}",
         output,
         sifchain_gas_entry,
@@ -109,12 +109,12 @@ def create_online_singlekey_async_txn(
         chain_id
 ):
     logging.debug(f"create_online_dispensation")
-    sifchain_fees_entry = f"--fees 150000rowan"
+    sifchain_fees_entry = f"--fees 150000aku"
     sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
-        "sifnoded tx dispensation create",
+        "akiranoded tx dispensation create",
         f"{claimType}",
         output,
         sifchain_fees_entry,
@@ -138,11 +138,11 @@ def create_offline_singlekey_txn(
         chain_id,
     ):
     logging.debug(f"create_unsigned_offline_dispensation_txn")
-    sifchain_fees_entry = f"--fees 150000rowan"
+    sifchain_fees_entry = f"--fees 150000aku"
     sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     output = 'output.json'
     cmd = " ".join([
-        "sifnoded tx dispensation create",
+        "akiranoded tx dispensation create",
         f"{claimType}",
         output,
         f"--from {signing_address}",
@@ -161,7 +161,7 @@ def create_offline_singlekey_txn(
 def sign_txn(signingaddress, file):
     keyring_backend_entry = f"--keyring-backend test"
     cmd = " ".join([
-        "sifnoded tx sign",
+        "akiranoded tx sign",
         f"--from {signingaddress}",
         f"{file}",
         keyring_backend_entry,
@@ -175,7 +175,7 @@ def sign_txn(signingaddress, file):
 #CODE TO BROADCAST SINGLE SIGNED TXN ON BLOCK
 def broadcast_txn(file_path):
     cmd = " ".join([
-        "sifnoded tx broadcast",
+        "akiranoded tx broadcast",
         f"{file_path}",
         f"--yes -o json"
     ])
@@ -187,7 +187,7 @@ def broadcast_txn(file_path):
 #CODE TO BROADCAST SINGLE SIGNED TXN ON BLOCK WITH AN ASYNC FLAG
 def broadcast_async_txn(file_path):
     cmd = " ".join([
-        "sifnoded tx broadcast",
+        "akiranoded tx broadcast",
         f"{file_path}",
         f"--broadcast-mode async",
         f"--yes -o json"
@@ -204,12 +204,12 @@ def create_online_singlekey_txn_with_runner(
         chain_id
 ):
     logging.debug(f"create_online_dispensation")
-    sifchain_fees_entry = f"--fees 150000rowan"
+    sifchain_fees_entry = f"--fees 150000aku"
     sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
-        "sifnoded tx dispensation create",
+        "akiranoded tx dispensation create",
         f"{claimType}",
         output,
         runner_address,
@@ -234,12 +234,12 @@ def create_offline_singlekey_txn_with_runner(
         chain_id
     ):
     logging.debug(f"create_unsigned_offline_dispensation_txn")
-    sifchain_fees_entry = f"--fees 150000rowan"
+    sifchain_fees_entry = f"--fees 150000aku"
     sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
-        "sifnoded tx dispensation create",
+        "akiranoded tx dispensation create",
         f"{claimType}",
         output,
         runner_address,
@@ -265,10 +265,10 @@ def run_dispensation(
     ):
     logging.debug(f"RUN DISPENSATION CLI LOGGING")
     sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
-    sifchain_fees_entry = f"--fees 200000rowan"
+    sifchain_fees_entry = f"--fees 200000aku"
     keyring_backend_entry = f"--keyring-backend test"
     cmd = " ".join([
-        "sifnoded tx dispensation run",
+        "akiranoded tx dispensation run",
         distribution_name,
         f"{claimType}",
         f"--from {runner_address}",
@@ -287,7 +287,7 @@ def run_dispensation(
 #CODE TO QUERY A NEW CLAIM 
 def query_created_claim(claimType):
     cmd = " ".join([
-        "sifnoded q dispensation claims-by-type",
+        "akiranoded q dispensation claims-by-type",
         f"{claimType}",
         "--chain-id localnet",
         f"-o json"
@@ -306,9 +306,9 @@ def create_claim(
     logging.debug(f"create_claim")
     keyring_backend_entry = f"--keyring-backend {keyring_backend}"
     sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
-    sifchain_fees_entry = f"--fees 100000000000000000rowan"
+    sifchain_fees_entry = f"--fees 100000000000000000aku"
     cmd = " ".join([
-        "sifnoded tx dispensation claim",
+        "akiranoded tx dispensation claim",
         f"{claimType}",
         f"--from {sifchain_address}",
         sifchain_fees_entry,

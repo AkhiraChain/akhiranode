@@ -1,8 +1,8 @@
 {
   "sifchain": {
-    "binary": "sifnoded",
-    "binaryUrl": "https://github.com/AkhiraChain/akhiranode/releases/download/betanet-0.9.10/sifnoded-betanet-0.9.10-linux-amd64.zip",
-    "denom": "rowan",
+    "binary": "akiranoded",
+    "binaryUrl": "https://github.com/AkhiraChain/akhiranode/releases/download/betanet-0.9.10/akiranoded-betanet-0.9.10-linux-amd64.zip",
+    "denom": "aku",
     "prefix": "sif",
     "fees": 100000,
     "node": "https://rpc-testnet.sifchain.finance:443",

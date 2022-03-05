@@ -3,7 +3,7 @@ required="${BASEDIR:?"Must be set to where you check out sifnode"}"
 cd $BASEDIR/test/integration
 
 required="${DEPLOYMENT_NAME:?"Must be set to a deployment name like sandpit"}"
-required="${ROWAN_SOURCE:?"Must be set to a sif address that contains rowan, and the key must be in your keyring"}"
+required="${ROWAN_SOURCE:?"Must be set to a sif address that contains aku, and the key must be in your keyring"}"
 required="${ETHEREUM_NETWORK:?"Must be set to an etherereum endpoint.  Can be ropsten or a url."}"
 required="${ETHEREUM_PRIVATE_KEY:?"Must be set to the private key of the address specified in ETHEREUM_ADDRESS or OPERATOR_ADDRESS"}"
 required="${SIFNODE:?"Must be set to sifnode endpoint."}"
@@ -23,7 +23,7 @@ cp $BASEDIR/smart-contracts/build/contracts/SifchainTestToken.json $SOLIDITY_JSO
 
 echo ========== Sample commands ==========
 
-echo; echo == erowan balance
+echo; echo == eaku balance
 echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:getTokenBalance \
   --symbol \$BRIDGE_TOKEN_ADDRESS \
   --ethereum_private_key_env_var "ETHEREUM_PRIVATE_KEY" \
@@ -41,7 +41,7 @@ echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:getTokenBalance \
   --ethereum_network \$ETHEREUM_NETWORK \
   --ethereum_address \$ETHEREUM_ADDRESS \
 
-echo; echo == mint erowan
+echo; echo == mint eaku
 echo yarn -s --cwd /home/james/workspace/sifnode/smart-contracts integrationtest:mintTestnetTokens  \
   --symbol $BRIDGE_TOKEN_ADDRESS \
   --ethereum_private_key_env_var "OPERATOR_PRIVATE_KEY" \
@@ -63,7 +63,7 @@ echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:sendLockTx --sifchai
   --ethereum_address $ETHEREUM_ADDRESS \
   --amount 1700000000000000000
 
-echo; echo == burn erowan
+echo; echo == burn eaku
 echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:sendBurnTx \
   --symbol $BRIDGE_TOKEN_ADDRESS \
   --ethereum_private_key_env_var "ETHEREUM_PRIVATE_KEY" \
@@ -75,7 +75,7 @@ echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:sendBurnTx \
   --sifchain_address $ROWAN_SOURCE \
   --amount 17
 
-echo; echo == burn erowan from operator account
+echo; echo == burn eaku from operator account
 echo yarn -s --cwd /home/james/workspace/sifnode/smart-contracts integrationtest:sendBurnTx \
   --symbol $BRIDGE_TOKEN_ADDRESS \
   --ethereum_private_key_env_var "OPERATOR_PRIVATE_KEY" \
@@ -94,7 +94,7 @@ echo yarn -s --cwd $BASEDIR/smart-contracts \
   --json_path $BASEDIR/smart-contracts/deployments/$DEPLOYMENT_NAME \
   --ethereum_network $ETHEREUM_NETWORK \
 
-sifnodecmd=sifnoded
+sifnodecmd=akiranoded
 
 echo; echo == sifchain balance
 echo $sifnodecmd q auth account --node $SIFNODE $ROWAN_SOURCE
@@ -110,17 +110,17 @@ echo $sifnodecmd tx ethbridge burn \
   $ROWAN_SOURCE $ETHEREUM_ADDRESS 100 ceth 58560000000000000 \
   --node $SIFNODE \
   --keyring-backend test \
-  --fees 100000rowan \
+  --fees 100000aku \
   --ethereum-chain-id=$ETHEREUM_NETWORK_ID \
   --chain-id=$DEPLOYMENT_NAME  \
   --yes \
   --from $ROWAN_SOURCE \
 
 echo; echo == send ceth
-echo $sifnodecmd tx send $ROWAN_SOURCE sifsomedestination 100rowan \
+echo $sifnodecmd tx send $ROWAN_SOURCE sifsomedestination 100aku \
   --node $SIFNODE \
   --keyring-backend test \
-  --fees 100000rowan \
+  --fees 100000aku \
   --chain-id=$DEPLOYMENT_NAME  \
   --yes \
 
@@ -128,6 +128,6 @@ echo; echo == Simple test run against $DEPLOYMENT_NAME:
 echo python3 -m pytest --color=yes -x -olog_cli=true -olog_level=DEBUG -v -olog_file=vagrant/data/pytest.log -v src/py/test_eth_transfers.py
 
 echo; echo == Load test run against $DEPLOYMENT_NAME - change NTRANSFERS to a large number:
-echo TOKENS=ceth,rowan NTRANSFERS=2 python3 -m pytest -olog_level=DEBUG -olog_file=vagrant/data/pytest.log -v src/py/test_bulk_transfers_to_ethereum.py::test_bulk_transfers_from_sifchain
+echo TOKENS=ceth,aku NTRANSFERS=2 python3 -m pytest -olog_level=DEBUG -olog_file=vagrant/data/pytest.log -v src/py/test_bulk_transfers_to_ethereum.py::test_bulk_transfers_from_sifchain
 
 echo; echo

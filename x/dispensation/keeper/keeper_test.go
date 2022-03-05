@@ -15,7 +15,7 @@ import (
 func TestKeeper_Logger(t *testing.T) {
 	app, ctx := test.CreateTestApp(false)
 
-	key := sdk.NewKVStoreKey("rowan")
+	key := sdk.NewKVStoreKey("aku")
 	cdc := codec.BinaryCodec(app.AppCodec())
 	accountKeeper := types.AccountKeeper(app.AccountKeeper)
 	bankkeeper := types.BankKeeper(app.BankKeeper)
@@ -29,7 +29,7 @@ func TestKeeper_Logger(t *testing.T) {
 func TestKeeper_Codec(t *testing.T) {
 	app, ctx := test.CreateTestApp(false)
 	t.Log(ctx)
-	key := sdk.NewKVStoreKey("rowan")
+	key := sdk.NewKVStoreKey("aku")
 	cdc := codec.BinaryCodec(app.AppCodec())
 	accountKeeper := types.AccountKeeper(app.AccountKeeper)
 	bankkeeper := types.BankKeeper(app.BankKeeper)
@@ -43,7 +43,7 @@ func TestKeeper_Codec(t *testing.T) {
 func TestKeeper_GetAccountKeeper(t *testing.T) {
 	app, ctx := test.CreateTestApp(false)
 	t.Log(ctx)
-	key := sdk.NewKVStoreKey("rowan")
+	key := sdk.NewKVStoreKey("aku")
 	cdc := codec.BinaryCodec(app.AppCodec())
 	accountKeeper := types.AccountKeeper(app.AccountKeeper)
 	bankkeeper := types.BankKeeper(app.BankKeeper)
@@ -58,14 +58,14 @@ func TestKeeper_GetAccountKeeper(t *testing.T) {
 func TestKeeper_HasCoin(t *testing.T) {
 	app, ctx := test.CreateTestApp(false)
 	t.Log(ctx)
-	key := sdk.NewKVStoreKey("rowan")
+	key := sdk.NewKVStoreKey("aku")
 	cdc := codec.BinaryCodec(app.AppCodec())
 	accountKeeper := types.AccountKeeper(app.AccountKeeper)
 	bankkeeper := types.BankKeeper(app.BankKeeper)
 	ps := paramtypes.Subspace{}
 	result := keeper.NewKeeper(cdc, key, bankkeeper, accountKeeper, ps)
 	user := sdk.AccAddress("addr1_____")
-	res := result.HasCoins(ctx, user, sdk.NewCoins(sdk.NewCoin("rowan", sdk.NewInt(1000000))))
+	res := result.HasCoins(ctx, user, sdk.NewCoins(sdk.NewCoin("aku", sdk.NewInt(1000000))))
 	t.Log(res)
 
 }

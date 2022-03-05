@@ -29,7 +29,7 @@ class IntegrationTestContext:
         )
 
     @property
-    def sifnoded_node(self):
+    def akiranoded_node(self):
         return self.get_optional_var("SIFNODE", None)
 
     @property
@@ -53,7 +53,7 @@ class IntegrationTestContext:
     @property
     def is_ropsten_testnet(self):
         """if sifnode_clinode is set, we're talking to ropsten/sandpit"""
-        return bool(self.sifnoded_node)
+        return bool(self.akiranoded_node)
 
     @property
     def ethereum_network_id(self):
@@ -81,20 +81,20 @@ class IntegrationTestContext:
         """true if we're using ganache"""
         return not self.ethereum_network
 
-    # Deprecated: sifnoded accepts --gas-prices=0.5rowan along with --gas-adjustment=1.5 instead of a fixed fee.
+    # Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
     # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
     # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     @property
     def sifchain_fees_int(self):
         return 100000000000000000
 
-    # Deprecated: sifnoded accepts --gas-prices=0.5rowan along with --gas-adjustment=1.5 instead of a fixed fee.
+    # Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
     # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
     # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     @property
     def sifchain_fees(self):
-        """returns a string suitable for passing to sifnoded"""
-        return f"{self.sifchain_fees_int}rowan"
+        """returns a string suitable for passing to akiranoded"""
+        return f"{self.sifchain_fees_int}aku"
 
     @property
     def solidity_json_path(self):
@@ -133,8 +133,8 @@ class IntegrationTestContext:
         return self.get_optional_var("VALIDATOR1_PASSWORD", None)
 
     @property
-    def rowan_source(self):
-        """A sifchain address or key that has rowan and can send that rowan to other address"""
+    def aku_source(self):
+        """A sifchain address or key that has aku and can send that aku to other address"""
         result = self.get_optional_var("ROWAN_SOURCE", None)
         if result:
             return result
@@ -146,12 +146,12 @@ class IntegrationTestContext:
             return result
 
     @property
-    def sifnoded_homedir(self):
+    def akiranoded_homedir(self):
         if self.is_ropsten_testnet:
             base = self.get_required_var("HOME")
         else:
             base = self.get_required_var("CHAINDIR")
-        result = f"""{base}/.sifnoded"""
+        result = f"""{base}/.akiranoded"""
         return result
 
     @property
@@ -175,25 +175,25 @@ class IntegrationTestContext:
         os.environ["OPERATOR_PRIVATE_KEY"] = self.operator_private_key
 
     @property
-    def rowan_source_integrationtest_env_credentials(self):
+    def aku_source_integrationtest_env_credentials(self):
         """
         Creates a SifchaincliCredentials with all the fields filled in
-        to transfer rowan from an account that already has rowan.
+        to transfer aku from an account that already has aku.
         """
         return test_utilities.SifchaincliCredentials(
             keyring_backend="test",
             keyring_passphrase=self.validator_password,
-            from_key=self.rowan_source
+            from_key=self.aku_source
         )
 
-    def rowan_source_integrationtest_env_transfer_request(self, basic_transfer_request):
+    def aku_source_integrationtest_env_transfer_request(self, basic_transfer_request):
         """
         Creates a EthereumToSifchainTransferRequest with all the generic fields filled in
-        for a transfer of rowan from an account that already has rowan.
+        for a transfer of aku from an account that already has aku.
         """
         result: test_utilities.EthereumToSifchainTransferRequest = copy.deepcopy(basic_transfer_request)
-        result.sifchain_address = self.rowan_source
-        result.sifchain_symbol = "rowan"
+        result.sifchain_address = self.aku_source
+        result.sifchain_symbol = "aku"
         return result
 
     @property
@@ -207,7 +207,7 @@ class IntegrationTestContext:
             bridgebank_address=self.bridgebank_address,
             bridgetoken_address=self.bridgetoken_address,
             ethereum_network=self.ethereum_network,
-            sifnoded_node=self.sifnoded_node,
+            akiranoded_node=self.akiranoded_node,
             manual_block_advance=self.is_ganache,
             chain_id=self.chain_id,
             sifchain_fees=self.sifchain_fees,

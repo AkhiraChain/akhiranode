@@ -70,7 +70,7 @@ Amount.ONE = Amount("1");
 An Asset represents a token denomination in our system. This ADR suggests two changes from our current setup.
 
 1. Remove the `Token` and `Coin` distinction as they are generally not helpful instead all Coins are Assets with an address field that contains the string `0x0000000000000000000000000000000000000000`
-2. Add a label field to use for displaying token labels. This would normally be the symbol with correct capitalization. Eg. `eROWAN` for the symbol `erowan`
+2. Add a label field to use for displaying token labels. This would normally be the symbol with correct capitalization. Eg. `eROWAN` for the symbol `eaku`
 
 Following is an interface which assets should conform
 

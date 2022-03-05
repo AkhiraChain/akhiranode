@@ -51,7 +51,7 @@ func RelayToCosmos(factory tx.Factory, claims []*types.EthBridgeClaim, cliCtx cl
 		cliCtx,
 		factory.
 			WithGas(1000000000000000000).
-			WithFees("500000000000000000rowan"),
+			WithFees("500000000000000000aku"),
 		messages...,
 	)
 

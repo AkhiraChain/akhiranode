@@ -211,8 +211,8 @@ contract("Gas Cost Test", function (accounts) {
       );
       this.cosmosSenderSequence = 1;
       this.ethereumReceiver = userOne;
-      this.symbol = "erowan";
-      this.passSymbol = "rowan";
+      this.symbol = "eaku";
+      this.passSymbol = "aku";
       this.amount = 100;
 
       this.token = await BridgeToken.new(this.symbol, { from: operator });
@@ -469,7 +469,7 @@ Total: 248719
 */
 
 
-// Cost to mint erowan
+// Cost to mint eaku
 /*
 run: 1
 tx:  89888

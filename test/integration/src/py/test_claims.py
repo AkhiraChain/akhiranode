@@ -5,7 +5,7 @@ import json
 import pytest
 import string
 import random
-from dispensation_envutils import create_new_sifaddr_and_key, send_sample_rowan, balance_check, \
+from dispensation_envutils import create_new_sifaddr_and_key, send_sample_aku, balance_check, \
 query_block_claim, create_claim, query_created_claim
 
 
@@ -16,8 +16,8 @@ def test_create_new_claim(claimType):
     keyring_backend = 'test'
     chain_id = 'localnet'
     from_address = 'sifnodeadmin'
-    amount = '100000000010000000rowan'
-    send_sample_rowan(from_address, sifchain_address, amount, keyring_backend, chain_id, "")
+    amount = '100000000010000000aku'
+    send_sample_aku(from_address, sifchain_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
     txnhash = (create_claim(sifchain_address, claimType, keyring_backend, chain_id))
     logging.info(f"txnhash= ${txnhash}")

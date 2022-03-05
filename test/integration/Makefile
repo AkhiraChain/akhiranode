@@ -12,7 +12,7 @@ endif
 
 gofiles=$(shell find ${BASEDIR}/* -name \*.go) ${BASEDIR}/go.mod ${BASEDIR}/go.sum
 
-${GOBIN}/sifnoded: $(gofiles)
+${GOBIN}/akiranoded: $(gofiles)
 	make -C ${BASEDIR} install
 	touch $@
-	rm -rf ~/.sifnoded/localnet
+	rm -rf ~/.akiranoded/localnet

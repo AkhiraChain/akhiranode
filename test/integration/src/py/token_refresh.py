@@ -18,12 +18,12 @@ def test_can_mint_token_and_peg_it_for_everything_in_whitelist(
         operator_address,
         ethereum_network,
         source_ethereum_address,
-        rowan_source
+        aku_source
 ):
     logging.info("token_refresh needs to use the operator private key, setting that to ETHEREUM_PRIVATE_KEY")
     os.environ["ETHEREUM_PRIVATE_KEY"] = test_utilities.get_required_env_var("OPERATOR_PRIVATE_KEY")
     request = copy.deepcopy(basic_transfer_request)
-    request.sifchain_address = rowan_source
+    request.sifchain_address = aku_source
     request.ethereum_address = source_ethereum_address
     amount_in_tokens = int(test_utilities.get_required_env_var("TOKEN_AMOUNT"))
 
@@ -32,8 +32,8 @@ def test_can_mint_token_and_peg_it_for_everything_in_whitelist(
 
     for t in tokens:
         destination_symbol = "c" + t["symbol"]
-        if t["symbol"] == "erowan":
-            destination_symbol = "rowan"
+        if t["symbol"] == "eaku":
+            destination_symbol = "aku"
         try:
             logging.info(f"sending {t}")
             request.amount = amount_in_tokens * (10 ** int(t["decimals"]))
@@ -46,5 +46,5 @@ def test_can_mint_token_and_peg_it_for_everything_in_whitelist(
             # try to get as many tokens across the bridge as you can,
             # don't stop if one of them fails
             logging.info(f"failed to mint and send for {t}, error was {e}")
-    logging.info(f"sent new batch of tokens to {rowan_source}")
-    test_utilities.get_sifchain_addr_balance(rowan_source, request.sifnoded_node, "rowan")
+    logging.info(f"sent new batch of tokens to {aku_source}")
+    test_utilities.get_sifchain_addr_balance(aku_source, request.akiranoded_node, "aku")

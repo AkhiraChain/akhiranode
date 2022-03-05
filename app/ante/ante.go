@@ -59,7 +59,7 @@ func (r AdjustGasPriceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate
 	if len(msgs) == 1 && (strings.Contains(strings.ToLower(sdk.MsgTypeURL(msgs[0])), strings.ToLower(disptypes.MsgTypeCreateDistribution)) ||
 		strings.Contains(strings.ToLower(sdk.MsgTypeURL(msgs[0])), strings.ToLower(disptypes.MsgTypeRunDistribution))) {
 		minGasPrice := sdk.DecCoin{
-			Denom:  "rowan",
+			Denom:  "aku",
 			Amount: sdk.MustNewDecFromStr("0.00000005"),
 		}
 		if !minGasPrice.IsValid() {
@@ -90,16 +90,16 @@ func (r AdjustGasPriceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate
 		return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "tx must be a FeeTx")
 	}
 	fees := feeTx.GetFee()
-	rowanFee := sdk.ZeroInt()
+	akuFee := sdk.ZeroInt()
 	for j := range fees {
-		if strings.EqualFold("rowan", fees[j].Denom) {
-			rowanFee = fees[j].Amount
+		if strings.EqualFold("aku", fees[j].Denom) {
+			akuFee = fees[j].Amount
 		}
 	}
-	if rowanFee.LTE(sdk.ZeroInt()) {
+	if akuFee.LTE(sdk.ZeroInt()) {
 		return ctx, sdkerrors.Wrap(sdkerrors.ErrLogic, "unsupported fee asset")
 	}
-	if rowanFee.LT(minFee) {
+	if akuFee.LT(minFee) {
 		return ctx, sdkerrors.Wrap(sdkerrors.ErrLogic, "tx fee is too low")
 	}
 	return next(ctx, tx, simulate)

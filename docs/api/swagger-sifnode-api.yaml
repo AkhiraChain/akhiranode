@@ -467,7 +467,7 @@ components:
           description: Asset ticker.
       example:
         source_chain: 'ROWAN'
-        symbol: 'rowan'
+        symbol: 'aku'
         ticker: 'ROWAN'
     BaseReq:
       type: object

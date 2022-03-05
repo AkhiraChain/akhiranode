@@ -44,8 +44,8 @@ fi
 
 TCP_URL=tcp://0.0.0.0:26657
 
-yes | sifnoded keys delete $MONIKER --keyring-backend test || true
-echo $MNEMONIC | sifnoded keys add $MONIKER --keyring-backend test --recover
+yes | akiranoded keys delete $MONIKER --keyring-backend test || true
+echo $MNEMONIC | akiranoded keys add $MONIKER --keyring-backend test --recover
 
 set_persistant_env_var EBRELAYER_DB "${TEST_INTEGRATION_DIR}/sifchainrelayerdb" $envexportfile
 
@@ -59,4 +59,4 @@ ETHEREUM_PRIVATE_KEY=$EBRELAYER_ETHEREUM_PRIVATE_KEY $runner init $TCP_URL "$ETH
   --from $MONIKER \
   --symbol-translator-file ${TEST_INTEGRATION_DIR}/config/symbol_translator.json \
   --relayerdb-path "$EBRELAYER_DB" \
-  # --home $CHAINDIR/.sifnoded \
+  # --home $CHAINDIR/.akiranoded \

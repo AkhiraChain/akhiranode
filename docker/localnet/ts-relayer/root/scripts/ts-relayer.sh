@@ -39,10 +39,10 @@ EOF
 #
 import_mnemonic() {
   if [ "${SIFNODE0_MNEMONIC}" == "${SIFNODE1_MNEMONIC}" ]; then
-    printf "%s\n\n" "${SIFNODE0_MNEMONIC}" | sifnoded keys add sifnode -i --recover --keyring-backend test
+    printf "%s\n\n" "${SIFNODE0_MNEMONIC}" | akiranoded keys add sifnode -i --recover --keyring-backend test
   else
-    printf "%s\n\n" "${SIFNODE0_MNEMONIC}" | sifnoded keys add "${CHAINNET0}" -i --recover --keyring-backend test
-    printf "%s\n\n" "${SIFNODE1_MNEMONIC}" | sifnoded keys add "${CHAINNET1}" -i --recover --keyring-backend test
+    printf "%s\n\n" "${SIFNODE0_MNEMONIC}" | akiranoded keys add "${CHAINNET0}" -i --recover --keyring-backend test
+    printf "%s\n\n" "${SIFNODE1_MNEMONIC}" | akiranoded keys add "${CHAINNET1}" -i --recover --keyring-backend test
   fi
 }
 
@@ -59,31 +59,31 @@ set_relayer_addrs() {
 #
 txfr_funds() {
   if [ "${SIFNODE0_MNEMONIC}" == "${SIFNODE1_MNEMONIC}" ]; then
-    FROM_ADDR=$(sifnoded keys show sifnode --keyring-backend test -a)
-    sifnoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000rowan \
+    FROM_ADDR=$(akiranoded keys show sifnode --keyring-backend test -a)
+    akiranoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000aku \
     --from sifnode \
-    --gas-prices 0.5rowan \
+    --gas-prices 0.5aku \
     --keyring-backend test \
     --node tcp://"${RPC0}" \
     --chain-id "${CHAINNET0}" -y
 
-    sifnoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000rowan \
+    akiranoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000aku \
     --from sifnode \
-    --gas-prices 0.5rowan \
+    --gas-prices 0.5aku \
     --keyring-backend test \
     --node tcp://"${RPC1}" \
     --chain-id "${CHAINNET1}" -y
   else
-    sifnoded tx bank send $(sifnoded keys show "${CHAINNET0}" --keyring-backend test -a) "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000rowan \
+    akiranoded tx bank send $(akiranoded keys show "${CHAINNET0}" --keyring-backend test -a) "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000aku \
     --from "${CHAINNET0}" \
-    --gas-prices 0.5rowan \
+    --gas-prices 0.5aku \
     --keyring-backend test \
     --node tcp://"${RPC0}" \
     --chain-id "${CHAINNET0}" -y
 
-    sifnoded tx bank send $(sifnoded keys show "${CHAINNET1}" --keyring-backend test -a) "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000rowan \
+    akiranoded tx bank send $(akiranoded keys show "${CHAINNET1}" --keyring-backend test -a) "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000aku \
     --from "${CHAINNET1}" \
-    --gas-prices 0.5rowan \
+    --gas-prices 0.5aku \
     --keyring-backend test \
     --node tcp://"${RPC1}" \
     --chain-id "${CHAINNET1}" -y

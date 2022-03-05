@@ -11,11 +11,11 @@ If the dispensation contains 3000 records, the authorized runner would need to s
 
 The CLI command 
 ```shell
-sifnoded tx dispensation run [Distribution_Name] [Distribution Type Airdrop/ValidatorSubsidy/LiquidityMining] --from [Authorised runner neeeds to sign the transaction] --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0rowan --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
+akiranoded tx dispensation run [Distribution_Name] [Distribution Type Airdrop/ValidatorSubsidy/LiquidityMining] --from [Authorised runner neeeds to sign the transaction] --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
 ```
 sample CLI command
 ```shell
-sifnoded tx dispensation run 2_sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd LiquidityMining --from sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0rowan --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
+akiranoded tx dispensation run 2_sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd LiquidityMining --from sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
 ```
 sample output
 ```json
@@ -27,7 +27,7 @@ sample output
 ```
 The Tx hash can then be used to query the blockchain to get the related events
 ```shell
-sifnoded q tx A9D019E1080ECD6A012B20B3058534AC6643BD17634F181FBE7F8F5C43B94D8E --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
+akiranoded q tx A9D019E1080ECD6A012B20B3058534AC6643BD17634F181FBE7F8F5C43B94D8E --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
 ```
 The relevant event 
 ```json
@@ -44,7 +44,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "11000rowan"
+              "value": "11000aku"
             }
           ]
         },
@@ -61,7 +61,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "8000rowan"
+              "value": "8000aku"
             }
           ]
         },
@@ -78,7 +78,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "9000rowan"
+              "value": "9000aku"
             }
           ]
         },
@@ -95,7 +95,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "5000rowan"
+              "value": "5000aku"
             }
           ]
         },
@@ -112,7 +112,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "12000rowan"
+              "value": "12000aku"
             }
           ]
         },
@@ -129,7 +129,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "14000rowan"
+              "value": "14000aku"
             }
           ]
         },
@@ -146,7 +146,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "7000rowan"
+              "value": "7000aku"
             }
           ]
         },
@@ -163,7 +163,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "13000rowan"
+              "value": "13000aku"
             }
           ]
         },
@@ -180,7 +180,7 @@ The relevant event
             },
             {
               "key": "amount",
-              "value": "10000rowan"
+              "value": "10000aku"
             }
           ]
         },

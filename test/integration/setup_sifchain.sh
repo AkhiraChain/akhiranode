@@ -6,7 +6,7 @@ set -e
 . $(dirname $0)/vagrantenv.sh
 . ${TEST_INTEGRATION_DIR}/shell_utilities.sh
 
-pkill sifnoded || true
+pkill akiranoded || true
 pkill ebrelayer || true
 
 sleep 1
@@ -22,7 +22,7 @@ then
   rm -rf $NETWORKDIR && mkdir $NETWORKDIR
 fi
 mkdir -p $NETWORKDIR
-sifgen network create localnet 1 $NETWORKDIR 192.168.1.2 $NETWORKDIR/network-definition.yml --keyring-backend test --mint-amount 999999000000000000000000000rowan,1370000000000000000ibc/FEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACE
+akhgen network create localnet 1 $NETWORKDIR 192.168.1.2 $NETWORKDIR/network-definition.yml --keyring-backend test --mint-amount 999999000000000000000000000aku,1370000000000000000ibc/FEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACE
 
 set_persistant_env_var NETDEF $NETWORKDIR/network-definition.yml $envexportfile
 set_persistant_env_var NETDEF_JSON $datadir/netdef.json $envexportfile
@@ -33,14 +33,14 @@ set_persistant_env_var VALIDATOR1_PASSWORD $(cat $NETDEF_JSON | jq -r '.[0].pass
 set_persistant_env_var VALIDATOR1_ADDR $(cat $NETDEF_JSON | jq -r '.[0].address') $envexportfile
 set_persistant_env_var MNEMONIC "$(cat $NETDEF_JSON | jq -r '.[0].mnemonic')" $envexportfile
 set_persistant_env_var CHAINDIR $NETWORKDIR/validators/$CHAINNET/$MONIKER $envexportfile
-set_persistant_env_var SIFNODED_LOG $datadir/logs/sifnoded.log $envexportfile
+set_persistant_env_var SIFNODED_LOG $datadir/logs/akiranoded.log $envexportfile
 
 . $envexportfile
 
-# now we have to add the validator key to the test keyring so the tests can send rowan from validator1
-echo "$MNEMONIC" | sifnoded keys add $MONIKER --keyring-backend test --recover 
-valoper=$(sifnoded keys show -a --bech val $MONIKER --home $CHAINDIR/.sifnoded --keyring-backend test)
-sifnoded add-genesis-validators $valoper --home $CHAINDIR/.sifnoded
+# now we have to add the validator key to the test keyring so the tests can send aku from validator1
+echo "$MNEMONIC" | akiranoded keys add $MONIKER --keyring-backend test --recover 
+valoper=$(akiranoded keys show -a --bech val $MONIKER --home $CHAINDIR/.akiranoded --keyring-backend test)
+akiranoded add-genesis-validators $valoper --home $CHAINDIR/.akiranoded
 
 mkdir -p $datadir/logs
 nohup $TEST_INTEGRATION_DIR/sifchain_start_daemon.sh < /dev/null > $SIFNODED_LOG 2>&1 &

@@ -66,7 +66,7 @@ Go to your .env file and assign the current gas price in wei to the variable MAI
 
 Set the ETHEREUM_PRIVATE_KEY to your private key you want to be the upgradeable proxy contract owner for the smart contract.
 
-Ensure that OWNER is the address that will be the user who deployed the erowan bridgetoken contract so that they can wire eRowan into the bridgebank easily.
+Ensure that OWNER is the address that will be the user who deployed the eaku bridgetoken contract so that they can wire eRowan into the bridgebank easily.
 
 Ensure that INITIAL_VALIDATOR_ADDRESSES and INITIAL_VALIDATOR_POWERS are set correctly. For mainnet, this should be 4 validator addresses and each validator power should be 25 with the consensus threshold being 75 so that it only takes 3/4 validators to sign off on a transaction for funds to be released.
 

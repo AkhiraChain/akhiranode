@@ -8,6 +8,6 @@
  The list is up to date at the runtime of Sifnoded. The new token will be added into the list after the prophecy completed.
 
  ## Export data into genesis
- sifnoded export > genesis.json
+ akiranoded export > genesis.json
  
  the sample file of genesis.json can be seen in the same folder.

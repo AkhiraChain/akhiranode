@@ -23,7 +23,7 @@ type CreateClaimReq struct {
 (This step can be done through CLI on friday , or process events throughout the week . Processing events would be the preferred approach)
 This query through the cli would look like
 ```shell
-sifnoded q dispensation claims-by-type ValidatorSubsidy --chain-id sifchain --node tcp://rpc.sifchain.finance:80
+akiranoded q dispensation claims-by-type ValidatorSubsidy --chain-id sifchain --node tcp://rpc.sifchain.finance:80
 ```
 Which returns 
 ```json
@@ -94,7 +94,7 @@ After parsing should become
    "address": "sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5",
    "coins": [
     {
-     "denom": "rowan",
+     "denom": "aku",
      "amount": "10000000000000000000"
     }
    ]
@@ -103,7 +103,7 @@ After parsing should become
    "address": "sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
    "coins": [
     {
-     "denom": "rowan",
+     "denom": "aku",
      "amount": "10000000000000000000"
     }
    ]
@@ -114,15 +114,15 @@ After parsing should become
 
 ### This file is then used to create a distribution
 ```shell
-sifnoded tx dispensation create mkey ar1 ValidatorSubsidy input.json output.json --gas 200064128 --generate-only >> offlinetx.json
+akiranoded tx dispensation create mkey ar1 ValidatorSubsidy input.json output.json --gas 200064128 --generate-only >> offlinetx.json
 # First user signs
-sifnoded tx sign --multisig $(sifnoded keys show mkey -a) --from $(sifnoded keys show sif -a)  offlinetx.json >> sig1.json
+akiranoded tx sign --multisig $(akiranoded keys show mkey -a) --from $(akiranoded keys show sif -a)  offlinetx.json >> sig1.json
 # Second user signs
-sifnoded tx sign --multisig $(sifnoded keys show mkey -a) --from $(sifnoded keys show akasha -a)  offlinetx.json >> sig2.json
+akiranoded tx sign --multisig $(akiranoded keys show mkey -a) --from $(akiranoded keys show akasha -a)  offlinetx.json >> sig2.json
 # Multisign created from the above signatures
-sifnoded tx multisign offlinetx.json mkey sig1.json sig2.json >> signedtx.json
+akiranoded tx multisign offlinetx.json mkey sig1.json sig2.json >> signedtx.json
 # transaction broadcast , distribution happens
-sifnoded tx broadcast signedtx.json
+akiranoded tx broadcast signedtx.json
 ```
 ### Post Dispensation
 - Suppose we do the dispensation at height X , The block results should contain this event 
@@ -151,7 +151,7 @@ The sender address for the transfers should be the module account in the distrib
           },
           {
             "key": "amount",
-            "value": "10000000000000000000rowan"
+            "value": "10000000000000000000aku"
           }
         ]
 

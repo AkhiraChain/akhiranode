@@ -25,5 +25,5 @@ EXPOSE 1317
 EXPOSE 26656
 EXPOSE 26657
 
-COPY --from=build /go/bin/sifnoded /usr/bin/sifnoded
-COPY --from=build /go/bin/sifgen /usr/bin/sifgen
+COPY --from=build /go/bin/akiranoded /usr/bin/akiranoded
+COPY --from=build /go/bin/akhgen /usr/bin/akhgen

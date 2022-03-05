@@ -52,7 +52,7 @@ func Test_IsEmpty(t *testing.T) {
 
 func Test_GetSettlementAsset(t *testing.T) {
 	asset := GetSettlementAsset()
-	assert.Equal(t, asset, NewAsset("rowan"))
+	assert.Equal(t, asset, NewAsset("aku"))
 }
 
 func Test_GetCLPModuleAddress(t *testing.T) {

@@ -41,14 +41,14 @@ message RegistryEntry {
   // != denom, then unit_denom can, in future, be used to indicate the source of
   // funds for a denom unit that does not actually exist on chain, enabling
   // other chains to overcome the uint64 limit on the packet level and import
-  // large amounts of high precision tokens easily. ie. microrowan -> rowan i.e
-  // rowan -> rowan
+  // large amounts of high precision tokens easily. ie. microaku -> aku i.e
+  // aku -> aku
   string unit_denom = 16;
   // The name of denomination unit of this token that should appear on
   // counterparty chain when this unit is exported. If empty, the denom is
   // exported as is. Generally this will only be used to map a high precision
   // (unit_denom) to a lower precision, to overcome the current uint64 limit on
-  // the packet level. i.e rowan -> microrowan i.e microrowan -> microrowan
+  // the packet level. i.e aku -> microaku i.e microaku -> microaku
   string ibc_counterparty_denom = 17;
   string ibc_counterparty_chain_id = 18;
 }

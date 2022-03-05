@@ -7,5 +7,5 @@ docker network rm genesis_sifchain
 # Image built is untagged at 3.21 GB, this removes them to prevent devouring ones disk space
 docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
 
-pkill sifnoded sifnoded ebrelayer node bash || true
-rm -rf ~/.sifnoded/localnet
+pkill akiranoded akiranoded ebrelayer node bash || true
+rm -rf ~/.akiranoded/localnet

@@ -10,7 +10,7 @@ class Peggy2SmartContractAddresses:
     bridge_bank: str
     bridge_registry: str
     cosmos_bridge: str
-    rowan: str
+    aku: str
 
 
 class Hardhat:
@@ -92,4 +92,4 @@ class Hardhat:
         assert stdout_lines[0] == "No need to generate any newer typings."
         tmp = json.loads(stdout_lines[1])
         return Peggy2SmartContractAddresses(cosmos_bridge=tmp["cosmosBridge"], bridge_bank=tmp["bridgeBank"],
-            bridge_registry=tmp["bridgeRegistry"], rowan=tmp["rowanContract"])
+            bridge_registry=tmp["bridgeRegistry"], aku=tmp["akuContract"])

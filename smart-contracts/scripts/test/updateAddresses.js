@@ -38,7 +38,7 @@ const assets = targets["assets"].map(t => {
 const sifchainAssets = assets.map(t => {
     return {
         ...t,
-        symbol: ((t.symbol === "erowan") ? "rowan" : `c${t.symbol}`).toLowerCase(),
+        symbol: ((t.symbol === "eaku") ? "aku" : `c${t.symbol}`).toLowerCase(),
         network: "sifchain",
     }
 });

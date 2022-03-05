@@ -3,7 +3,7 @@
     {
       "decimals": "18",
       "denom": "ibc/4C2B3D3B398FC7B8FFA3A96314006FF0B38E3BFC4CE90D8EE46E9EB6768A482D",
-      "base_denom": "rowan",
+      "base_denom": "aku",
       "path": "transfer/channel-0",
       "ibc_channel_id": "channel-0",
       "ibc_counterparty_channel_id": "channel-0",

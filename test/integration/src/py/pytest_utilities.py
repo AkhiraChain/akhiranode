@@ -38,25 +38,25 @@ def generate_minimal_test_account(
 
 def generate_test_account(
         base_transfer_request: EthereumToSifchainTransferRequest,
-        rowan_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
-        rowan_source_integrationtest_env_credentials: SifchaincliCredentials,
+        aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
+        aku_source_integrationtest_env_credentials: SifchaincliCredentials,
         target_ceth_balance: int = 10 ** 18,
-        target_rowan_balance: int = 10 ** 18
+        target_aku_balance: int = 10 ** 18
 ) -> (EthereumToSifchainTransferRequest, SifchaincliCredentials):
-    """Creates a test account with ceth and rowan"""
+    """Creates a test account with ceth and aku"""
     new_account_key = get_shell_output("uuidgen")
     credentials = sifchain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     new_sifaddr = new_addr["address"]
     credentials.from_key = new_addr["name"]
 
-    if target_rowan_balance > 0:
-        rowan_request: EthereumToSifchainTransferRequest = copy.deepcopy(
-            rowan_source_integrationtest_env_transfer_request)
-        rowan_request.sifchain_destination_address = new_sifaddr
-        rowan_request.amount = target_rowan_balance
-        logging.debug(f"transfer {target_rowan_balance} rowan to {new_sifaddr} from {rowan_request.sifchain_address}")
-        test_utilities.send_from_sifchain_to_sifchain(rowan_request, rowan_source_integrationtest_env_credentials)
+    if target_aku_balance > 0:
+        aku_request: EthereumToSifchainTransferRequest = copy.deepcopy(
+            aku_source_integrationtest_env_transfer_request)
+        aku_request.sifchain_destination_address = new_sifaddr
+        aku_request.amount = target_aku_balance
+        logging.debug(f"transfer {target_aku_balance} aku to {new_sifaddr} from {aku_request.sifchain_address}")
+        test_utilities.send_from_sifchain_to_sifchain(aku_request, aku_source_integrationtest_env_credentials)
 
     request: EthereumToSifchainTransferRequest = copy.deepcopy(base_transfer_request)
     request.sifchain_address = new_sifaddr
@@ -70,7 +70,7 @@ def generate_test_account(
     logging.info(
         f"created sifchain addr {new_sifaddr} "
         f"with {test_utilities.display_currency_value(target_ceth_balance)} ceth "
-        f"and {test_utilities.display_currency_value(target_rowan_balance)} rowan"
+        f"and {test_utilities.display_currency_value(target_aku_balance)} aku"
     )
 
     return request, credentials

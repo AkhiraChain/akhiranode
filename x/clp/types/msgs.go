@@ -153,7 +153,7 @@ func (m MsgAddLiquidity) ValidateBasic() error {
 		return sdkerrors.Wrap(ErrInValidAsset, m.ExternalAsset.Symbol)
 	}
 	if m.ExternalAsset.Equals(GetSettlementAsset()) {
-		return sdkerrors.Wrap(ErrInValidAsset, "External asset cannot be rowan")
+		return sdkerrors.Wrap(ErrInValidAsset, "External asset cannot be aku")
 	}
 	if (!m.NativeAssetAmount.GT(sdk.ZeroUint())) && (!m.ExternalAssetAmount.GT(sdk.ZeroUint())) {
 		return sdkerrors.Wrap(ErrInValidAmount, fmt.Sprintf("Both asset ammounts cannot be 0 %s / %s", m.NativeAssetAmount.String(), m.ExternalAssetAmount.String()))
@@ -194,7 +194,7 @@ func (m MsgCreatePool) ValidateBasic() error {
 		return sdkerrors.Wrap(ErrInValidAsset, m.ExternalAsset.Symbol)
 	}
 	if m.ExternalAsset.Equals(GetSettlementAsset()) {
-		return sdkerrors.Wrap(ErrInValidAsset, "External Asset cannot be rowan")
+		return sdkerrors.Wrap(ErrInValidAsset, "External Asset cannot be aku")
 	}
 	if !(m.NativeAssetAmount.GT(sdk.ZeroUint())) {
 		return sdkerrors.Wrap(ErrInValidAmount, m.NativeAssetAmount.String())

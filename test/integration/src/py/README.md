@@ -2,7 +2,7 @@
 test_bulk_transfers.py
 test_eth_transfers.py
 test_peggy_fees.py
-test_rowan_transfers.py
+test_aku_transfers.py
 
 ## Operator
 test_new_currency_transfers.py

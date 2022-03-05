@@ -46,9 +46,9 @@ func getDefaultArgs() Args {
 		Sender:           accInfo.GetAddress(),
 		SifchainReceiver: toAddr,
 		CosmosReceiver:   "",
-		Amount:           sdk.NewCoins(sdk.NewCoin("rowan", amount)),
+		Amount:           sdk.NewCoins(sdk.NewCoin("aku", amount)),
 		TimeoutTimestamp: 0,
-		Fees:             "1000000rowan",
+		Fees:             "1000000aku",
 		Network:          Devnet,
 		SenderName:       senderName,
 	}

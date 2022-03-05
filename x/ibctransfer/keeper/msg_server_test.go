@@ -24,15 +24,15 @@ func TestMsgServer_Transfer(t *testing.T) {
 	app, ctx, _ := tokenregistrytest.CreateTestApp(false)
 	addrs, _ := test.CreateTestAddrs(2)
 	app.TokenRegistryKeeper.SetToken(ctx, &tokenregistrytypes.RegistryEntry{
-		Denom:                "rowan",
+		Denom:                "aku",
 		Decimals:             18,
-		IbcCounterpartyDenom: "xrowan",
+		IbcCounterpartyDenom: "xaku",
 		Permissions:          []tokenregistrytypes.Permission{tokenregistrytypes.Permission_IBCEXPORT},
 	})
 	app.TokenRegistryKeeper.SetToken(ctx, &tokenregistrytypes.RegistryEntry{
-		Denom:       "xrowan",
+		Denom:       "xaku",
 		Decimals:    10,
-		UnitDenom:   "rowan",
+		UnitDenom:   "aku",
 		Permissions: []tokenregistrytypes.Permission{tokenregistrytypes.Permission_IBCEXPORT},
 	})
 	app.TokenRegistryKeeper.SetToken(ctx, &tokenregistrytypes.RegistryEntry{
@@ -46,7 +46,7 @@ func TestMsgServer_Transfer(t *testing.T) {
 		IbcCounterpartyDenom: "ceth",
 		Permissions:          []tokenregistrytypes.Permission{},
 	})
-	rowanSmallest, ok := sdk.NewIntFromString("183456789")
+	akuSmallest, ok := sdk.NewIntFromString("183456789")
 	require.True(t, ok)
 	tt := []struct {
 		name                 string
@@ -58,13 +58,13 @@ func TestMsgServer_Transfer(t *testing.T) {
 		setupBankKeeperCalls func()
 	}{
 		{
-			name:       "transfer smallest rowan without rounding",
+			name:       "transfer smallest aku without rounding",
 			bankKeeper: bankKeeper,
 			msgSrv:     msgSrv,
 			msg: sdktransfertypes.NewMsgTransfer(
 				"transfer",
 				"channel-0",
-				sdk.NewCoin("rowan", rowanSmallest),
+				sdk.NewCoin("aku", akuSmallest),
 				addrs[0].String(),
 				addrs[1].String(),
 				clienttypes.NewHeight(0, 0),
@@ -74,7 +74,7 @@ func TestMsgServer_Transfer(t *testing.T) {
 				msgSrv.EXPECT().Transfer(gomock.Any(), &sdktransfertypes.MsgTransfer{
 					SourcePort:       "transfer",
 					SourceChannel:    "channel-0",
-					Token:            sdk.NewCoin("rowan", rowanSmallest),
+					Token:            sdk.NewCoin("aku", akuSmallest),
 					Sender:           addrs[0].String(),
 					Receiver:         addrs[1].String(),
 					TimeoutHeight:    clienttypes.NewHeight(0, 0),
@@ -125,7 +125,7 @@ func TestMsgServer_Transfer(t *testing.T) {
 			msg: sdktransfertypes.NewMsgTransfer(
 				"transfer",
 				"channel-0",
-				sdk.NewCoin("xrowan", sdk.NewInt(1)),
+				sdk.NewCoin("xaku", sdk.NewInt(1)),
 				addrs[0].String(),
 				addrs[1].String(),
 				clienttypes.NewHeight(0, 0),

@@ -18,4 +18,4 @@ Follow step 6 in Deployment.md to do this.
 
 Follow step 6 in Deployment.md to do this.
 
-4. Whenever you make a new prophecy claim for rowan, you will need to pass the symbol eRowan as a parameter, otherwise it will mess up and create a new token when it should not.
+4. Whenever you make a new prophecy claim for aku, you will need to pass the symbol eRowan as a parameter, otherwise it will mess up and create a new token when it should not.

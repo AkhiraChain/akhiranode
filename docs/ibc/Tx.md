@@ -21,7 +21,7 @@ General Flow
 
 Transfer Funds from Chain-1 to Chain-2
 ```shell
-sifnoded tx ibc-transfer transfer 
+akiranoded tx ibc-transfer transfer 
 transfer  -> Port
 channel-101  -> Channel
 cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux  -> Receiver( in Chain-2)
@@ -29,7 +29,7 @@ cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux  -> Receiver( in Chain-2)
 --from=sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd (Sender in Chain-1)
 --node=https://rpc-devnet.sifchain.finance:443 (Broadcasting Node for Chain-1)
 --chain-id=sifchain-devnet-1  (chainID for Chain-1)
---gas-prices=1rowan (Gas Prices to pay in Chain-1)
+--gas-prices=1aku (Gas Prices to pay in Chain-1)
 --gas=5000000 (Max gas the Sender is willing to pay)
 --y  (Auto-Confirm)
 --packet-timeout-timestamp=600000000000 (The transfer operation will timieout after this number + concensus.CurrentTimestamp)

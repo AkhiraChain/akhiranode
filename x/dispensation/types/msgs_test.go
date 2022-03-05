@@ -118,7 +118,7 @@ func TestMsgCreateDistribution_ValidateBasic_Order(t *testing.T) {
 	authorizedRunner := sdk.AccAddress("addr2_______________")
 	validAddress := sdk.AccAddress("addr3_______________")
 
-	coin := []sdk.Coin{sdk.NewCoin("rowan", sdk.NewInt(1000000)), sdk.NewCoin("cusdt", sdk.NewInt(1000000))}
+	coin := []sdk.Coin{sdk.NewCoin("aku", sdk.NewInt(1000000)), sdk.NewCoin("cusdt", sdk.NewInt(1000000))}
 
 	output := banktypes.NewOutput(validAddress, sdk.NewCoins(coin...))
 	outputList := []banktypes.Output{output}
@@ -151,7 +151,7 @@ func TestMsgCreateDistribution_ValidateBasic_WrongAddress(t *testing.T) {
 	authorizedRunner := sdk.AccAddress("addr3_______________")
 	// Address is valid as long as its length is between 1-255 bytes.
 	invalidAddress := sdk.AccAddress("")
-	outputList = append(outputList, banktypes.NewOutput(invalidAddress, sdk.NewCoins(sdk.NewCoin("rowan", sdk.NewInt(1000000)))))
+	outputList = append(outputList, banktypes.NewOutput(invalidAddress, sdk.NewCoins(sdk.NewCoin("aku", sdk.NewInt(1000000)))))
 	msg := types.MsgCreateDistribution{
 		Distributor:      distributor.String(),
 		DistributionType: types.DistributionType_DISTRIBUTION_TYPE_AIRDROP,
@@ -161,7 +161,7 @@ func TestMsgCreateDistribution_ValidateBasic_WrongAddress(t *testing.T) {
 	err := msg.ValidateBasic()
 	assert.Error(t, err)
 	invalidAddress2 := sdk.AccAddress(strings.Repeat(validAddress.String(), 7))
-	outputList = append(outputList, banktypes.NewOutput(invalidAddress2, sdk.NewCoins(sdk.NewCoin("rowan", sdk.NewInt(1000000)))))
+	outputList = append(outputList, banktypes.NewOutput(invalidAddress2, sdk.NewCoins(sdk.NewCoin("aku", sdk.NewInt(1000000)))))
 	msg = types.MsgCreateDistribution{
 		Distributor:      distributor.String(),
 		DistributionType: types.DistributionType_DISTRIBUTION_TYPE_AIRDROP,
@@ -221,7 +221,7 @@ func TestMsgCreateDistribution_ValidateBasic_MultipleCoins(t *testing.T) {
 	outputlist := test.CreatOutputList(2000, "1")
 	authorizedRunner := sdk.AccAddress("addr2_______________")
 	outputlist = append(outputlist, banktypes.NewOutput(sdk.AccAddress(ed25519.GenPrivKey().PubKey().Address()),
-		sdk.NewCoins(sdk.NewCoin("rowan", sdk.NewInt(10)), sdk.NewCoin("dash", sdk.NewInt(100)))))
+		sdk.NewCoins(sdk.NewCoin("aku", sdk.NewInt(10)), sdk.NewCoin("dash", sdk.NewInt(100)))))
 	msg := types.MsgCreateDistribution{
 		Distributor:      distributor.String(),
 		DistributionType: types.DistributionType_DISTRIBUTION_TYPE_AIRDROP,

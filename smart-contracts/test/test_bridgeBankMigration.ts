@@ -87,13 +87,13 @@ describe("BridgeBank and CosmosBridge - updating to latest smart contracts", () 
                 const impersonatedValidators = await Promise.all(validators.map(v => startImpersonateAccount(hardhat, v)))
 
                 {
-                    // it("should turn rowan to erowan in a lock")
+                    // it("should turn aku to eaku in a lock")
 
-                    const rowanContract = await container.resolve(DeployedBridgeToken).contract
-                    const startingBalance = await rowanContract.balanceOf(receiver.address)
-                    const prophecyResult = await executeNewProphecyClaimWithTestValues("lock", receiver.address, "erowan", amount, newCosmosBridge, impersonatedValidators)
+                    const akuContract = await container.resolve(DeployedBridgeToken).contract
+                    const startingBalance = await akuContract.balanceOf(receiver.address)
+                    const prophecyResult = await executeNewProphecyClaimWithTestValues("lock", receiver.address, "eaku", amount, newCosmosBridge, impersonatedValidators)
                     expect(prophecyResult.length).to.equal(validators.length - 1, "we expected one of the validators to fail after the prophecy was completed")
-                    expect(await rowanContract.balanceOf(receiver.address)).to.equal(startingBalance.add(amount))
+                    expect(await akuContract.balanceOf(receiver.address)).to.equal(startingBalance.add(amount))
                 }
                 {
                     // it("should turn ceth to eth using burn")

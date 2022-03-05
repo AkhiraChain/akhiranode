@@ -1,6 +1,6 @@
 # ui-stack
 
-Take a sifnode binary and build a docker image that forms the basis of the [`ui-stack`](https://github.com/orgs/Sifchain/packages/container/package/sifnode%2Fui-stack) image that our frontend UI is based on. This is the primary way we keep our repositories in sync.
+Take a sifnode binary and build a docker image that forms the basis of the [`ui-stack`](https://github.com/orgs/AkhiraChain/packages/container/package/akhiranode%2Fui-stack) image that our frontend UI is based on. This is the primary way we keep our repositories in sync.
 
 This code is managed by the frontend team.
 
@@ -16,19 +16,19 @@ This code is managed by the frontend team.
 
 ## Why is this set up like this?
 
-We need to have a different deployment cadence for `ui` code compared to our `sifnode` or blockchain code. In order to do this we need to be able to run our frontend e2e and integration tests against background builds.
+We need to have a different deployment cadence for `ui` code compared to our `akhiranode` or blockchain code. In order to do this we need to be able to run our frontend e2e and integration tests against background builds.
 
 ## Structure
 
 ### Docker registry
 
-We tie our repos together using a docker image generated on this repo and consumed by the frontend repo. You can view the latest docker repository uploads here: https://github.com/orgs/Sifchain/packages/container/package/sifnode%2Fui-stack
+We tie our repos together using a docker image generated on this repo and consumed by the frontend repo. You can view the latest docker repository uploads here: https://github.com/orgs/AkhiraChain/packages/container/package/akhiranode%2Fui-stack
 
 You can pull the repo using the following although you should never have to as it is built in to the scripts on the ui repo:
 
 ```
 # raw command for pulling the image
-docker pull ghcr.io/AkhiraChain/akhiranode/ui-stack:develop
+docker pull ghcr.io/akhirachain/akhiranode/ui-stack:develop
 ```
 
 Example of running a particular ui-stack built from a commit in the UI repo:
@@ -41,7 +41,7 @@ yarn stack --tag 1fa110636f94aa2f1c87a30c131462c814293ba8
 
 We have a github action `./.github/workflows/ui-stack.yml` which uses the scripts located in `./ui` to:
 
-1. Launch a single sifnode, ethereum node, and ebrelayer instance
+1. Launch a single akhiranode, ethereum node, and ebrelayer instance
 1. Run migration scripts setting up the state required for our frontend e2e tests
 1. Shutdown and save the state of the chains to the `./chains/snapshots` folder
 1. Build a docker image to instantly restart the stack on demand
@@ -56,7 +56,7 @@ The chains folder holds folders for each individual service our frontend require
 | -------- | ------------------------------------------------- |
 | `/eth`   | our ethereum node we run in the docker container. |
 | `/peggy` | ebrelayer                                         |
-| `/sif`   | sifnode                                           |
+| `/sif`   | akhiranode                                           |
 
 Then we have a folder for snapshot data.
 

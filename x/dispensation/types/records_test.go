@@ -17,7 +17,7 @@ func TestNewDistributionRecord(t *testing.T) {
 	runner := types.AttributeKeyDistributionRunner
 	recipientAddress := types.AttributeKeyDistributionRecordAddress
 	Coins := sdk.Coins{sdk.Coin{
-		Denom:  "rowan",
+		Denom:  "aku",
 		Amount: sdk.NewInt(20),
 	}}
 	distributionStartHeight := int64(1)
@@ -42,7 +42,7 @@ func TestNewDistributionRecord_validateTrue(t *testing.T) {
 	runner := types.AttributeKeyDistributionRunner
 	recipientAddress := types.AttributeKeyDistributionRecordAddress
 	Coins := sdk.Coins{sdk.Coin{
-		Denom:  "rowan",
+		Denom:  "aku",
 		Amount: sdk.NewInt(20)}}
 	distributionStartHeight := int64(1)
 	distributionCompletedHeight := int64(10)
@@ -111,7 +111,7 @@ func TestNewDistributionRecord_DoesTypeSupportClaim(t *testing.T) {
 	runner := types.AttributeKeyDistributionRunner
 	recipientAddress := types.AttributeKeyDistributionRecordAddress
 	Coins := sdk.Coins{sdk.Coin{
-		Denom:  "rowan",
+		Denom:  "aku",
 		Amount: sdk.NewInt(20)}}
 	distributionStartHeight := int64(1)
 	distributionCompletedHeight := int64(10)
@@ -128,7 +128,7 @@ func TestNewDistributionRecord_DoesTypeSupportClaim_False(t *testing.T) {
 	runner := types.AttributeKeyDistributionRunner
 	recipientAddress := types.AttributeKeyDistributionRecordAddress
 	Coins := sdk.Coins{sdk.Coin{
-		Denom:  "rowan",
+		Denom:  "aku",
 		Amount: sdk.NewInt(20)}}
 	distributionStartHeight := int64(1)
 	distributionCompletedHeight := int64(10)

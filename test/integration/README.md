@@ -29,7 +29,7 @@ make sifdocker-sh     # gives you a shell in the running container
 ## Execute
 
 [start-integration-env.sh](./start-integration-env.sh) starts 
-sifnoded and ganache.
+akiranoded and ganache.
 
 Run the tests in a container with:
 
@@ -44,7 +44,7 @@ You can control the log level and which tests are run
 with standard pytest options:
 
 ```
-python3 -m pytest -olog_cli=true -olog_level=DEBUG -olog_file=/tmp/log.txt -v src/py/test_rowan_transfers.py::test_transfer_rowan_to_erowan
+python3 -m pytest -olog_cli=true -olog_level=DEBUG -olog_file=/tmp/log.txt -v src/py/test_aku_transfers.py::test_transfer_aku_to_eaku
 ```
 If you have a clean Ubuntu environment, these two commands will set up everything you need:
 
@@ -62,7 +62,7 @@ test/integration/start-integration-env.sh
 ```
 # cd ~/workspace/sifnode/test/integration 
 # source ./exampleenv.sh
-# sifnoded q auth account --node tcp://44.241.55.154:26657 sif1pvnu2kh826vn8r0ttlgt82hsmfknvcnf7qmpvk
+# akiranoded q auth account --node tcp://44.241.55.154:26657 sif1pvnu2kh826vn8r0ttlgt82hsmfknvcnf7qmpvk
 # ...
 ```
 

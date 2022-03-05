@@ -14,7 +14,7 @@ lock_gas_cost = 160000000000 * 393000
 highest_gas_cost = max(burn_gas_cost, lock_gas_cost)
 
 
-sifnoded_binary = "sifnoded"
+akiranoded_binary = "akiranoded"
 
 @dataclass
 class EthereumToSifchainTransferRequest:
@@ -35,7 +35,7 @@ class EthereumToSifchainTransferRequest:
     n_wait_blocks: int = n_wait_blocks
     bridgebank_address: str = ""
     bridgetoken_address: str = ""
-    sifnoded_node: str = "tcp://localhost:26657"
+    akiranoded_node: str = "tcp://localhost:26657"
     solidity_json_path: str = ""
     # set to true if you want to fail if the balance changes before
     # the block waiting period has elapsed.  If you're runing
@@ -70,7 +70,7 @@ class SifchaincliCredentials:
     keyring_passphrase: str = None
     keyring_backend: str = "test"
     from_key: str = None
-    sifnoded_homedir: str = None
+    akiranoded_homedir: str = None
 
     def printable_entries(self):
         return {**(self.__dict__), "keyring_passphrase": "** hidden **"}
@@ -88,8 +88,8 @@ class RequestAndCredentials:
 
 SIF_ETH = "ceth"
 ETHEREUM_ETH = "eth"
-SIF_ROWAN = "rowan"
-ETHEREUM_ROWAN = "erowan"
+SIF_ROWAN = "aku"
+ETHEREUM_ROWAN = "eaku"
 NULL_ADDRESS = "0x0000000000000000000000000000000000000000"
 
 
@@ -125,7 +125,7 @@ cmdfile = open("/tmp/testcmds.txt", "w")
 
 def get_shell_output(command_line):
     cmdfile.write(command_line)
-    if sifnoded_binary in command_line and not "q auth account" in command_line:
+    if akiranoded_binary in command_line and not "q auth account" in command_line:
         time.sleep(2)
     logging.debug(f"execute shell command:\n{command_line}")
     sub = subprocess.run(command_line, shell=True, capture_output=True)
@@ -189,7 +189,7 @@ def start_ebrelayer():
 
 # converts a key to a sif address.
 def get_user_account(user, network_password):
-    command_line = "yes " + network_password + f" | {sifnoded_binary} keys show " + user + " -a"
+    command_line = "yes " + network_password + f" | {akiranoded_binary} keys show " + user + " -a"
     return get_shell_output(command_line)
 
 
@@ -263,9 +263,9 @@ def mint_tokens(transfer_request: EthereumToSifchainTransferRequest, operator_ad
     return run_yarn_command(command_line)
 
 
-def get_sifchain_addr_balance(sifaddress, sifnoded_node, denom):
-    node = f"--node {sifnoded_node}" if sifnoded_node else ""
-    command_line = f"{sifnoded_binary} query bank balances {node} {sifaddress} --output json --limit 100000000"
+def get_sifchain_addr_balance(sifaddress, akiranoded_node, denom):
+    node = f"--node {akiranoded_node}" if akiranoded_node else ""
+    command_line = f"{akiranoded_binary} query bank balances {node} {sifaddress} --output json --limit 100000000"
     json_str = get_shell_output_json(command_line)
     coins = json_str["balances"]
     for coin in coins:
@@ -296,10 +296,10 @@ def wait_for_successful_command(command_line, max_seconds=80):
     )
 
 
-def get_transaction_result(tx_hash, sifnoded_node, chain_id):
-    node = f"--node {sifnoded_node}" if sifnoded_node else ""
+def get_transaction_result(tx_hash, akiranoded_node, chain_id):
+    node = f"--node {akiranoded_node}" if akiranoded_node else ""
     chain_id_entry = f"--chain-id {chain_id}" if chain_id else ""
-    command_line = f"{sifnoded_binary} q tx {node} {tx_hash} {chain_id_entry} --output json"
+    command_line = f"{akiranoded_binary} q tx {node} {tx_hash} {chain_id_entry} --output json"
     json_str = wait_for_successful_command(command_line, max_seconds=30)
     return json_str
 
@@ -360,7 +360,7 @@ def wait_for_sifchain_addr_balance(
     )
 
 
-def detect_errors_in_sifnoded_output(result):
+def detect_errors_in_akiranoded_output(result):
     result_lines = result.split("\n")
     for line in result_lines:
         line: str
@@ -376,12 +376,12 @@ def send_from_sifchain_to_sifchain_cmd(
     yes_entry = f"yes {credentials.keyring_passphrase} | " if credentials.keyring_passphrase else ""
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     chain_id_entry = f"--chain-id {transfer_request.chain_id}" if transfer_request.chain_id else ""
-    node = f"--node {transfer_request.sifnoded_node}" if transfer_request.sifnoded_node else ""
+    node = f"--node {transfer_request.akiranoded_node}" if transfer_request.akiranoded_node else ""
     sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
-    home_entry = f"--home {credentials.sifnoded_homedir}" if credentials.sifnoded_homedir else ""
+    home_entry = f"--home {credentials.akiranoded_homedir}" if credentials.akiranoded_homedir else ""
     cmd = " ".join([
         yes_entry,
-        f"{sifnoded_binary} tx bank send",
+        f"{akiranoded_binary} tx bank send",
         transfer_request.sifchain_address,
         transfer_request.sifchain_destination_address,
         keyring_backend_entry,
@@ -402,9 +402,9 @@ def send_from_sifchain_to_sifchain(
 ):
     cmd = send_from_sifchain_to_sifchain_cmd(transfer_request, credentials)
     result = get_shell_output_json(cmd)
-    # detect_errors_in_sifnoded_output(result)
+    # detect_errors_in_akiranoded_output(result)
     time.sleep(4)
-    # get_transaction_result(result["txhash"], transfer_request.sifnoded_node, transfer_request.chain_id)
+    # get_transaction_result(result["txhash"], transfer_request.akiranoded_node, transfer_request.chain_id)
     return result
 
 
@@ -415,15 +415,15 @@ def send_from_sifchain_to_ethereum_cmd(
     """
     Sends from Sifchain to Ethereum.
 
-    Picks a lock or a burn based on the token (rowan, anything else).
+    Picks a lock or a burn based on the token (aku, anything else).
     """
     assert transfer_request.amount > 0
     yes_entry = f"yes {credentials.keyring_passphrase} | " if credentials.keyring_passphrase else ""
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
-    node = f"--node {transfer_request.sifnoded_node}" if transfer_request.sifnoded_node else ""
+    node = f"--node {transfer_request.akiranoded_node}" if transfer_request.akiranoded_node else ""
     sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
-    direction = "lock" if transfer_request.sifchain_symbol == "rowan" else "burn"
-    home_entry = f"--home {credentials.sifnoded_homedir}" if credentials.sifnoded_homedir else ""
+    direction = "lock" if transfer_request.sifchain_symbol == "aku" else "burn"
+    home_entry = f"--home {credentials.akiranoded_homedir}" if credentials.akiranoded_homedir else ""
     from_entry = f"--from {credentials.from_key} " if credentials.from_key else ""
     if not transfer_request.ceth_amount:
         if direction == "lock":
@@ -431,7 +431,7 @@ def send_from_sifchain_to_ethereum_cmd(
         else:
             ceth_charge = burn_gas_cost
     command_line = f"{yes_entry} " \
-                   f"{sifnoded_binary} tx ethbridge {direction} {node} " \
+                   f"{akiranoded_binary} tx ethbridge {direction} {node} " \
                    f"{transfer_request.sifchain_address} " \
                    f"{transfer_request.ethereum_address} " \
                    f"{int(transfer_request.amount):0} " \
@@ -451,13 +451,13 @@ def send_from_sifchain_to_ethereum(transfer_request: EthereumToSifchainTransferR
                                    credentials: SifchaincliCredentials):
     command_line = send_from_sifchain_to_ethereum_cmd(transfer_request, credentials)
     result = get_shell_output(command_line)
-    detect_errors_in_sifnoded_output(result)
+    detect_errors_in_akiranoded_output(result)
     return result
 
 
 # this does not wait for the transaction to complete
 def send_from_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRequest) -> int:
-    direction = "sendBurnTx" if transfer_request.sifchain_symbol == "rowan" else "sendLockTx"
+    direction = "sendBurnTx" if transfer_request.sifchain_symbol == "aku" else "sendLockTx"
     command_line = f"yarn -s --cwd {transfer_request.smart_contracts_dir} integrationtest:{direction} " \
                    f"--sifchain_address {transfer_request.sifchain_address} " \
                    f"--symbol {transfer_request.ethereum_symbol} " \
@@ -479,8 +479,8 @@ def send_from_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferR
 currency_pairs = {
     "eth": "ceth",
     "ceth": "eth",
-    "rowan": "erowan",
-    "erowan": "rowan"
+    "aku": "eaku",
+    "eaku": "aku"
 }
 
 
@@ -687,8 +687,8 @@ def ganache_private_key(ganache_private_keys_file: str, address):
 
 
 def sifchain_symbol_to_ethereum_symbol(s: str):
-    if s == "rowan":
-        return "erowan"
+    if s == "aku":
+        return "eaku"
     elif s == "ceth":
         return NULL_ADDRESS
     else:
@@ -702,7 +702,7 @@ def update_ceth_receiver_account(
         credentials: SifchaincliCredentials
 ):
     cmd = build_sifchain_command(
-        f"{sifnoded_binary} tx ethbridge update_ceth_receiver_account -y {admin_account} {receiver_account}",
+        f"{akiranoded_binary} tx ethbridge update_ceth_receiver_account -y {admin_account} {receiver_account}",
         transfer_request=transfer_request,
         credentials=credentials
     )
@@ -718,7 +718,7 @@ def rescue_ceth(
         credentials: SifchaincliCredentials
 ):
     cmd = build_sifchain_command(
-        f"{sifnoded_binary} tx ethbridge rescue_ceth -y {admin_account} {receiver_account} {amount:d}",
+        f"{akiranoded_binary} tx ethbridge rescue_ceth -y {admin_account} {receiver_account} {amount:d}",
         transfer_request=transfer_request,
         credentials=credentials
     )
@@ -733,8 +733,8 @@ def build_sifchain_command(
     yes_entry = f"yes {credentials.keyring_passphrase} | " if credentials.keyring_passphrase else ""
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     chain_id_entry = f"--chain-id {transfer_request.chain_id}" if transfer_request.chain_id else ""
-    node_entry = f"--node {transfer_request.sifnoded_node}" if transfer_request.sifnoded_node else ""
-    home_entry = f"--home {credentials.sifnoded_homedir}" if credentials.sifnoded_homedir else ""
+    node_entry = f"--node {transfer_request.akiranoded_node}" if transfer_request.akiranoded_node else ""
+    home_entry = f"--home {credentials.akiranoded_homedir}" if credentials.akiranoded_homedir else ""
     from_entry = f"--from {credentials.from_key} " if credentials.from_key else ""
     sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     return " ".join([

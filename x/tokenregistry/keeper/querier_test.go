@@ -13,7 +13,7 @@ import (
 func TestQueryEntries(t *testing.T) {
 	app, ctx, _ := test.CreateTestApp(false)
 	app.TokenRegistryKeeper.SetToken(ctx, &types.RegistryEntry{
-		Denom:    "rowan",
+		Denom:    "aku",
 		Decimals: 18,
 	})
 	expectedRegistry := app.TokenRegistryKeeper.GetRegistry(ctx)

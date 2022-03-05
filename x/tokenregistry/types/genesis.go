@@ -33,7 +33,7 @@ func GetGenesisStateFromAppState(marshaler codec.JSONCodec, appState map[string]
 func InitialRegistry() Registry {
 	entries := Registry{
 		Entries: []*RegistryEntry{
-			{Denom: "rowan", Decimals: 18, Permissions: []Permission{Permission_CLP}},
+			{Denom: "aku", Decimals: 18, Permissions: []Permission{Permission_CLP}},
 			{Denom: "causc", Decimals: 6, Permissions: []Permission{Permission_CLP}},
 			{Denom: "cusdt", Decimals: 6, Permissions: []Permission{Permission_CLP}},
 			{Denom: "cusdc", Decimals: 6, Permissions: []Permission{Permission_CLP}},

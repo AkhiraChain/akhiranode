@@ -1,9 +1,9 @@
 #!/bin/bash
 
-killall sifnoded
+killall akiranoded
 
-rm $(which sifnoded) 2> /dev/null || echo sifnoded not install yet ...
+rm $(which akiranoded) 2> /dev/null || echo akiranoded not install yet ...
 
-rm -rf ~/.sifnoded
+rm -rf ~/.akiranoded
 
 cd ../../../ && make install 

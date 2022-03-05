@@ -17,7 +17,7 @@ ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=akhirachain \
 
 BUILD_FLAGS := -ldflags '$(ldflags)'
 
-BINARIES=./cmd/akhiranoded ./cmd/sifgen ./cmd/ebrelayer
+BINARIES=./cmd/akhiranoded ./cmd/akhgen ./cmd/ebrelayer
 
 all: lint install
 
@@ -29,7 +29,7 @@ init:
 	./scripts/init.sh
 
 start:
-	akhiranoded start
+	./akhiranoded start
 
 lint-pre:
 	@test -z $(gofmt -l .)
@@ -44,11 +44,11 @@ lint-verbose: lint-pre
 install: go.sum
 	go install ${BUILD_FLAGS} ${BINARIES}
 
-build-sifd: go.sum
+build-akd: go.sum
 	go build  ${BUILD_FLAGS} ./cmd/akhiranoded
 
 clean:
-	@rm -rf ${GOBIN}/sif*
+	@rm -rf ${GOBIN}/ak*
 
 coverage:
 	@go test -v ./... -coverprofile=coverage.txt -covermode=atomic
@@ -63,13 +63,13 @@ run:
 	go run ./cmd/akhiranoded start
 
 build-image:
-	docker build -t sifchain/$(BINARY):$(IMAGE_TAG) -f ./cmd/$(BINARY)/Dockerfile .
+	docker build -t akhirachain/$(BINARY):$(IMAGE_TAG) -f ./cmd/$(BINARY)/Dockerfile .
 
 run-image: build-image
-	docker run sifchain/$(BINARY):$(IMAGE_TAG)
+	docker run akhirachain/$(BINARY):$(IMAGE_TAG)
 
 sh-image: build-image
-	docker run -it sifchain/$(BINARY):$(IMAGE_TAG) sh
+	docker run -it akhirachain/$(BINARY):$(IMAGE_TAG) sh
 
 init-run:
 	./scripts/init.sh && ./scripts/run.sh

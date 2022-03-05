@@ -14,4 +14,4 @@ loglevel=${LOG_LEVEL:-INFO}
 
 python3 -m pytest -olog_level=$loglevel -v -olog_file=/tmp/log.txt -v \
   ${TEST_INTEGRATION_PY_DIR}/test_eth_transfers.py \
-  ${TEST_INTEGRATION_PY_DIR}/test_rowan_transfers.py \
+  ${TEST_INTEGRATION_PY_DIR}/test_aku_transfers.py \

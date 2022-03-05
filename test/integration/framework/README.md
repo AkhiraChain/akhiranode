@@ -21,7 +21,7 @@
 8. In AkhiraChain/akhiranode/scripts there's init.sh which, if you have everything installed, will run a single node. Ping
    @Brianosaurus for more info.
 
-9. erowan should be deployed and whitelisted (assumption)
+9. eaku should be deployed and whitelisted (assumption)
 
 # RPC endpoints:
 e.g. SIFNODE="https://api-testnet.sifchain.finance"

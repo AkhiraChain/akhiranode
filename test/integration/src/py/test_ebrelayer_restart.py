@@ -20,12 +20,12 @@ def test_ebrelayer_restart(
         base_transfer_request=basic_transfer_request,
         target_ceth_balance=10 ** 15
     )
-    balance = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.sifnoded_node, "ceth")
+    balance = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akiranoded_node, "ceth")
     logging.info("restart ebrelayer normally, leaving the last block db in place")
     test_utilities.start_ebrelayer()
     test_utilities.advance_n_ethereum_blocks(test_utilities.n_wait_blocks * 2, request.smart_contracts_dir)
     time.sleep(5)
-    assert balance == test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.sifnoded_node,
+    assert balance == test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akiranoded_node,
                                                                "ceth")
 
 
@@ -81,26 +81,26 @@ def test_ethereum_transactions_with_offline_relayer(
         # ebrelayer only reads blocks if there are new blocks generated
         test_utilities.advance_n_ethereum_blocks(test_utilities.n_wait_blocks, request.smart_contracts_dir)
     for a in new_addresses:
-        test_utilities.wait_for_sif_account(a, basic_transfer_request.sifnoded_node, 90)
-        test_utilities.wait_for_sifchain_addr_balance(a, "ceth", amount, basic_transfer_request.sifnoded_node, 90)
+        test_utilities.wait_for_sif_account(a, basic_transfer_request.akiranoded_node, 90)
+        test_utilities.wait_for_sifchain_addr_balance(a, "ceth", amount, basic_transfer_request.akiranoded_node, 90)
 
 
 @pytest.mark.usefixtures("ensure_relayer_restart")
 def test_sifchain_transactions_with_offline_relayer(
         basic_transfer_request: EthereumToSifchainTransferRequest,
-        rowan_source_integrationtest_env_credentials: test_utilities.SifchaincliCredentials,
-        rowan_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
-        rowan_source,
+        aku_source_integrationtest_env_credentials: test_utilities.SifchaincliCredentials,
+        aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
+        aku_source,
         smart_contracts_dir,
         source_ethereum_address,
 ):
     basic_transfer_request.ethereum_address = source_ethereum_address
     request, credentials = generate_test_account(
         basic_transfer_request,
-        rowan_source_integrationtest_env_transfer_request,
-        rowan_source_integrationtest_env_credentials,
+        aku_source_integrationtest_env_transfer_request,
+        aku_source_integrationtest_env_credentials,
         target_ceth_balance=10 ** 19,
-        target_rowan_balance=10 ** 19,
+        target_aku_balance=10 ** 19,
     )
     logging.info("shut down ebrelayer")
     time.sleep(10)
@@ -123,7 +123,7 @@ def test_sifchain_transactions_with_offline_relayer(
 
     for a in new_eth_addrs:
         request.ethereum_address = a["address"]
-        sifchain_balance = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.sifnoded_node,
+        sifchain_balance = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akiranoded_node,
                                                                     "ceth")
         logging.info(f"sifchain balance is {sifchain_balance}, request is {request}")
         test_utilities.send_from_sifchain_to_ethereum(

@@ -10,15 +10,15 @@ import sifchain
 from common import *
 
 
-# These are utilities to interact with running environment (running agains local ganache-cli/hardhat/sifnoded).
+# These are utilities to interact with running environment (running agains local ganache-cli/hardhat/akiranoded).
 # This is to replace test_utilities.py, conftest.py, burn_lock_functions.py and integration_test_context.py.
 # Also to replace smart-contracts/scripts/...
 
 
 CETH = "ceth"  # Peggy1 only (Peggy2.0 uses denom hash)
-ROWAN = "rowan"
+ROWAN = "aku"
 
-sifnode_funds_for_transfer_peggy1 = 10**17  # rowan
+sifnode_funds_for_transfer_peggy1 = 10**17  # aku
 
 # This is called from test fixture and will optionally set a snapshot to run the test in.
 def get_test_env_ctx(snapshot_name=None):
@@ -65,7 +65,7 @@ def get_env_ctx_peggy2():
         "BridgeBank": tmp["bridgeBank"],
         "CosmosBridge": tmp["cosmosBridge"],
         "BridgeRegistry": tmp["bridgeRegistry"],
-        "Rowan": tmp["rowanContract"],
+        "Rowan": tmp["akuContract"],
     }
     abi_provider = HardhatAbiProvider(cmd, deployed_contract_addresses)
 
@@ -77,7 +77,7 @@ def get_env_ctx_peggy2():
     owner_private_key = dot_env_vars.get("ETH_ACCOUNT_OWNER_PRIVATEKEY")
     if (owner_private_key is not None) and (owner_private_key.startswith("0x")):
         owner_private_key = owner_private_key[2:]
-    rowan_source = dot_env_vars["ROWAN_SOURCE"]
+    aku_source = dot_env_vars["ROWAN_SOURCE"]
 
     w3_url = eth.web3_host_port_url(dot_env_vars["ETH_HOST"], int(dot_env_vars["ETH_PORT"]))
     w3_conn = eth.web3_connect(w3_url, websocket_timeout=90)
@@ -85,15 +85,15 @@ def get_env_ctx_peggy2():
     sifnode_url = dot_env_vars["TCP_URL"]
     sifnode_chain_id = "localnet"  # TODO Mandatory, but not present either in environment_vars or dot_env_vars
     assert dot_env_vars["CHAINDIR"] == dot_env_vars["HOME"]
-    sifnoded_home = os.path.join(dot_env_vars["CHAINDIR"], ".sifnoded")
+    akiranoded_home = os.path.join(dot_env_vars["CHAINDIR"], ".akiranoded")
     ethereum_network_descriptor = dot_env_vars["ETH_CHAIN_ID"]
 
     eth_node_is_local = True
     generic_erc20_contract = "BridgeToken"
 
     ctx_eth = eth.EthereumTxWrapper(w3_conn, eth_node_is_local)
-    ctx = EnvCtx(cmd, w3_conn, ctx_eth, abi_provider, owner_address, sifnoded_home, sifnode_url, sifnode_chain_id,
-        rowan_source, generic_erc20_contract)
+    ctx = EnvCtx(cmd, w3_conn, ctx_eth, abi_provider, owner_address, akiranoded_home, sifnode_url, sifnode_chain_id,
+        aku_source, generic_erc20_contract)
     if owner_private_key:
         ctx.eth.set_private_key(owner_address, owner_private_key)
 
@@ -108,7 +108,7 @@ def get_env_ctx_peggy2():
     assert ctx.eth.fixed_gas_args["gasPrice"] == 1 * eth.GWEI + 7
 
     # Monkeypatching for peggy2 extras
-    # TODO These are set in main.py:Peggy2Environment.init_sifchain(), specifically "sifnoded tx ethbridge set-cross-chain-fee"
+    # TODO These are set in main.py:Peggy2Environment.init_sifchain(), specifically "akiranoded tx ethbridge set-cross-chain-fee"
     # Consider passing them via environment
     ctx.cross_chain_fee_base = 1
     ctx.cross_chain_lock_fee = 1
@@ -172,11 +172,11 @@ def get_env_ctx_peggy1(cmd=None, env_file=None, env_vars=None):
         assert env_vars["PAUSER"] == operator_address
 
     if "ROWAN_SOURCE" in env_vars:
-        rowan_source = env_vars["ROWAN_SOURCE"]
+        aku_source = env_vars["ROWAN_SOURCE"]
     elif "VALIDATOR1_ADDR" in env_vars:
-        rowan_source = env_vars["VALIDATOR1_ADDR"]
+        aku_source = env_vars["VALIDATOR1_ADDR"]
     else:
-        rowan_source = None
+        aku_source = None
 
     ethereum_network_id = int(env_vars.get("ETHEREUM_NETWORK_ID", 5777))
 
@@ -194,7 +194,7 @@ def get_env_ctx_peggy1(cmd=None, env_file=None, env_vars=None):
         artifacts_dir = cmd.project.project_dir("smart-contracts/build")
 
     sifnode_url = env_vars.get("SIFNODE")  # Defaults to "tcp://localhost:26657"
-    sifnoded_home = None  # Implies default ~/.sifnoded
+    akiranoded_home = None  # Implies default ~/.akiranoded
 
     w3_conn = eth.web3_connect(w3_url, websocket_timeout=90)
 
@@ -208,8 +208,8 @@ def get_env_ctx_peggy1(cmd=None, env_file=None, env_vars=None):
 
     ctx_eth = eth.EthereumTxWrapper(w3_conn, eth_node_is_local)
     abi_provider = GanacheAbiProvider(cmd, artifacts_dir, ethereum_network_id)
-    ctx = EnvCtx(cmd, w3_conn, ctx_eth, abi_provider, operator_address, sifnoded_home, sifnode_url, sifnode_chain_id,
-        rowan_source, generic_erc20_contract_name)
+    ctx = EnvCtx(cmd, w3_conn, ctx_eth, abi_provider, operator_address, akiranoded_home, sifnode_url, sifnode_chain_id,
+        aku_source, generic_erc20_contract_name)
     if operator_private_key:
         ctx.eth.set_private_key(operator_address, operator_private_key)
 
@@ -285,18 +285,18 @@ class HardhatAbiProvider:
 
 
 class EnvCtx:
-    def __init__(self, cmd, w3_conn, ctx_eth, abi_provider, operator, sifnoded_home, sifnode_url, sifnode_chain_id,
-        rowan_source, generic_erc20_contract
+    def __init__(self, cmd, w3_conn, ctx_eth, abi_provider, operator, akiranoded_home, sifnode_url, sifnode_chain_id,
+        aku_source, generic_erc20_contract
     ):
         self.cmd = cmd
         self.w3_conn = w3_conn
         self.eth = ctx_eth
         self.abi_provider = abi_provider
         self.operator = operator
-        self.sifnode = sifchain.Sifnoded(self.cmd, home=sifnoded_home)
+        self.sifnode = sifchain.Sifnoded(self.cmd, home=akiranoded_home)
         self.sifnode_url = sifnode_url
         self.sifnode_chain_id = sifnode_chain_id
-        self.rowan_source = rowan_source
+        self.aku_source = aku_source
         self.generic_erc20_contract = generic_erc20_contract
         self.available_test_eth_accounts = None
 
@@ -554,13 +554,13 @@ class EnvCtx:
         args = ["tx", "ethbridge", direction, from_sif_addr, to_eth_addr, str(amount), denom, str(cross_chain_ceth_fee),
                 "--network-descriptor", str(self.ethereum_network_descriptor),  # Mandatory
                 "--from", from_sif_addr,  # Mandatory, either name from keyring or address
-                "--gas-prices", "0.5rowan",
+                "--gas-prices", "0.5aku",
                 "--gas-adjustment", "1.5",
                 "-y"
             ] + \
-            self._sifnoded_home_arg() + \
-            self._sifnoded_chain_id_and_node_arg()
-        res = self.sifnode.sifnoded_exec(args, keyring_backend=self.sifnode.keyring_backend)
+            self._akiranoded_home_arg() + \
+            self._akiranoded_chain_id_and_node_arg()
+        res = self.sifnode.akiranoded_exec(args, keyring_backend=self.sifnode.keyring_backend)
         result = json.loads(stdout(res))
         assert "failed to execute message" not in result["raw_log"]
         return json.loads(stdout(res))
@@ -569,29 +569,29 @@ class EnvCtx:
         """
         Generates a new sifchain address in test keyring. If moniker is given, uses it, otherwise
         generates a random one 'test-xxx'. If fund_amounts is given, the sifchain funds are transferred
-        from rowan_source to the account before returning.
+        from aku_source to the account before returning.
         """
         moniker = moniker or "test-" + random_string(20)
         acct = self.sifnode.keys_add_1(moniker)
         sif_address = acct["address"]
         if fund_amounts:
             old_balances = self.get_sifchain_balance(sif_address)
-            self.send_from_sifchain_to_sifchain(self.rowan_source, sif_address, fund_amounts)
+            self.send_from_sifchain_to_sifchain(self.aku_source, sif_address, fund_amounts)
             self.wait_for_sif_balance_change(sif_address, old_balances, min_changes=fund_amounts)
         return sif_address
 
     # smart-contracts/scripts/test/{sendLockTx.js OR sendBurnTx.js}
-    # sendBurnTx is called when sifchain_symbol == "rowan", sendLockTx otherwise
+    # sendBurnTx is called when sifchain_symbol == "aku", sendLockTx otherwise
     def send_from_ethereum_to_sifchain(self):
         assert False,"Not implemented yet"  # TODO
 
     def send_from_sifchain_to_sifchain(self, from_sif_addr, to_sif_addr, amounts):
         amounts_string = ",".join([sif_format_amount(*a) for a in amounts])
         args = ["tx", "bank", "send", from_sif_addr, to_sif_addr, amounts_string] + \
-            self._sifnoded_chain_id_and_node_arg() + \
-            self._sifnoded_fees_arg() + \
+            self._akiranoded_chain_id_and_node_arg() + \
+            self._akiranoded_fees_arg() + \
             ["--yes", "--output", "json"]
-        res = self.sifnode.sifnoded_exec(args, sifnoded_home=self.sifnode.home, keyring_backend=self.sifnode.keyring_backend)
+        res = self.sifnode.akiranoded_exec(args, akiranoded_home=self.sifnode.home, keyring_backend=self.sifnode.keyring_backend)
         retval = json.loads(stdout(res))
         raw_log = retval["raw_log"]
         if "insufficient funds" in raw_log:
@@ -599,16 +599,16 @@ class EnvCtx:
         return retval
 
     # TODO
-    # def generate_test_account(self, target_ceth_balance=10**18, target_rowan_balance=10**18):
+    # def generate_test_account(self, target_ceth_balance=10**18, target_aku_balance=10**18):
     #     sifchain_addr = self.create_sifchain_addr()
     #     self.send_eth_from_ethereum_to_sifchain(self.operator, sifchain_addr, target_ceth_balance)
-    #     self.send_from_sifchain_to_sifchain(self.rowan_source, sifchain_addr, target_rowan_balance)
+    #     self.send_from_sifchain_to_sifchain(self.aku_source, sifchain_addr, target_aku_balance)
     #     return sifchain_addr
 
     def get_sifchain_balance(self, sif_addr):
         args = ["query", "bank", "balances", sif_addr, "--limit", str(100000000), "--output", "json"] + \
-            self._sifnoded_chain_id_and_node_arg()
-        res = self.sifnode.sifnoded_exec(args, sifnoded_home=self.sifnode.home)
+            self._akiranoded_chain_id_and_node_arg()
+        res = self.sifnode.akiranoded_exec(args, akiranoded_home=self.sifnode.home)
         res = json.loads(stdout(res))["balances"]
         return dict(((x["denom"], int(x["amount"])) for x in res))
 
@@ -653,7 +653,7 @@ class EnvCtx:
     def eth_symbol_to_sif_symbol(self, eth_token_symbol):
         # TODO sifchain.use sifchain_denom_hash() if on_peggy2_branch
         # E.g. "usdt" -> "cusdt"
-        if eth_token_symbol == "erowan":
+        if eth_token_symbol == "eaku":
             return ROWAN
         else:
             return "c" + eth_token_symbol.lower()
@@ -662,11 +662,11 @@ class EnvCtx:
     # You need to have its private key in the test keyring.
     def token_registry_register(self, address, symbol, token_name, decimals, from_sif_addr):
         # Check that we have the private key in test keyring. This will throw an exception if we don't.
-        self.cmd.sifnoded_keys_show(from_sif_addr)
+        self.cmd.akiranoded_keys_show(from_sif_addr)
         sifchain_symbol = self.eth_symbol_to_sif_symbol(symbol)
         upper_symbol = symbol.upper()  # Like "USDT"
         # See scripts/ibc/tokenregistration for more information and examples.
-        # JSON file can be generated with "sifnoded q tokenregistry generate"
+        # JSON file can be generated with "akiranoded q tokenregistry generate"
         token_data = {"entries": [{
             "decimals": str(decimals),
             "denom": sifchain_symbol,
@@ -689,14 +689,14 @@ class EnvCtx:
         try:
             self.cmd.write_text_file(tmp_registry_json, json.dumps(token_data, indent=4))
             args = ["tx", "tokenregistry", "register", tmp_registry_json] + \
-                self._sifnoded_chain_id_and_node_arg() + \
-                self._sifnoded_fees_arg() + [
+                self._akiranoded_chain_id_and_node_arg() + \
+                self._akiranoded_fees_arg() + [
                 "--from", from_sif_addr,
                 "--output", "json",
                 "--broadcast-mode", "block",  # One of sync|async|block; block will actually get us raw_message
                 "--yes"
             ]
-            res = self.cmd.sifnoded_exec(args, keyring_backend="test")
+            res = self.cmd.akiranoded_exec(args, keyring_backend="test")
             res = json.loads(stdout(res))
             # Example of successful output: {"height":"196804","txhash":"C8252E77BCD441A005666A4F3D76C99BD35F9CB49AA1BE44CBE2FFCC6AD6ADF4","codespace":"","code":0,"data":"0A270A252F7369666E6F64652E746F6B656E72656769737472792E76312E4D73675265676973746572","raw_log":"[{\"events\":[{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"/sifnode.tokenregistry.v1.MsgRegister\"}]}]}]","logs":[{"msg_index":0,"log":"","events":[{"type":"message","attributes":[{"key":"action","value":"/sifnode.tokenregistry.v1.MsgRegister"}]}]}],"info":"","gas_wanted":"200000","gas_used":"115149","tx":null,"timestamp":""}
             if res["raw_log"].startswith("signature verification failed"):
@@ -707,28 +707,28 @@ class EnvCtx:
         finally:
             self.cmd.rm(tmp_registry_json)
 
-    def _sifnoded_chain_id_and_node_arg(self):
+    def _akiranoded_chain_id_and_node_arg(self):
         return [] + \
             (["--node", self.sifnode_url] if self.sifnode_url else []) + \
             (["--chain-id", self.sifnode_chain_id] if self.sifnode_chain_id else [])
 
-    def _sifnoded_home_arg(self):
+    def _akiranoded_home_arg(self):
         return [] + \
             (["--home", self.sifnode.home] if self.sifnode.home else [])
 
-    # Deprecated: sifnoded accepts --gas-prices=0.5rowan along with --gas-adjustment=1.5 instead of a fixed fee.
+    # Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
     # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
     # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
-    # The corresponding denom should be "rowan".
+    # The corresponding denom should be "aku".
     @property
     def sifchain_fees(self):
         return 200000
 
-    def _sifnoded_fees_arg(self):
-        sifnode_tx_fees = [10**17, "rowan"]
+    def _akiranoded_fees_arg(self):
+        sifnode_tx_fees = [10**17, "aku"]
         return [
-            # Deprecated: sifnoded accepts --gas-prices=0.5rowan along with --gas-adjustment=1.5 instead of a fixed fee.
-            # "--gas-prices", "0.5rowan", "--gas-adjustment", "1.5",
+            # Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
+            # "--gas-prices", "0.5aku", "--gas-adjustment", "1.5",
             "--fees", sif_format_amount(*sifnode_tx_fees)]
 
     def __enter__(self):
@@ -811,15 +811,15 @@ class EnvCtx:
         assert operator_balance >= 1, "Insufficient operator balance, should be at least 1 ETH"
 
         available_accounts = self.sifnode.keys_list()
-        rowan_source_account = [x for x in available_accounts if x["address"] == self.rowan_source]
-        assert len(rowan_source_account) == 1, "There should be exactly one key in test keystore corresponding to " \
-            "ROWAN_SOURCE {}".format(self.rowan_source)
-        if len(rowan_source_account) != 1:
+        aku_source_account = [x for x in available_accounts if x["address"] == self.aku_source]
+        assert len(aku_source_account) == 1, "There should be exactly one key in test keystore corresponding to " \
+            "ROWAN_SOURCE {}".format(self.aku_source)
+        if len(aku_source_account) != 1:
             raise Exception
-        rowan_source_balance = self.get_sifchain_balance(self.rowan_source).get(ROWAN, 0)
-        min_rowan_source_balance = 10 * 10**18
-        assert rowan_source_balance > min_rowan_source_balance, "ROWAN_SOURCE should have at least {}rowan balance, " \
-            "but has only {}rowan".format(min_rowan_source_balance, rowan_source_balance)
+        aku_source_balance = self.get_sifchain_balance(self.aku_source).get(ROWAN, 0)
+        min_aku_source_balance = 10 * 10**18
+        assert aku_source_balance > min_aku_source_balance, "ROWAN_SOURCE should have at least {}aku balance, " \
+            "but has only {}aku".format(min_aku_source_balance, aku_source_balance)
 
 
 class ERC20TokenData:

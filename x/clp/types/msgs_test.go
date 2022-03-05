@@ -39,7 +39,7 @@ func GetETHAsset() Asset {
 }
 
 func GetROWANAsset() Asset {
-	return NewAsset("rowan")
+	return NewAsset("aku")
 }
 
 func GetWrongAsset() Asset {
@@ -67,7 +67,7 @@ func TestNewMsgCreatePool(t *testing.T) {
 	assert.Error(t, err, "invalid address")
 	newpool = NewMsgCreatePool(signer, GetROWANAsset(), sdk.NewUint(1000), sdk.NewUint(100))
 	err = newpool.ValidateBasic()
-	assert.Error(t, err, "External Asset cannot be rowan")
+	assert.Error(t, err, "External Asset cannot be aku")
 	newpool = NewMsgCreatePool(signer, asset, sdk.NewUint(0), sdk.NewUint(100))
 	err = newpool.ValidateBasic()
 	assert.Error(t, err, "amount is invalid")
@@ -151,7 +151,7 @@ func TestNewMsgAddLiquidity(t *testing.T) {
 	assert.Error(t, err, "invalid address")
 	tx = NewMsgAddLiquidity(signer, GetSettlementAsset(), sdk.NewUint(100), sdk.NewUint(100))
 	err = tx.ValidateBasic()
-	assert.Error(t, err, "External asset cannot be rowan")
+	assert.Error(t, err, "External asset cannot be aku")
 	tx = NewMsgAddLiquidity(signer, asset, sdk.ZeroUint(), sdk.ZeroUint())
 	err = tx.ValidateBasic()
 	assert.Error(t, err, "Both asset ammounts cannot be 0 0 / 0")

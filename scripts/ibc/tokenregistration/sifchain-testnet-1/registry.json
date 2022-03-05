@@ -310,8 +310,8 @@
     },
     {
       "decimals": "18",
-      "denom": "rowan",
-      "base_denom": "rowan",
+      "denom": "aku",
+      "base_denom": "aku",
       "path": "",
       "ibc_channel_id": "",
       "ibc_counterparty_channel_id": "",
@@ -326,7 +326,7 @@
         "IBCEXPORT",
         "IBCIMPORT"
       ],
-      "unit_denom": "rowan",
+      "unit_denom": "aku",
       "ibc_counterparty_denom": "",
       "ibc_counterparty_chain_id": ""
     },

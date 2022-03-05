@@ -13,12 +13,12 @@ from test_utilities import EthereumToSifchainTransferRequest, SifchaincliCredent
 @pytest.mark.skipif(not test_utilities.get_optional_env_var("DESTINATION_ACCOUNT", None), reason="run by hand and specify DESTINATION_ACCOUNT")
 def test_token_distribution(
         basic_transfer_request: EthereumToSifchainTransferRequest,
-        rowan_source_integrationtest_env_credentials: SifchaincliCredentials,
-        rowan_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
+        aku_source_integrationtest_env_credentials: SifchaincliCredentials,
+        aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
         smart_contracts_dir,
         source_ethereum_address,
-        rowan_source,
-        rowan_source_key,
+        aku_source,
+        aku_source_key,
         bridgebank_address,
         bridgetoken_address,
         ethereum_network,
@@ -31,13 +31,13 @@ def test_token_distribution(
         try:
             logging.info(f"sending: {t}")
             destination_symbol = "c" + t["symbol"]
-            if t["symbol"] == "erowan":
-                destination_symbol = "rowan"
+            if t["symbol"] == "eaku":
+                destination_symbol = "aku"
             request.amount = int(amount_in_tokens * (10 ** int(t["decimals"])))
             request.ethereum_symbol = t["token"]
             request.sifchain_symbol = destination_symbol
-            request.sifchain_address = rowan_source
+            request.sifchain_address = aku_source
             request.sifchain_destination_address = test_utilities.get_required_env_var("DESTINATION_ACCOUNT")
-            test_utilities.send_from_sifchain_to_sifchain(request, rowan_source_integrationtest_env_credentials)
+            test_utilities.send_from_sifchain_to_sifchain(request, aku_source_integrationtest_env_credentials)
         except Exception as e:
             logging.error(f"error: {e}")

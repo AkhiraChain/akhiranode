@@ -1,9 +1,10 @@
 package ibctransfer_test
 
 import (
+	"testing"
+
 	app2 "github.com/AkhiraChain/akhiranode/app"
 	sctransfertypes "github.com/AkhiraChain/akhiranode/x/ibctransfer/types"
-	"testing"
 
 	"github.com/AkhiraChain/akhiranode/x/ethbridge/test"
 
@@ -99,7 +100,7 @@ func TestIsRecvPacketAllowed(t *testing.T) {
 		Data:               nil,
 	}
 	returningDenom := transfertypes.FungibleTokenPacketData{
-		Denom: "transfer/channel-0/rowan",
+		Denom: "transfer/channel-0/aku",
 	}
 	whitelistedDenom := transfertypes.FungibleTokenPacketData{
 		Denom: "atom",
@@ -138,7 +139,7 @@ func TestIsRecvPacketAllowed(t *testing.T) {
 	require.Equal(t, permitted2, false)
 	got = helpers.IsRecvPacketAllowed(ctx, app.TokenRegistryKeeper, transferPacket, disallowedDenom, entry2)
 	require.Equal(t, got, false)
-	entry3, err := app.TokenRegistryKeeper.GetEntry(registry, "rowan")
+	entry3, err := app.TokenRegistryKeeper.GetEntry(registry, "aku")
 	require.Error(t, err)
 	got = helpers.IsRecvPacketAllowed(ctx, app.TokenRegistryKeeper, transferPacket, returningDenom, entry3)
 	require.Equal(t, got, true)
@@ -211,38 +212,38 @@ func TestOnRecvPacketV2(t *testing.T) {
 		DestinationPort:    "transfer",
 		DestinationChannel: "channel-1",
 	}
-	// Xrowan which originated on Sifchain
+	// Xaku which originated on Sifchain
 	xRowanV2Amount := "10000000000"
-	returningXrowan := transfertypes.FungibleTokenPacketData{
-		Denom:    "transfer/channel-0/xrowan",
+	returningXaku := transfertypes.FungibleTokenPacketData{
+		Denom:    "transfer/channel-0/xaku",
 		Receiver: addrs[0].String(),
 		Amount:   xRowanV2Amount,
 	}
 	ibcRegistryEntryXRowan := tokenregistrytypes.RegistryEntry{
-		Denom:     "xrowan",
+		Denom:     "xaku",
 		Decimals:  10,
-		UnitDenom: "rowan",
+		UnitDenom: "aku",
 	}
-	// Adding registry entry for rowan as rowan is UnitDenom for xrowan
+	// Adding registry entry for aku as aku is UnitDenom for xaku
 	ibcRegistryEntryRowan := tokenregistrytypes.RegistryEntry{
-		Denom:     "rowan",
+		Denom:     "aku",
 		Decimals:  18,
-		UnitDenom: "rowan",
+		UnitDenom: "aku",
 	}
 	app.TokenRegistryKeeper.SetToken(ctx, &ibcRegistryEntryXRowan)
 	app.TokenRegistryKeeper.SetToken(ctx, &ibcRegistryEntryRowan)
-	mintedXRowan := helpers.GetMintedDenomFromPacket(packet, returningXrowan)
+	mintedXRowan := helpers.GetMintedDenomFromPacket(packet, returningXaku)
 	registry := app.TokenRegistryKeeper.GetRegistry(ctx)
 	mintedXRowanEntry, err := app.TokenRegistryKeeper.GetEntry(registry, mintedXRowan)
 	require.NoError(t, err)
 
-	allowed := helpers.IsRecvPacketAllowed(ctx, app.TokenRegistryKeeper, packet, returningXrowan, mintedXRowanEntry)
+	allowed := helpers.IsRecvPacketAllowed(ctx, app.TokenRegistryKeeper, packet, returningXaku, mintedXRowanEntry)
 	require.Equal(t, allowed, true)
 	convertToDenomEntry, err := app.TokenRegistryKeeper.GetEntry(registry, mintedXRowanEntry.UnitDenom)
 	require.NoError(t, err)
 	intAmount, ok := sdk.NewIntFromString(xRowanV2Amount)
 	require.True(t, ok)
-	err = app2.AddCoinsToAccount(sctransfertypes.ModuleName, app.BankKeeper, ctx, addrs[0], sdk.NewCoins(sdk.NewCoin("xrowan", intAmount)))
+	err = app2.AddCoinsToAccount(sctransfertypes.ModuleName, app.BankKeeper, ctx, addrs[0], sdk.NewCoins(sdk.NewCoin("xaku", intAmount)))
 	require.NoError(t, err)
 
 	diff := uint64(convertToDenomEntry.Decimals - mintedXRowanEntry.Decimals)
@@ -253,7 +254,7 @@ func TestOnRecvPacketV2(t *testing.T) {
 	escrowAddress := sctransfertypes.GetEscrowAddress(packet.GetDestPort(), packet.GetDestChannel())
 	err = app2.AddCoinsToAccount(sctransfertypes.ModuleName, app.BankKeeper, ctx, escrowAddress, finalCoins)
 	require.NoError(t, err)
-	err = helpers.ExecConvForIncomingCoins(ctx, app.BankKeeper, mintedXRowanEntry, convertToDenomEntry, packet, returningXrowan)
+	err = helpers.ExecConvForIncomingCoins(ctx, app.BankKeeper, mintedXRowanEntry, convertToDenomEntry, packet, returningXaku)
 	require.NoError(t, err)
 }
 
@@ -287,16 +288,16 @@ func TestGetMintedDenomFromPacket(t *testing.T) {
 		Denom: "transfer/channel-0/atom",
 	}
 	returningData2 := transfertypes.FungibleTokenPacketData{
-		Denom: "transfer/channel-0/rowan",
+		Denom: "transfer/channel-0/aku",
 	}
 	nonReturningData := transfertypes.FungibleTokenPacketData{
 		Denom: "transfer/channel-11/atom",
 	}
 	nonReturningData2 := transfertypes.FungibleTokenPacketData{
-		Denom: "transfer/channel-11/rowan",
+		Denom: "transfer/channel-11/aku",
 	}
 	nonReturningData3 := transfertypes.FungibleTokenPacketData{
-		Denom: "transfer/channel-1/rowan",
+		Denom: "transfer/channel-1/aku",
 	}
 	nonReturningData4 := transfertypes.FungibleTokenPacketData{
 		Denom: "transfer/channel-1/atom",
@@ -308,7 +309,7 @@ func TestGetMintedDenomFromPacket(t *testing.T) {
 	nonReturningDenom3 := helpers.GetMintedDenomFromPacket(packet, nonReturningData3)
 	nonReturningDenom4 := helpers.GetMintedDenomFromPacket(packet, nonReturningData4)
 	require.Equal(t, "atom", returningDenom)
-	require.Equal(t, "rowan", returningDenom2)
+	require.Equal(t, "aku", returningDenom2)
 	require.Equal(t, "ibc/611BB1D7CBB019DBA91690697697B3CB56335EBCFDD4573B9A11A34A20802940", nonReturningDenom)
 	require.Equal(t, "ibc/666BF1A729F1F7FFF31563C704C303B0B73DC00A8B4C9072894239006227B96A", nonReturningDenom2)
 	require.Equal(t, "ibc/6ABBE597A317EA31C9D1522D4DC4C5BF2EC8815A5B276713EE11EEDF2FA79012", nonReturningDenom3)

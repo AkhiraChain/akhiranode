@@ -15,11 +15,11 @@ def sifchain_denom_hash(network_descriptor, token_contract_address):
 class Sifnoded:
     def __init__(self, cmd, home=None):
         self.cmd = cmd
-        self.binary = "sifnoded"
+        self.binary = "akiranoded"
         self.home = home
         self.keyring_backend = "test"
-        # self.sifnoded_burn_gas_cost = 16 * 10**10 * 393000  # see x/ethbridge/types/msgs.go for gas
-        # self.sifnoded_lock_gas_cost = 16 * 10**10 * 393000
+        # self.akiranoded_burn_gas_cost = 16 * 10**10 * 393000  # see x/ethbridge/types/msgs.go for gas
+        # self.akiranoded_lock_gas_cost = 16 * 10**10 * 393000
 
     def init(self, moniker, chain_id):
         args = [self.binary, "init", moniker, "--chain-id", chain_id]
@@ -28,31 +28,31 @@ class Sifnoded:
 
     def keys_list(self):
         args = ["keys", "list", "--output", "json"]
-        res = self.sifnoded_exec(args, keyring_backend=self.keyring_backend, sifnoded_home=self.home)
+        res = self.akiranoded_exec(args, keyring_backend=self.keyring_backend, akiranoded_home=self.home)
         return json.loads(stdout(res))
 
     def keys_show(self, name, bech=None):
         args = ["keys", "show", name] + \
             (["--bech", bech] if bech else [])
-        res = self.sifnoded_exec(args, keyring_backend=self.keyring_backend, sifnoded_home=self.home)
+        res = self.akiranoded_exec(args, keyring_backend=self.keyring_backend, akiranoded_home=self.home)
         return yaml_load(stdout(res))
 
     def get_val_address(self, moniker):
-        res = self.sifnoded_exec(["keys", "show", "-a", "--bech", "val", moniker], keyring_backend=self.keyring_backend, sifnoded_home=self.home)
+        res = self.akiranoded_exec(["keys", "show", "-a", "--bech", "val", moniker], keyring_backend=self.keyring_backend, akiranoded_home=self.home)
         expected = exactly_one(stdout_lines(res))
         result = exactly_one(self.keys_show(moniker, bech="val"))["address"]
         assert result == expected
         return result
 
-    # How "sifnoded keys add <name> --keyring-backend test" works:
+    # How "akiranoded keys add <name> --keyring-backend test" works:
     # If name does not exist yet, it creates it and returns a yaml
     # If name alredy exists, prompts for overwrite (y/n) on standard input, generates new address/pubkey/mnemonic
-    # Directory used is xxx/keyring-test if "--home xxx" is specified, otherwise $HOME/.sifnoded/keyring-test
+    # Directory used is xxx/keyring-test if "--home xxx" is specified, otherwise $HOME/.akiranoded/keyring-test
 
     def keys_add(self, moniker, mnemonic):
         stdin = [" ".join(mnemonic)]
-        res = self.sifnoded_exec(["keys", "add", moniker, "--recover"], keyring_backend=self.keyring_backend,
-            sifnoded_home=self.home, stdin=stdin)
+        res = self.akiranoded_exec(["keys", "add", moniker, "--recover"], keyring_backend=self.keyring_backend,
+            akiranoded_home=self.home, stdin=stdin)
         account = exactly_one(yaml_load(stdout(res)))
         return account
 
@@ -60,36 +60,36 @@ class Sifnoded:
     # Since this is a test keyring, we don't need to save the generated private key.
     # If we wanted to recreate it, we can capture the mnemonic from the message that is printed to stderr.
     def keys_add_1(self, moniker):
-        res = self.sifnoded_exec(["keys", "add", moniker], keyring_backend=self.keyring_backend, sifnoded_home=self.home, stdin=["y"])
+        res = self.akiranoded_exec(["keys", "add", moniker], keyring_backend=self.keyring_backend, akiranoded_home=self.home, stdin=["y"])
         account = exactly_one(yaml_load(stdout(res)))
         unused_mnemonic = stderr(res).splitlines()[-1].split(" ")
         return account
 
     def keys_delete(self, name):
-        self.cmd.execst(["sifnoded", "keys", "delete", name, "--keyring-backend", self.keyring_backend], stdin=["y"], check_exit=False)
+        self.cmd.execst(["akiranoded", "keys", "delete", name, "--keyring-backend", self.keyring_backend], stdin=["y"], check_exit=False)
 
     def add_genesis_account(self, sifnodeadmin_addr, tokens):
         tokens_str = ",".join([sif_format_amount(amount, denom) for amount, denom in tokens])
-        self.sifnoded_exec(["add-genesis-account", sifnodeadmin_addr, tokens_str], sifnoded_home=self.home)
+        self.akiranoded_exec(["add-genesis-account", sifnodeadmin_addr, tokens_str], akiranoded_home=self.home)
 
     def add_genesis_validators(self, address):
-        args = ["sifnoded", "add-genesis-validators", address]
+        args = ["akiranoded", "add-genesis-validators", address]
         res = self.cmd.execst(args)
         return res
 
     # At the moment only on future/peggy2 branch, called from PeggyEnvironment
     def add_genesis_validators_peggy(self, evm_network_descriptor, valoper, validator_power):
-        self.sifnoded_exec(["add-genesis-validators", str(evm_network_descriptor), valoper, str(validator_power)],
-            sifnoded_home=self.home)
+        self.akiranoded_exec(["add-genesis-validators", str(evm_network_descriptor), valoper, str(validator_power)],
+            akiranoded_home=self.home)
 
     def set_genesis_oracle_admin(self, address):
-        self.sifnoded_exec(["set-genesis-oracle-admin", address], sifnoded_home=self.home)
+        self.akiranoded_exec(["set-genesis-oracle-admin", address], akiranoded_home=self.home)
 
     def set_genesis_whitelister_admin(self, address):
-        self.sifnoded_exec(["set-genesis-whitelister-admin", address], sifnoded_home=self.home)
+        self.akiranoded_exec(["set-genesis-whitelister-admin", address], akiranoded_home=self.home)
 
     def set_gen_denom_whitelist(self, denom_whitelist_file):
-        self.sifnoded_exec(["set-gen-denom-whitelist", denom_whitelist_file], sifnoded_home=self.home)
+        self.akiranoded_exec(["set-gen-denom-whitelist", denom_whitelist_file], akiranoded_home=self.home)
 
     # At the moment only on future/peggy2 branch, called from PeggyEnvironment
     # This was split from init_common
@@ -116,7 +116,7 @@ class Sifnoded:
         args = ["tx", "clp", "create-pool", "--chain-id", chain_id, "--from", from_name, "--symbol", symbol,
             "--fees", sif_format_amount(*fees), "--nativeAmount", str(native_amount), "--externalAmount",
             str(external_amount), "--yes"]
-        res = self.sifnoded_exec(args, keyring_backend=self.keyring_backend)  # TODO home?
+        res = self.akiranoded_exec(args, keyring_backend=self.keyring_backend)  # TODO home?
         return yaml_load(stdout(res))
 
     def peggy2_token_registry_register_all(self, registry_path, gas_prices, gas_adjustment, from_account,
@@ -124,7 +124,7 @@ class Sifnoded:
     ):
         args = ["tx", "tokenregistry", "register-all", registry_path, "--gas-prices", sif_format_amount(*gas_prices),
             "--gas-adjustment", str(gas_adjustment), "--from", from_account, "--chain-id", chain_id, "--yes"]
-        res = self.sifnoded_exec(args, keyring_backend=self.keyring_backend, sifnoded_home=self.home)
+        res = self.akiranoded_exec(args, keyring_backend=self.keyring_backend, akiranoded_home=self.home)
         return [json.loads(x) for x in stdout(res).splitlines()]
 
     def peggy2_set_cross_chain_fee(self, admin_account_address, network_id, ethereum_cross_chain_fee_token,
@@ -136,13 +136,13 @@ class Sifnoded:
             ethereum_cross_chain_fee_token, str(cross_chain_fee_base), str(cross_chain_lock_fee),
             str(cross_chain_burn_fee), "--from", admin_account_name, "--chain-id", chain_id, "--gas-prices",
             sif_format_amount(*gas_prices), "--gas-adjustment", str(gas_adjustment), "-y"]
-        res = self.sifnoded_exec(args, keyring_backend=self.keyring_backend, sifnoded_home=self.home)
+        res = self.akiranoded_exec(args, keyring_backend=self.keyring_backend, akiranoded_home=self.home)
         return res
 
-    def sifnoded_start(self, tcp_url=None, minimum_gas_prices=None, log_format_json=False, log_file=None):
-        sifnoded_exec_args = self.build_start_cmd(tcp_url=tcp_url, minimum_gas_prices=minimum_gas_prices,
+    def akiranoded_start(self, tcp_url=None, minimum_gas_prices=None, log_format_json=False, log_file=None):
+        akiranoded_exec_args = self.build_start_cmd(tcp_url=tcp_url, minimum_gas_prices=minimum_gas_prices,
             log_format_json=log_format_json)
-        return self.cmd.spawn_asynchronous_process(sifnoded_exec_args, log_file=log_file)
+        return self.cmd.spawn_asynchronous_process(akiranoded_exec_args, log_file=log_file)
 
     def build_start_cmd(self, tcp_url=None, minimum_gas_prices=None, log_format_json=False):
         args = [self.binary, "start"] + \
@@ -153,9 +153,9 @@ class Sifnoded:
             (["--home", self.home] if self.home else [])
         return buildcmd(args)
 
-    def sifnoded_exec(self, args, sifnoded_home=None, keyring_backend=None, stdin=None, cwd=None):
+    def akiranoded_exec(self, args, akiranoded_home=None, keyring_backend=None, stdin=None, cwd=None):
         args = [self.binary] + args + \
-            (["--home", sifnoded_home] if sifnoded_home else []) + \
+            (["--home", akiranoded_home] if akiranoded_home else []) + \
             (["--keyring-backend", keyring_backend] if keyring_backend else [])
         res = self.cmd.execst(args, stdin=stdin, cwd=cwd)
         return res
@@ -173,18 +173,18 @@ class Sifnoded:
                 time.sleep(1)
 
 
-class Sifgen:
+class Akhgen:
     def __init__(self, cmd):
         self.cmd = cmd
-        self.binary = "sifgen"
+        self.binary = "akhgen"
 
     # Reference: docker/localnet/sifnode/root/scripts/sifnode.sh (branch future/peggy2):
-    # sifgen node create "$CHAINNET" "$MONIKER" "$MNEMONIC" --bind-ip-address "$BIND_IP_ADDRESS" --standalone --keyring-backend test
+    # akhgen node create "$CHAINNET" "$MONIKER" "$MNEMONIC" --bind-ip-address "$BIND_IP_ADDRESS" --standalone --keyring-backend test
     def create_standalone(self, chainnet, moniker, mnemonic, bind_ip_address, keyring_backend=None):
         args = ["node", "create", chainnet, moniker, mnemonic, bind_ip_address]
-        return self.sifgen_exec(args, keyring_backend=keyring_backend)
+        return self.akhgen_exec(args, keyring_backend=keyring_backend)
 
-    def sifgen_exec(self, args, keyring_backend=None, cwd=None, env=None):
+    def akhgen_exec(self, args, keyring_backend=None, cwd=None, env=None):
         args = [self.binary] + args + \
             (["--keyring-backend", keyring_backend] if keyring_backend else [])
         return self.cmd.execst(args, cwd=cwd, env=env)

@@ -18,15 +18,15 @@
       "permissions": ["CLP", "IBCEXPORT", "IBCIMPORT"]
     },
     {
-      "denom": "rowan",
+      "denom": "aku",
       "decimals": 18,
-      "ibc_counterparty_denom": "xrowan",
+      "ibc_counterparty_denom": "xaku",
       "permissions": ["CLP", "IBCEXPORT", "IBCIMPORT"]
     },
     {
-      "denom": "xrowan",
+      "denom": "xaku",
       "decimals": 10,
-      "unit_denom": "rowan",
+      "unit_denom": "aku",
       "permissions": ["CLP", "IBCEXPORT", "IBCIMPORT"]
     }
   ]

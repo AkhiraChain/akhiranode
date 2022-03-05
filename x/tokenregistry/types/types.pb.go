@@ -172,14 +172,14 @@ type RegistryEntry struct {
 	// != denom, then unit_denom can, in future, be used to indicate the source of
 	// funds for a denom unit that does not actually exist on chain, enabling
 	// other chains to overcome the uint64 limit on the packet level and import
-	// large amounts of high precision tokens easily. ie. microrowan -> rowan i.e
-	// rowan -> rowan
+	// large amounts of high precision tokens easily. ie. microaku -> aku i.e
+	// aku -> aku
 	UnitDenom string `protobuf:"bytes,16,opt,name=unit_denom,json=unitDenom,proto3" json:"unit_denom,omitempty"`
 	// The name of denomination unit of this token that should appear on
 	// counterparty chain when this unit is exported. If empty, the denom is
 	// exported as is. Generally this will only be used to map a high precision
 	// (unit_denom) to a lower precision, to overcome the current uint64 limit on
-	// the packet level. i.e rowan -> microrowan i.e microrowan -> microrowan
+	// the packet level. i.e aku -> microaku i.e microaku -> microaku
 	IbcCounterpartyDenom   string `protobuf:"bytes,17,opt,name=ibc_counterparty_denom,json=ibcCounterpartyDenom,proto3" json:"ibc_counterparty_denom,omitempty"`
 	IbcCounterpartyChainId string `protobuf:"bytes,18,opt,name=ibc_counterparty_chain_id,json=ibcCounterpartyChainId,proto3" json:"ibc_counterparty_chain_id,omitempty"`
 }

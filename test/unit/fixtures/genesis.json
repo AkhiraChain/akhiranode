@@ -89,7 +89,7 @@
                 "address": "sif12tqnz6lfwdvzurvw55h24rgwzrdth7wph9g7qx",
                 "coins": [
                   {
-                    "denom": "rowan",
+                    "denom": "aku",
                     "amount": "1000000000000"
                   },
                   {

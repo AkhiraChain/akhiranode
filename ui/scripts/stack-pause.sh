@@ -1,4 +1,4 @@
 #!/bin/bash
 
-killall sifnoded sifnoded ebrelayer ganache-cli
+killall akiranoded akiranoded ebrelayer ganache-cli
 sleep 10

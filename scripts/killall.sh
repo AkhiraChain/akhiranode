@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-killall sifnoded sifnoded ebrelayer
+killall akiranoded akiranoded ebrelayer

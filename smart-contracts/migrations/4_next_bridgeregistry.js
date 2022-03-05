@@ -86,25 +86,25 @@ module.exports = function(deployer, network, accounts) {
       );
     }
 
-    const erowan = await deployer.deploy(eRowan, "erowan", setTxSpecifications(3000000, operator));
+    const eaku = await deployer.deploy(eRowan, "eaku", setTxSpecifications(3000000, operator));
 
-    await erowan.addMinter(BridgeBank.address, setTxSpecifications(3000000, operator));
+    await eaku.addMinter(BridgeBank.address, setTxSpecifications(3000000, operator));
 
-    await bridgeBank.addExistingBridgeToken(erowan.address, setTxSpecifications(3000000, operator));
+    await bridgeBank.addExistingBridgeToken(eaku.address, setTxSpecifications(3000000, operator));
 
     const tokenAddress = "0x0000000000000000000000000000000000000000";
 
     // allow 10 eth to be sent at once
-    await erowan.approve(bridgeBank.address, '10000000000000000000', setTxSpecifications(3000000, operator));
+    await eaku.approve(bridgeBank.address, '10000000000000000000', setTxSpecifications(3000000, operator));
 
-    console.log("erowan token address: ", erowan.address);
+    console.log("eaku token address: ", eaku.address);
 
     const bnAmount = web3.utils.toWei("100", "ether");
 
-    await erowan.mint(operator, bnAmount, setTxSpecifications(3000000, operator));
+    await eaku.mint(operator, bnAmount, setTxSpecifications(3000000, operator));
 
     if (network === "develop") {
-      await erowan.mint(accounts[1], bnAmount, setTxSpecifications(3000000, operator));
+      await eaku.mint(accounts[1], bnAmount, setTxSpecifications(3000000, operator));
     }
 
     return;

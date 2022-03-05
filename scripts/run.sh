@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-killall sifnoded
+killall ./akhiranoded
 
-sifnoded start
+./akhiranoded start

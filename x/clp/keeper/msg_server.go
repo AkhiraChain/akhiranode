@@ -131,7 +131,7 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 	// Get native asset
 	nativeAsset := types.GetSettlementAsset()
 	inPool, outPool := types.Pool{}, types.Pool{}
-	// If sending rowan ,deduct directly from the Native balance  instead of fetching from rowan pool
+	// If sending aku ,deduct directly from the Native balance  instead of fetching from aku pool
 	if !msg.SentAsset.Equals(types.GetSettlementAsset()) {
 		inPool, err = k.Keeper.GetPool(ctx, msg.SentAsset.Symbol)
 		if err != nil {
@@ -168,7 +168,7 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		priceImpact = priceImpact.Add(ts)
 		liquidityFeeNative = liquidityFeeNative.Add(lp)
 	}
-	// If receiving  rowan , add directly to  Native balance  instead of fetching from rowan pool
+	// If receiving  aku , add directly to  Native balance  instead of fetching from aku pool
 	if msg.ReceivedAsset.Equals(types.GetSettlementAsset()) {
 		outPool, err = k.Keeper.GetPool(ctx, msg.SentAsset.Symbol)
 		if err != nil {

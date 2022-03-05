@@ -11,7 +11,7 @@ import (
 func TestKeeper_CheckDenomPermissions(t *testing.T) {
 	app, ctx, _ := test.CreateTestApp(false)
 	app.TokenRegistryKeeper.SetToken(ctx, &types.RegistryEntry{
-		Denom:       "rowan",
+		Denom:       "aku",
 		Decimals:    18,
 		Permissions: []types.Permission{types.Permission_CLP},
 	})
@@ -27,7 +27,7 @@ func TestKeeper_CheckDenomPermissions(t *testing.T) {
 		Permissions: []types.Permission{types.Permission_IBCEXPORT, types.Permission_IBCEXPORT},
 	})
 	registry := app.TokenRegistryKeeper.GetRegistry(ctx)
-	entry, err := app.TokenRegistryKeeper.GetEntry(registry, "rowan")
+	entry, err := app.TokenRegistryKeeper.GetEntry(registry, "aku")
 	assert.NoError(t, err)
 	entry2, err := app.TokenRegistryKeeper.GetEntry(registry, "t2")
 	assert.NoError(t, err)

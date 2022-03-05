@@ -85,8 +85,8 @@ def n_sifchain_accounts():
 
 
 @pytest.fixture
-def rowan_amount():
-    """the meaning of rowan_amount is determined by the test using it"""
+def aku_amount():
+    """the meaning of aku_amount is determined by the test using it"""
     return int(int(test_utilities.get_optional_env_var("ROWAN_AMOUNT", 10 ** 18)))
 
 
@@ -96,18 +96,18 @@ def solidity_json_path(smart_contracts_dir):
 
 
 @pytest.fixture
-def sifnoded_homedir(is_ropsten_testnet):
+def akiranoded_homedir(is_ropsten_testnet):
     if is_ropsten_testnet:
         base = test_utilities.get_required_env_var("HOME")
     else:
         base = test_utilities.get_required_env_var("CHAINDIR")
-    result = f"""{base}/.sifnoded"""
+    result = f"""{base}/.akiranoded"""
     return result
 
 
 @pytest.fixture
-def rowan_source(is_ropsten_testnet, validator_address):
-    """A sifchain address or key that has rowan and can send that rowan to other address"""
+def aku_source(is_ropsten_testnet, validator_address):
+    """A sifchain address or key that has aku and can send that aku to other address"""
     result = test_utilities.get_optional_env_var("ROWAN_SOURCE", None)
     if result:
         return result
@@ -119,9 +119,9 @@ def rowan_source(is_ropsten_testnet, validator_address):
 
 
 @pytest.fixture
-def rowan_source_key(is_ropsten_testnet, rowan_source):
-    """A sifchain address or key that has rowan and can send that rowan to other address"""
-    result = test_utilities.get_optional_env_var("ROWAN_SOURCE_KEY", rowan_source)
+def aku_source_key(is_ropsten_testnet, aku_source):
+    """A sifchain address or key that has aku and can send that aku to other address"""
+    result = test_utilities.get_optional_env_var("ROWAN_SOURCE_KEY", aku_source)
     if result:
         return result
     if is_ropsten_testnet:
@@ -132,7 +132,7 @@ def rowan_source_key(is_ropsten_testnet, rowan_source):
 
 
 @pytest.fixture
-def sifnoded_node():
+def akiranoded_node():
     return test_utilities.get_optional_env_var("SIFNODE", None)
 
 
@@ -169,9 +169,9 @@ def ropsten_wait_time():
 
 
 @pytest.fixture
-def is_ropsten_testnet(sifnoded_node):
+def is_ropsten_testnet(akiranoded_node):
     """if sifnode_clinode is set, we're talking to ropsten/sandpit"""
-    return sifnoded_node
+    return akiranoded_node
 
 
 @pytest.fixture
@@ -180,16 +180,16 @@ def is_ganache(ethereum_network):
     return not ethereum_network
 
 
-# Deprecated: sifnoded accepts --gas-prices=0.5rowan along with --gas-adjustment=1.5 instead of a fixed fee.
+# Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
 # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
 # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
 @pytest.fixture
 def sifchain_fees(sifchain_fees_int):
-    """returns a string suitable for passing to sifnoded"""
-    return f"{sifchain_fees_int}rowan"
+    """returns a string suitable for passing to akiranoded"""
+    return f"{sifchain_fees_int}aku"
 
 
-# Deprecated: sifnoded accepts --gas-prices=0.5rowan along with --gas-adjustment=1.5 instead of a fixed fee.
+# Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
 # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
 # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
 @pytest.fixture
@@ -269,7 +269,7 @@ def basic_transfer_request(
         bridgebank_address,
         bridgetoken_address,
         ethereum_network,
-        sifnoded_node,
+        akiranoded_node,
         chain_id,
         sifchain_fees,
         solidity_json_path,
@@ -284,7 +284,7 @@ def basic_transfer_request(
         bridgebank_address=bridgebank_address,
         bridgetoken_address=bridgetoken_address,
         ethereum_network=ethereum_network,
-        sifnoded_node=sifnoded_node,
+        akiranoded_node=akiranoded_node,
         manual_block_advance=is_ganache,
         chain_id=chain_id,
         sifchain_fees=sifchain_fees,
@@ -293,36 +293,36 @@ def basic_transfer_request(
 
 
 @pytest.fixture(scope="function")
-def rowan_source_integrationtest_env_credentials(
-        sifnoded_homedir,
+def aku_source_integrationtest_env_credentials(
+        akiranoded_homedir,
         validator_password,
-        rowan_source_key,
+        aku_source_key,
         is_ganache,
-        rowan_source
+        aku_source
 ):
     """
     Creates a SifchaincliCredentials with all the fields filled in
-    to transfer rowan from an account that already has rowan.
+    to transfer aku from an account that already has aku.
     """
     return test_utilities.SifchaincliCredentials(
         keyring_backend="test",
         keyring_passphrase=validator_password,
-        from_key=rowan_source
+        from_key=aku_source
     )
 
 
 @pytest.fixture(scope="function")
-def rowan_source_integrationtest_env_transfer_request(
+def aku_source_integrationtest_env_transfer_request(
         basic_transfer_request,
-        rowan_source
+        aku_source
 ) -> test_utilities.EthereumToSifchainTransferRequest:
     """
     Creates a EthereumToSifchainTransferRequest with all the generic fields filled in
-    for a transfer of rowan from an account that already has rowan.
+    for a transfer of aku from an account that already has aku.
     """
     result: test_utilities.EthereumToSifchainTransferRequest = copy.deepcopy(basic_transfer_request)
-    result.sifchain_address = rowan_source
-    result.sifchain_symbol = "rowan"
+    result.sifchain_address = aku_source
+    result.sifchain_symbol = "aku"
     return result
 
 

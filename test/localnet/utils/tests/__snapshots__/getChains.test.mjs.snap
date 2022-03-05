@@ -149,10 +149,10 @@ Object {
       "chainId": "sifchain-1",
       "node": "https://rpc.sifchain.finance:443",
     },
-    "binary": "sifnoded",
-    "binaryUrl": "https://github.com/AkhiraChain/akhiranode/releases/download/betanet-0.9.10/sifnoded-betanet-0.9.10-linux-amd64.zip",
+    "binary": "akiranoded",
+    "binaryUrl": "https://github.com/AkhiraChain/akhiranode/releases/download/betanet-0.9.10/akiranoded-betanet-0.9.10-linux-amd64.zip",
     "chainId": "sifchain-testnet-1",
-    "denom": "rowan",
+    "denom": "aku",
     "devnet-1": Object {
       "chainId": "sifchain-devnet-1",
       "node": "https://rpc-devnet.sifchain.finance:443",

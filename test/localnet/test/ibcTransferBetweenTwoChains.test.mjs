@@ -80,7 +80,7 @@ ${BIN_PATH}/${chainAProps.binary} \
     transfer \
     ${channel} \
     ${chainBAddress} \
-    100000000rowan \
+    100000000aku \
     --fees ${chainAProps.fees}${chainAProps.denom} \
     --from ${chainAAddress} \
     --node ${CHAIN_A_NODE} \

@@ -29,19 +29,19 @@ def create_new_sifaddr_and_key():
 )
 def test_bulk_transfers_from_sifchain(
         basic_transfer_request: EthereumToSifchainTransferRequest,
-        rowan_source_integrationtest_env_credentials: SifchaincliCredentials,
-        rowan_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
+        aku_source_integrationtest_env_credentials: SifchaincliCredentials,
+        aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
         smart_contracts_dir,
         source_ethereum_address,
-        rowan_source,
-        rowan_source_key,
+        aku_source,
+        aku_source_key,
         bridgebank_address,
         bridgetoken_address,
         ethereum_network,
         sifchain_fees_int,
 ):
     test_transfer_amount = 100  # just a tiny number of wei to move to confirm things are working
-    tokens = test_utilities.get_required_env_var("TOKENS", "ceth,rowan").split(",")
+    tokens = test_utilities.get_required_env_var("TOKENS", "ceth,aku").split(",")
     logging.info(f"tokens to be transferred are: {tokens}")
     logging.info("create new ethereum and sifchain addresses")
     basic_transfer_request.ethereum_address = source_ethereum_address
@@ -49,12 +49,12 @@ def test_bulk_transfers_from_sifchain(
     n_transactions = n_transfers * len(tokens)
     new_addresses_and_keys = list(map(lambda x: create_new_sifaddr_and_key(), range(n_transactions)))
     logging.debug(f"new_addresses_and_keys: {new_addresses_and_keys}")
-    credentials_for_account_with_ceth = SifchaincliCredentials(from_key=rowan_source_key)
+    credentials_for_account_with_ceth = SifchaincliCredentials(from_key=aku_source_key)
     request: EthereumToSifchainTransferRequest = copy.deepcopy(basic_transfer_request)
     ceth_amount = n_transactions * (test_utilities.highest_gas_cost + 100)
     request.amount = ceth_amount
     request.ethereum_address = source_ethereum_address
-    request.sifchain_address = rowan_source
+    request.sifchain_address = aku_source
     addresses_to_populate = copy.deepcopy(new_addresses_and_keys)
     test_transfers = []
     for a in range(n_transfers):
@@ -66,9 +66,9 @@ def test_bulk_transfers_from_sifchain(
             request.sifchain_symbol = "ceth"
             burn_lock_functions.transfer_sifchain_to_sifchain(request, credentials_for_account_with_ceth)
 
-            # send rowan to pay the fee
+            # send aku to pay the fee
             request.amount = sifchain_fees_int
-            request.sifchain_symbol = "rowan"
+            request.sifchain_symbol = "aku"
             burn_lock_functions.transfer_sifchain_to_sifchain(request, credentials_for_account_with_ceth)
 
             # send the token itself
@@ -77,7 +77,7 @@ def test_bulk_transfers_from_sifchain(
             burn_lock_functions.transfer_sifchain_to_sifchain(request, credentials_for_account_with_ceth)
             transfer = (request.sifchain_destination_address, from_key, request.sifchain_symbol, request.amount)
 
-            test_utilities.get_sifchain_addr_balance(request.sifchain_destination_address, request.sifnoded_node, t)
+            test_utilities.get_sifchain_addr_balance(request.sifchain_destination_address, request.akiranoded_node, t)
 
             test_transfers.append(transfer)
 
@@ -88,7 +88,7 @@ def test_bulk_transfers_from_sifchain(
         keyring_passphrase=None,
         keyring_backend="test",
         from_key=None,
-        sifnoded_homedir=None
+        akiranoded_homedir=None
     )
 
     logging.info(f"all accounts are on sifchain and have the correct balance")

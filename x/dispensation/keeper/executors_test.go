@@ -26,7 +26,7 @@ func createInput(t *testing.T, filename string) {
 	assert.NoError(t, err)
 	out, err := sdk.AccAddressFromBech32("sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5")
 	assert.NoError(t, err)
-	coin := sdk.NewCoins(sdk.NewCoin("rowan", sdk.NewInt(10)))
+	coin := sdk.NewCoins(sdk.NewCoin("aku", sdk.NewInt(10)))
 	inputList := []banktypes.Input{banktypes.NewInput(in, coin), banktypes.NewInput(out, coin)}
 	tempInput := utils.TempInput{In: inputList}
 	file, _ := json.MarshalIndent(tempInput, "", " ")
@@ -127,7 +127,7 @@ func TestKeeper_CreateAndDistributeDrops(t *testing.T) {
 	assert.True(t, ok)
 	for i := 0; i < len(outputList); i++ {
 		assert.True(t, recordsLM.DistributionRecords[i].Coins.IsAllGT(recordsAD.DistributionRecords[i].Coins))
-		assert.True(t, recordsLM.DistributionRecords[i].Coins.AmountOf("rowan").Equal(doubleOutputAmount) ||
+		assert.True(t, recordsLM.DistributionRecords[i].Coins.AmountOf("aku").Equal(doubleOutputAmount) ||
 			recordsLM.DistributionRecords[i].Coins.AmountOf("ceth").Equal(doubleOutputAmount) ||
 			recordsLM.DistributionRecords[i].Coins.AmountOf("catk").Equal(doubleOutputAmount))
 	}

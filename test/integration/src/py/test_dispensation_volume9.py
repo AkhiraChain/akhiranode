@@ -5,7 +5,7 @@ import json
 import pytest
 import string
 import random
-from dispensation_envutils import create_online_singlekey_txn, create_new_sifaddr_and_key, send_sample_rowan, balance_check, \
+from dispensation_envutils import create_online_singlekey_txn, create_new_sifaddr_and_key, send_sample_aku, balance_check, \
 query_block_claim, create_online_singlekey_txn_with_runner, run_dispensation
 
 # AUTOMATED TEST TO VALIDATE ONLINE TXN
@@ -27,48 +27,48 @@ def test_run_online_morethan10distribution_txn(claimType):
     from_address = 'sifnodeadmin'
     keyring_backend = 'test'
     chain_id = 'localnet'
-    amount = '100000000rowan'
+    amount = '100000000aku'
     fee = '150000'
-    currency = 'rowan'
-    sampleamount = '1000rowan'
+    currency = 'aku'
+    sampleamount = '1000aku'
 
     # THESE 4 TXNS ARE TO REGISTER NEW ACCOUNTS ON CHAIN
-    send_sample_rowan(from_address, runner_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, runner_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, distributor_address, amount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, distributor_address, amount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress1, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress2, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress3, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress3, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress4, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress4, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress5, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress5, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress6, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress6, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress7, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress7, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress8, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress8, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
-    send_sample_rowan(from_address, destaddress9, sampleamount, keyring_backend, chain_id, "")
+    send_sample_aku(from_address, destaddress9, sampleamount, keyring_backend, chain_id, "")
     time.sleep(5)
 
     sorted_dest_address_list = sorted([destaddress1, destaddress2, destaddress3, destaddress4, destaddress5, destaddress6, destaddress7, destaddress8, destaddress9])
     logging.info(f"sorted_dest_address_list = {sorted_dest_address_list}")
 
     # CREATING TEST DATA HERE MIMICKING OUTPUT.JSON TO BE SUPPLIED BY NIKO'S API
-    dict1 = {"denom": "rowan", "amount": "5000"}
-    dict2 = {"denom": "rowan", "amount": "7000"}
-    dict3 = {"denom": "rowan", "amount": "8000"}
-    dict4 = {"denom": "rowan", "amount": "9000"}
-    dict5 = {"denom": "rowan", "amount": "10000"}
-    dict6 = {"denom": "rowan", "amount": "11000"}
-    dict7 = {"denom": "rowan", "amount": "12000"}
-    dict8 = {"denom": "rowan", "amount": "13000"}
-    dict9 = {"denom": "rowan", "amount": "14000"}
+    dict1 = {"denom": "aku", "amount": "5000"}
+    dict2 = {"denom": "aku", "amount": "7000"}
+    dict3 = {"denom": "aku", "amount": "8000"}
+    dict4 = {"denom": "aku", "amount": "9000"}
+    dict5 = {"denom": "aku", "amount": "10000"}
+    dict6 = {"denom": "aku", "amount": "11000"}
+    dict7 = {"denom": "aku", "amount": "12000"}
+    dict8 = {"denom": "aku", "amount": "13000"}
+    dict9 = {"denom": "aku", "amount": "14000"}
 
     dict13 = {"address": destaddress1, "coins": [dict1]}
     dict14 = {"address": destaddress2, "coins": [dict2]}

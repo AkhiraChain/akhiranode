@@ -16,7 +16,7 @@ func (CreateDispensationMultiTx) GetMsgAndArgs(_ CommonArgs) (sdk.Msg, Args) {
 		panic("Failed to get amount")
 	}
 	address := sdk.AccAddress(crypto.AddressHash([]byte("Output")))
-	coinRowan := sdk.NewCoins(sdk.NewCoin("rowan", amount))
+	coinRowan := sdk.NewCoins(sdk.NewCoin("aku", amount))
 	coinCeth := sdk.NewCoins(sdk.NewCoin("ceth", amount))
 	output := []types.Output{types.NewOutput(address, coinCeth), types.NewOutput(address, coinRowan)}
 

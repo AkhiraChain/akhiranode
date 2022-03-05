@@ -101,7 +101,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_HappyCase(t *testing
 	for i := 0; i < len(msgAirdropOutput); i++ {
 		//(testing) So users should get random catk or ceth coins here.
 		assert.True(t, msgAirdropOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgAirdropOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgAirdropOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgAirdropOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgAirdropOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 	msgLM := types.NewMsgCreateDistribution(distributor, types.DistributionType_DISTRIBUTION_TYPE_LIQUIDITY_MINING, outputList, runner.String())
 	res, err = handler(ctx, &msgLM)
@@ -113,7 +113,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_HappyCase(t *testing
 	for i := 0; i < len(outputList); i++ {
 		lpAddess, _ := sdk.AccAddressFromBech32(outputList[i].Address)
 		assert.True(t, keeper.GetBankKeeper().GetBalance(ctx, lpAddess, "ceth").Amount.Equal(sdk.NewInt(10)) ||
-			keeper.GetBankKeeper().GetBalance(ctx, lpAddess, "catk").Amount.Equal(sdk.NewInt(10)) || keeper.GetBankKeeper().GetBalance(ctx, lpAddess, "rowan").Amount.Equal(sdk.NewInt(10)))
+			keeper.GetBankKeeper().GetBalance(ctx, lpAddess, "catk").Amount.Equal(sdk.NewInt(10)) || keeper.GetBankKeeper().GetBalance(ctx, lpAddess, "aku").Amount.Equal(sdk.NewInt(10)))
 	}
 
 	require.NoError(t, err)
@@ -138,7 +138,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_HappyCase(t *testing
 	for i := 0; i < len(msgLiquidityMiningOutput); i++ {
 		//(testing) So users should get random catk or ceth coins here.
 		assert.True(t, msgLiquidityMiningOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgLiquidityMiningOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgLiquidityMiningOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgLiquidityMiningOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgLiquidityMiningOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 
 	err = sifapp.AddCoinsToAccount(types.ModuleName, app.BankKeeper, ctx, distributor, totalCoins)
@@ -159,7 +159,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_HappyCase(t *testing
 	for i := 0; i < len(msgUnspecifiedOutput); i++ {
 		//(testing) So users should get random catk or ceth coins here.
 		assert.True(t, msgUnspecifiedOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgUnspecifiedOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgUnspecifiedOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgUnspecifiedOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgUnspecifiedOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 	// Validator Subsidy distribution type
 	msgValidatorSubsidy := types.NewMsgCreateDistribution(distributor, types.DistributionType_DISTRIBUTION_TYPE_VALIDATOR_SUBSIDY, outputList, "")
@@ -174,7 +174,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_HappyCase(t *testing
 	for i := 0; i < len(msgValidatorSubsidyOutput); i++ {
 		//(testing) So users should get random catk or ceth coins here.
 		assert.True(t, msgValidatorSubsidyOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgValidatorSubsidyOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgValidatorSubsidyOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgValidatorSubsidyOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgValidatorSubsidyOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 }
 
@@ -201,7 +201,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_Error(t *testing.T) 
 	assert.Equal(t, recipients, len(msgAirdropOutput))
 	for i := 0; i < len(msgAirdropOutput); i++ {
 		assert.True(t, msgAirdropOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgAirdropOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgAirdropOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgAirdropOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgAirdropOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 	msgAirdrop = types.NewMsgCreateDistribution(distributor, types.DistributionType_DISTRIBUTION_TYPE_AIRDROP, outputList, "")
 	_, err = handler(ctx, &msgAirdrop)
@@ -221,7 +221,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_Error(t *testing.T) 
 	assert.Equal(t, recipients, len(msgLiquidityMiningOutput))
 	for i := 0; i < len(msgLiquidityMiningOutput); i++ {
 		assert.True(t, msgLiquidityMiningOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgLiquidityMiningOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgLiquidityMiningOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgLiquidityMiningOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgLiquidityMiningOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 
 	msgLiquidityMining = types.NewMsgCreateDistribution(distributor, types.DistributionType_DISTRIBUTION_TYPE_LIQUIDITY_MINING, outputList, "")
@@ -242,7 +242,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_Error(t *testing.T) 
 	assert.Equal(t, recipients, len(msgUnspecifiedOutput))
 	for i := 0; i < len(msgUnspecifiedOutput); i++ {
 		assert.True(t, msgUnspecifiedOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgUnspecifiedOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgUnspecifiedOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgUnspecifiedOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgUnspecifiedOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 
 	msgUnspecified = types.NewMsgCreateDistribution(distributor, types.DistributionType_DISTRIBUTION_TYPE_UNSPECIFIED, outputList, "")
@@ -263,7 +263,7 @@ func TestNewHandler_CreateDistribution_PayRewardsInAnyToken_Error(t *testing.T) 
 	assert.Equal(t, recipients, len(msgValidatorSubsidyOutput))
 	for i := 0; i < len(msgValidatorSubsidyOutput); i++ {
 		assert.True(t, msgValidatorSubsidyOutput[i].Coins.AmountOf("catk").Equal(sdk.NewInt(10)) ||
-			msgValidatorSubsidyOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgValidatorSubsidyOutput[i].Coins.AmountOf("rowan").Equal(sdk.NewInt(10)))
+			msgValidatorSubsidyOutput[i].Coins.AmountOf("ceth").Equal(sdk.NewInt(10)) || msgValidatorSubsidyOutput[i].Coins.AmountOf("aku").Equal(sdk.NewInt(10)))
 	}
 
 	msgValidatorSubsidy = types.NewMsgCreateDistribution(distributor, types.DistributionType_DISTRIBUTION_TYPE_VALIDATOR_SUBSIDY, outputList, "")

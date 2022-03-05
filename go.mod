@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v0.4.1
 	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/cespare/cp v1.1.1 // indirect
-	github.com/cosmos/cosmos-sdk v0.44.5
+	github.com/cosmos/cosmos-sdk v0.45.1
 	github.com/cosmos/ibc-go/v2 v2.0.2
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/ethereum/go-ethereum v1.10.11
@@ -61,7 +61,7 @@ require (
 	github.com/coinbase/rosetta-sdk-go v0.6.10 // indirect
 	github.com/confio/ics23/go v0.6.6 // indirect
 	github.com/cosmos/go-bip39 v1.0.0 // indirect
-	github.com/cosmos/iavl v0.17.2 // indirect
+	github.com/cosmos/iavl v0.17.3 // indirect
 	github.com/cosmos/ledger-cosmos-go v0.11.1 // indirect
 	github.com/cosmos/ledger-go v0.9.2 // indirect
 	github.com/danieljoos/wincred v1.0.2 // indirect
@@ -117,7 +117,7 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0 // indirect
 	github.com/regen-network/cosmos-proto v0.3.1 // indirect
 	github.com/rs/cors v1.7.0 // indirect
-	github.com/rs/zerolog v1.23.0 // indirect
+	github.com/rs/zerolog v1.26.1 // indirect
 	github.com/sasha-s/go-deadlock v0.2.1-0.20190427202633-1595213edefa // indirect
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
 	github.com/spf13/afero v1.6.0 // indirect
@@ -145,17 +145,20 @@ require (
 )
 
 require (
+	github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c // indirect
+	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/lib/pq v1.10.2 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
+	github.com/otiai10/copy v1.7.0 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
+	golang.org/x/crypto v0.0.0-20211215165025-cf75a172585e // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 )
 
 replace (
 	github.com/cosmos/cosmos-sdk => github.com/cosmos/cosmos-sdk v0.43.0
-	github.com/cosmos/ibc-go/v2 => github.com/AkhiraChain/ibc-go/v2 v2.0.3-issue.850
+	github.com/cosmos/ibc-go/v2 => github.com/AkhiraChain/ibc-go/v2 v2.0.3
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/tendermint/tendermint => github.com/tendermint/tendermint v0.34.14
 	google.golang.org/grpc => google.golang.org/grpc v1.33.2

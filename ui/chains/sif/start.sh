@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "Starting test chain"
+echo "Starting Akhira test chain"
 
-sifnoded start --minimum-gas-prices 0.5rowan
+../akhiranoded start --minimum-gas-prices 0.5aku

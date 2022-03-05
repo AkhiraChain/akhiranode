@@ -55,7 +55,7 @@ def test_can_create_a_new_token_and_peg_it(
     existing_tokens.add("ceth")
     logging.info(f"requested tokens: {tokens}")
     for t in tokens["assets"]:
-        if t["symbol"] in existing_tokens or t["symbol"] == "rowan":
+        if t["symbol"] in existing_tokens or t["symbol"] == "aku":
             logging.info(f"token {t} already whitelisted, skipping")
             continue
         logging.info(f"whitelisting token {t}")

@@ -158,7 +158,7 @@ export class BridgeRegistryProxy {
 }
 
 /**
- * Deploys a BridgeToken named erowan
+ * Deploys a BridgeToken named eaku
  */
 @singleton()
 export class RowanContract {
@@ -168,7 +168,7 @@ export class RowanContract {
         private sifchainContractFactories: SifchainContractFactories,
     ) {
         this.contract = sifchainContractFactories.bridgeToken.then(async bridgeToken => {
-            return await (bridgeToken as BridgeToken__factory).deploy("erowan") as BridgeToken
+            return await (bridgeToken as BridgeToken__factory).deploy("eaku") as BridgeToken
         })
     }
 }
@@ -178,27 +178,27 @@ export class BridgeTokenSetup {
     readonly complete: Promise<boolean>
 
     private async build(
-        rowan: RowanContract,
+        aku: RowanContract,
         bridgeBankProxy: BridgeBankProxy,
         sifchainAccounts: SifchainAccountsPromise
     ) {
-        const erowan = await rowan.contract
+        const eaku = await aku.contract
         const owner = (await sifchainAccounts.accounts).ownerAccount
         const bridgebank = (await bridgeBankProxy.contract).connect(owner)
-        await bridgebank.addExistingBridgeToken(erowan.address)
-        await erowan.approve(bridgebank.address, "10000000000000000000")
-        await erowan.addMinter(owner.address)
+        await bridgebank.addExistingBridgeToken(eaku.address)
+        await eaku.approve(bridgebank.address, "10000000000000000000")
+        await eaku.addMinter(owner.address)
         const accounts = await sifchainAccounts.accounts
         const muchRowan = BigNumber.from(100000000).mul(BigNumber.from(10).pow(18))
-        await erowan.mint(accounts.operatorAccount.address, muchRowan)
+        await eaku.mint(accounts.operatorAccount.address, muchRowan)
         return true
     }
 
     constructor(
-        rowan: RowanContract,
+        aku: RowanContract,
         bridgeBankProxy: BridgeBankProxy,
         sifchainAccounts: SifchainAccountsPromise
     ) {
-        this.complete = this.build(rowan, bridgeBankProxy, sifchainAccounts)
+        this.complete = this.build(aku, bridgeBankProxy, sifchainAccounts)
     }
 }

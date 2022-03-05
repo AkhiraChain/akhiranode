@@ -15,8 +15,8 @@ feedface_token = "ibc/FEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFE
 def test_burn_ibc_coins(
         basic_transfer_request: EthereumToSifchainTransferRequest,
         source_ethereum_address: str,
-        rowan_source_integrationtest_env_credentials: SifchaincliCredentials,
-        rowan_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
+        aku_source_integrationtest_env_credentials: SifchaincliCredentials,
+        aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
         ethereum_network,
         smart_contracts_dir,
         bridgebank_address,
@@ -27,13 +27,13 @@ def test_burn_ibc_coins(
     basic_transfer_request.check_wait_blocks = True
     small_amount = 100
 
-    logging.info("the test account needs enough rowan and ceth for one burn and one lock, make sure it has that")
+    logging.info("the test account needs enough aku and ceth for one burn and one lock, make sure it has that")
     request, credentials = generate_test_account(
         basic_transfer_request,
-        rowan_source_integrationtest_env_transfer_request,
-        rowan_source_integrationtest_env_credentials,
+        aku_source_integrationtest_env_transfer_request,
+        aku_source_integrationtest_env_credentials,
         target_ceth_balance=test_utilities.burn_gas_cost + test_utilities.lock_gas_cost + small_amount,
-        target_rowan_balance=sifchain_fees_int * 2 + small_amount
+        target_aku_balance=sifchain_fees_int * 2 + small_amount
     )
 
     logging.info("create an ERC20 token for use by FEEDFACE")
@@ -59,35 +59,35 @@ def test_burn_ibc_coins(
 def test_lock_ibc_coins(
         basic_transfer_request: EthereumToSifchainTransferRequest,
         source_ethereum_address: str,
-        rowan_source_integrationtest_env_credentials: SifchaincliCredentials,
-        rowan_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
+        aku_source_integrationtest_env_credentials: SifchaincliCredentials,
+        aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
         ethereum_network,
         smart_contracts_dir,
         bridgebank_address,
         solidity_json_path,
         sifchain_fees_int,
-        rowan_source
+        aku_source
 ):
     basic_transfer_request.ethereum_address = source_ethereum_address
     basic_transfer_request.check_wait_blocks = True
     small_amount = 100
 
-    logging.info("the test account needs enough rowan and ceth for one burn and one lock, make sure it has that")
+    logging.info("the test account needs enough aku and ceth for one burn and one lock, make sure it has that")
     request, credentials = generate_test_account(
         basic_transfer_request,
-        rowan_source_integrationtest_env_transfer_request,
-        rowan_source_integrationtest_env_credentials,
+        aku_source_integrationtest_env_transfer_request,
+        aku_source_integrationtest_env_credentials,
         target_ceth_balance=test_utilities.burn_gas_cost + test_utilities.lock_gas_cost + small_amount,
-        target_rowan_balance=sifchain_fees_int * 2 + small_amount
+        target_aku_balance=sifchain_fees_int * 2 + small_amount
     )
     logging.info("transfer some FEEDFACE to the new test account")
     feedface_transfer_request = copy.deepcopy(request)
-    feedface_transfer_request.sifchain_address = rowan_source
+    feedface_transfer_request.sifchain_address = aku_source
     feedface_transfer_request.sifchain_destination_address = request.sifchain_address
     feedface_transfer_request.sifchain_symbol = feedface_token
     feedface_transfer_request.amount = 100
 
-    burn_lock_functions.send_from_sifchain_to_sifchain(feedface_transfer_request, rowan_source_integrationtest_env_credentials)
+    burn_lock_functions.send_from_sifchain_to_sifchain(feedface_transfer_request, aku_source_integrationtest_env_credentials)
 
     logging.info(
         "send some test account FEEDFACE back to a new ethereum address, requiring the deployment of a new ERC20 contract")

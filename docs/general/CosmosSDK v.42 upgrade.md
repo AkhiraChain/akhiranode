@@ -35,23 +35,23 @@ Key files related to API changes:
 
 CLI commands and related code has undergone various changes, and improvements, including syntax modifications, fixes, and refactoring.
 
-**sifnoded** and **sifnoded** have been combined into **sifnoded** , so all commands previously executed through sifnoded are now executed through **sifnoded**. Aside from the merge into sidnoded, command syntax remains largely unchanged. The changes to scripts in **scripts/demo** are minimal beyond the shift from sifnoded to sifnoded.
+**akiranoded** and **akiranoded** have been combined into **akiranoded** , so all commands previously executed through akiranoded are now executed through **akiranoded**. Aside from the merge into sidnoded, command syntax remains largely unchanged. The changes to scripts in **scripts/demo** are minimal beyond the shift from akiranoded to akiranoded.
 
 Syntax changes:
 
 - **send** tx is now under the **bank** route rather than a root **tx** command
 
-  - **Old:** sifnoded tx send [from\_key\_or\_address] [to\_address] [amount] [flags]
-  - **New:** sifnoded tx bank send [from\_key\_or\_address] [to\_address] [amount] [flags]
+  - **Old:** akiranoded tx send [from\_key\_or\_address] [to\_address] [amount] [flags]
+  - **New:** akiranoded tx bank send [from\_key\_or\_address] [to\_address] [amount] [flags]
 
-Commands are no longer added in **cmd/sifnoded/main.go** , each route is now added in the following files:
+Commands are no longer added in **cmd/akiranoded/main.go** , each route is now added in the following files:
 
-- **cmd/sifnoded/cmd/root.go**
-- **cmd/sifnoded/cmd/oracle.go**
-- **cmd/sifnoded/cmd/migrate.go**
-- **cmd/sifnoded/cmd/gentx.go**
-- **cmd/sifnoded/cmd/genaccounts.go**
-- **cmd/sifnoded/cmd/clpadmin.go**
+- **cmd/akiranoded/cmd/root.go**
+- **cmd/akiranoded/cmd/oracle.go**
+- **cmd/akiranoded/cmd/migrate.go**
+- **cmd/akiranoded/cmd/gentx.go**
+- **cmd/akiranoded/cmd/genaccounts.go**
+- **cmd/akiranoded/cmd/clpadmin.go**
 
 Compatibility changes for each module&#39;s cli can be found in the modules&#39; **x/module_name/client/cli/** directories.
 

@@ -38,9 +38,9 @@ class InflateTokens:
             log.debug("Whitelisted entry: {}".format(repr(token_data)))
             assert token_symbol not in result, f"Symbol {token_symbol} is being used by more than one whitelisted token"
             result.append(token)
-        erowan_token = [t for t in result if t["symbol"] == "erowan"]
-        assert len(erowan_token) == 1, "erowan is not whitelisted"
-        assert erowan_token[0]["is_whitelisted"], "erowan is un-whitelisted"
+        eaku_token = [t for t in result if t["symbol"] == "eaku"]
+        assert len(eaku_token) == 1, "eaku is not whitelisted"
+        assert eaku_token[0]["is_whitelisted"], "eaku is un-whitelisted"
         return result
 
     def wait_for_all(self, pending_txs):
@@ -66,14 +66,14 @@ class InflateTokens:
         # been deployed, hence there is no need to deploy them.
 
         # This assumes that requested token symbols are in sifchain format (c-prefixed, i.e. "cusdt", "csushi" etc.).
-        # There can also be "ceth" and "rowan" in this list, which we ignore as they represent special cases.
+        # There can also be "ceth" and "aku" in this list, which we ignore as they represent special cases.
         # To compare it to entries on existing_whitelist, we need to prefix entries on existing_whitelist with "c".
         # TODO It would be better if the requested tokens didn't have "c" prefixes. For now we keep it for
         #      compatibility. Ask people who use this script.
         token_symbols_to_skip = set()
         token_symbols_to_skip.add(test_utils.CETH)  # ceth is special since we can't just mint it or create an ERC20 contract for it
         token_symbols_to_skip.add(test_utils.ROWAN)
-        tokens_to_create = []  # = requested - existing - {rowan, ceth}
+        tokens_to_create = []  # = requested - existing - {aku, ceth}
         for token in requested_tokens:
             token_symbol = token["symbol"]
             if (token_symbol == test_utils.CETH) or (token_symbol == test_utils.ROWAN):
@@ -175,10 +175,10 @@ class InflateTokens:
 
     def distribute_tokens_to_wallets(self, from_sif_account, tokens_to_transfer, amount, target_sif_accounts):
         # Distribute from intermediate_sif_account to each individual account
-        # Note: firing transactions with "sifnoded tx bank send" in rapid succession does not work. This is currently a
+        # Note: firing transactions with "akiranoded tx bank send" in rapid succession does not work. This is currently a
         # known limitation of Cosmos SDK, see https://github.com/cosmos/cosmos-sdk/issues/4186
         # Instead, we take advantage of batching multiple denoms to single account with single send command (amounts
-        # separated by by comma: "sifnoded tx bank send ... 100denoma,100denomb,100denomc") and wait for destination
+        # separated by by comma: "akiranoded tx bank send ... 100denoma,100denomb,100denomc") and wait for destination
         # account to show changes for all denoms after each send.
         send_amounts = [[amount, t["sif_denom"]] for t in tokens_to_transfer]
         for sif_acct in target_sif_accounts:
@@ -187,7 +187,7 @@ class InflateTokens:
             self.ctx.wait_for_sif_balance_change(sif_acct, sif_balance_before, min_changes=send_amounts)
 
     def export(self):
-        excluded = ["erowan"]
+        excluded = ["eaku"]
         return [{
             "symbol": token["symbol"],
             "name": token["name"],
@@ -205,11 +205,11 @@ class InflateTokens:
         familiar so that any tokens that would get stuck in the case of interrupting the script can be recovered.
         """
 
-        # TODO Add support for "ceth" and "rowan"
+        # TODO Add support for "ceth" and "aku"
 
         amount_per_token = amount * len(target_sif_accounts)
-        fund_rowan = [5 * test_utils.sifnode_funds_for_transfer_peggy1, "rowan"]
-        sif_broker_account = self.ctx.create_sifchain_addr(fund_amounts=[fund_rowan])
+        fund_aku = [5 * test_utils.sifnode_funds_for_transfer_peggy1, "aku"]
+        sif_broker_account = self.ctx.create_sifchain_addr(fund_amounts=[fund_aku])
         eth_broker_account = self.ctx.operator
 
         log.info("Using eth_broker_account {}".format(eth_broker_account))
@@ -217,8 +217,8 @@ class InflateTokens:
 
         # Check first that we have the key for ROWAN_SOURCE since the script uses it as an intermediate address
         keys = self.ctx.sifnode.keys_list()
-        rowan_source_key = zero_or_one([k for k in keys if k["address"] == sif_broker_account])
-        assert rowan_source_key is not None, "Need private key of broker account {} in sifnoded test keyring".format(sif_broker_account)
+        aku_source_key = zero_or_one([k for k in keys if k["address"] == sif_broker_account])
+        assert aku_source_key is not None, "Need private key of broker account {} in akiranoded test keyring".format(sif_broker_account)
 
         existing_tokens = self.get_whitelisted_tokens()
 

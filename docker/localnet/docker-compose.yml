@@ -50,8 +50,8 @@ services:
       RPC1: ${IPADDR1}:26657
       PREFIX0: sif
       PREFIX1: sif
-      GAS_PRICE0: "0.5rowan"
-      GAS_PRICE1: "0.5rowan"
+      GAS_PRICE0: "0.5aku"
+      GAS_PRICE1: "0.5aku"
     volumes:
       - ./ts-relayer/root/scripts:/root/scripts:Z
     depends_on:
