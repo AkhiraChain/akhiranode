@@ -175,10 +175,10 @@ class InflateTokens:
 
     def distribute_tokens_to_wallets(self, from_sif_account, tokens_to_transfer, amount, target_sif_accounts):
         # Distribute from intermediate_sif_account to each individual account
-        # Note: firing transactions with "akiranoded tx bank send" in rapid succession does not work. This is currently a
+        # Note: firing transactions with "akhiranoded tx bank send" in rapid succession does not work. This is currently a
         # known limitation of Cosmos SDK, see https://github.com/cosmos/cosmos-sdk/issues/4186
         # Instead, we take advantage of batching multiple denoms to single account with single send command (amounts
-        # separated by by comma: "akiranoded tx bank send ... 100denoma,100denomb,100denomc") and wait for destination
+        # separated by by comma: "akhiranoded tx bank send ... 100denoma,100denomb,100denomc") and wait for destination
         # account to show changes for all denoms after each send.
         send_amounts = [[amount, t["sif_denom"]] for t in tokens_to_transfer]
         for sif_acct in target_sif_accounts:
@@ -218,7 +218,7 @@ class InflateTokens:
         # Check first that we have the key for ROWAN_SOURCE since the script uses it as an intermediate address
         keys = self.ctx.sifnode.keys_list()
         aku_source_key = zero_or_one([k for k in keys if k["address"] == sif_broker_account])
-        assert aku_source_key is not None, "Need private key of broker account {} in akiranoded test keyring".format(sif_broker_account)
+        assert aku_source_key is not None, "Need private key of broker account {} in akhiranoded test keyring".format(sif_broker_account)
 
         existing_tokens = self.get_whitelisted_tokens()
 

@@ -83,11 +83,11 @@ func (c CLI) Reset(paths []string) error {
 }
 
 func (c CLI) DaemonPath() (*string, error) {
-	return c.shellExec("which", "akiranoded")
+	return c.shellExec("which", "akhiranoded")
 }
 
 func (c CLI) ResetState(nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "unsafe-reset-all", "--home", nodeDir)
+	return c.shellExec("akhiranoded", "unsafe-reset-all", "--home", nodeDir)
 }
 
 func (c CLI) CreateDir(path string) error {
@@ -99,19 +99,19 @@ func (c CLI) MoveFile(src, dest string) (*string, error) {
 }
 
 func (c CLI) NodeID(nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "tendermint", "show-node-id", "--home", nodeDir)
+	return c.shellExec("akhiranoded", "tendermint", "show-node-id", "--home", nodeDir)
 }
 
 func (c CLI) ValidatorAddress(nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "tendermint", "show-validator", "--home", nodeDir)
+	return c.shellExec("akhiranoded", "tendermint", "show-validator", "--home", nodeDir)
 }
 
 func (c CLI) ValidatorConsensusAddress(nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "tendermint", "show-address", "--home", nodeDir)
+	return c.shellExec("akhiranoded", "tendermint", "show-address", "--home", nodeDir)
 }
 
 func (c CLI) InitChain(chainID, moniker, nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "init", moniker, "--chain-id", chainID, "--home", nodeDir)
+	return c.shellExec("akhiranoded", "init", moniker, "--chain-id", chainID, "--home", nodeDir)
 }
 
 func (c CLI) AddKey(name, mnemonic, keyPassword, cliDir string) (*string, error) {
@@ -121,20 +121,20 @@ func (c CLI) AddKey(name, mnemonic, keyPassword, cliDir string) (*string, error)
 	default:
 		var input [][]byte
 		input = c.formatInputs([]string{mnemonic, ""})
-		return c.shellExecInput("akiranoded", input, "keys", "add", name, "--home", cliDir, "-i", "--keyring-backend", c.keyringBackend)
+		return c.shellExecInput("akhiranoded", input, "keys", "add", name, "--home", cliDir, "-i", "--keyring-backend", c.keyringBackend)
 	}
 }
 
 func (c CLI) AddGenesisAccount(address, nodeDir string, coins []string) (*string, error) {
-	return c.shellExec("akiranoded", "add-genesis-account", address, strings.Join(coins[:], ","), "--home", nodeDir)
+	return c.shellExec("akhiranoded", "add-genesis-account", address, strings.Join(coins[:], ","), "--home", nodeDir)
 }
 
 func (c CLI) AddGenesisCLPAdmin(address, nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "add-genesis-clp-admin", address, "--home", nodeDir, "--keyring-backend", c.keyringBackend)
+	return c.shellExec("akhiranoded", "add-genesis-clp-admin", address, "--home", nodeDir, "--keyring-backend", c.keyringBackend)
 }
 
 func (c CLI) SetGenesisOracleAdmin(address, nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "set-genesis-oracle-admin", address, "--home", nodeDir, "--keyring-backend", c.keyringBackend)
+	return c.shellExec("akhiranoded", "set-genesis-oracle-admin", address, "--home", nodeDir, "--keyring-backend", c.keyringBackend)
 }
 
 func (c CLI) GenerateGenesisTxn(name, keyPassword, bondAmount, nodeDir, outputFile, nodeID, pubKey, ipV4Addr, chainID string) (*string, error) {
@@ -143,7 +143,7 @@ func (c CLI) GenerateGenesisTxn(name, keyPassword, bondAmount, nodeDir, outputFi
 		input = c.formatInputs([]string{keyPassword, keyPassword, keyPassword})
 	}
 
-	return c.shellExecInput("akiranoded", input,
+	return c.shellExecInput("akhiranoded", input,
 		"gentx", name, bondAmount,
 		"--details", name,
 		"--keyring-backend", c.keyringBackend,
@@ -157,11 +157,11 @@ func (c CLI) GenerateGenesisTxn(name, keyPassword, bondAmount, nodeDir, outputFi
 }
 
 func (c CLI) CollectGenesisTxns(gentxDir, nodeDir string) (*string, error) {
-	return c.shellExec("akiranoded", "collect-gentxs", "--gentx-dir", gentxDir, "--home", nodeDir)
+	return c.shellExec("akhiranoded", "collect-gentxs", "--gentx-dir", gentxDir, "--home", nodeDir)
 }
 
 func (c CLI) ExportGenesis() (*string, error) {
-	return c.shellExec("akiranoded", "export")
+	return c.shellExec("akhiranoded", "export")
 }
 
 func (c CLI) GenesisFilePath() string {
@@ -182,11 +182,11 @@ func (c CLI) TransferFunds(keyPassword, fromAddress, toAddress, coins string) (*
 		input = c.formatInputs([]string{keyPassword, keyPassword})
 	}
 
-	return c.shellExecInput("akiranoded", input, "tx", "send", fromAddress, toAddress, coins, "-y")
+	return c.shellExecInput("akhiranoded", input, "tx", "send", fromAddress, toAddress, coins, "-y")
 }
 
 func (c CLI) ValidatorPublicKeyAddress() (*string, error) {
-	return c.shellExec("akiranoded", "tendermint", "show-validator")
+	return c.shellExec("akhiranoded", "tendermint", "show-validator")
 }
 
 func (c CLI) CreateValidator(moniker, validatorPublicKey, keyPassword, bondAmount string) (*string, error) {
@@ -195,7 +195,7 @@ func (c CLI) CreateValidator(moniker, validatorPublicKey, keyPassword, bondAmoun
 		input = c.formatInputs([]string{keyPassword, keyPassword})
 	}
 
-	return c.shellExecInput("akiranoded", input,
+	return c.shellExecInput("akhiranoded", input,
 		"tx", "staking", "create-validator",
 		"--commission-max-change-rate", "0.1",
 		"--commission-max-rate", "0.1",

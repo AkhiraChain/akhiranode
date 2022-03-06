@@ -1,9 +1,9 @@
 #!/bin/bash
 
-killall akiranoded
+killall akhiranoded
 
-rm $(which akiranoded) 2> /dev/null || echo akiranoded not install yet ...
+rm $(which akhiranoded) 2> /dev/null || echo akhiranoded not install yet ...
 
-rm -rf ~/.akiranoded
+rm -rf ~/.akhiranoded
 
 cd ../../../ && make install 

@@ -21,14 +21,14 @@ General Flow
 
 Transfer Funds from Chain-1 to Chain-2
 ```shell
-akiranoded tx ibc-transfer transfer 
+akhiranoded tx ibc-transfer transfer 
 transfer  -> Port
 channel-101  -> Channel
 cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux  -> Receiver( in Chain-2)
 1ibc/C782C1DE5F380BC8A5B7D490684894B439D31847A004B271D7B7BA07751E582A (Tokens sent)
---from=sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd (Sender in Chain-1)
+--from=ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd (Sender in Chain-1)
 --node=https://rpc-devnet.sifchain.finance:443 (Broadcasting Node for Chain-1)
---chain-id=sifchain-devnet-1  (chainID for Chain-1)
+--chain-id=akhirachain-devnet-1  (chainID for Chain-1)
 --gas-prices=1aku (Gas Prices to pay in Chain-1)
 --gas=5000000 (Max gas the Sender is willing to pay)
 --y  (Auto-Confirm)
@@ -44,7 +44,7 @@ Sample Response
    "codespace":"",
    "code":0,
    "data":"0A0A0A087472616E73666572",
-   "raw_log":"[{\"events\":[{\"type\":\"ibc_transfer\",\"attributes\":[{\"key\":\"sender\",\"value\":\"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"},{\"key\":\"receiver\",\"value\":\"cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"transfer\"},{\"key\":\"sender\",\"value\":\"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"},{\"key\":\"module\",\"value\":\"ibc_channel\"},{\"key\":\"module\",\"value\":\"transfer\"}]},{\"type\":\"send_packet\",\"attributes\":[{\"key\":\"packet_data\",\"value\":\"{\\\"amount\\\":\\\"1\\\",\\\"denom\\\":\\\"transfer/channel-101/uphoton\\\",\\\"receiver\\\":\\\"cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux\\\",\\\"sender\\\":\\\"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\\\"}\"},{\"key\":\"packet_timeout_height\",\"value\":\"0-104721\"},{\"key\":\"packet_timeout_timestamp\",\"value\":\"1629903792589870129\"},{\"key\":\"packet_sequence\",\"value\":\"31\"},{\"key\":\"packet_src_port\",\"value\":\"transfer\"},{\"key\":\"packet_src_channel\",\"value\":\"channel-101\"},{\"key\":\"packet_dst_port\",\"value\":\"transfer\"},{\"key\":\"packet_dst_channel\",\"value\":\"channel-3\"},{\"key\":\"packet_channel_ordering\",\"value\":\"ORDER_UNORDERED\"},{\"key\":\"packet_connection\",\"value\":\"connection-110\"}]},{\"type\":\"transfer\",\"attributes\":[{\"key\":\"recipient\",\"value\":\"sif1yl6hdjhmkf37639730gffanpzndzdpmhtzelcg\"},{\"key\":\"sender\",\"value\":\"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"},{\"key\":\"amount\",\"value\":\"1ibc/C782C1DE5F380BC8A5B7D490684894B439D31847A004B271D7B7BA07751E582A\"}]}]}]",
+   "raw_log":"[{\"events\":[{\"type\":\"ibc_transfer\",\"attributes\":[{\"key\":\"sender\",\"value\":\"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"},{\"key\":\"receiver\",\"value\":\"cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"transfer\"},{\"key\":\"sender\",\"value\":\"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"},{\"key\":\"module\",\"value\":\"ibc_channel\"},{\"key\":\"module\",\"value\":\"transfer\"}]},{\"type\":\"send_packet\",\"attributes\":[{\"key\":\"packet_data\",\"value\":\"{\\\"amount\\\":\\\"1\\\",\\\"denom\\\":\\\"transfer/channel-101/uphoton\\\",\\\"receiver\\\":\\\"cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux\\\",\\\"sender\\\":\\\"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\\\"}\"},{\"key\":\"packet_timeout_height\",\"value\":\"0-104721\"},{\"key\":\"packet_timeout_timestamp\",\"value\":\"1629903792589870129\"},{\"key\":\"packet_sequence\",\"value\":\"31\"},{\"key\":\"packet_src_port\",\"value\":\"transfer\"},{\"key\":\"packet_src_channel\",\"value\":\"channel-101\"},{\"key\":\"packet_dst_port\",\"value\":\"transfer\"},{\"key\":\"packet_dst_channel\",\"value\":\"channel-3\"},{\"key\":\"packet_channel_ordering\",\"value\":\"ORDER_UNORDERED\"},{\"key\":\"packet_connection\",\"value\":\"connection-110\"}]},{\"type\":\"transfer\",\"attributes\":[{\"key\":\"recipient\",\"value\":\"sif1yl6hdjhmkf37639730gffanpzndzdpmhtzelcg\"},{\"key\":\"sender\",\"value\":\"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"},{\"key\":\"amount\",\"value\":\"1ibc/C782C1DE5F380BC8A5B7D490684894B439D31847A004B271D7B7BA07751E582A\"}]}]}]",
    "logs":[
       {
          "msg_index":0,
@@ -55,7 +55,7 @@ Sample Response
                "attributes":[
                   {
                      "key":"sender",
-                     "value":"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
+                     "value":"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
                   },
                   {
                      "key":"receiver",
@@ -72,7 +72,7 @@ Sample Response
                   },
                   {
                      "key":"sender",
-                     "value":"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
+                     "value":"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
                   },
                   {
                      "key":"module",
@@ -89,7 +89,7 @@ Sample Response
                "attributes":[
                   {
                      "key":"packet_data",
-                     "value":"{\"amount\":\"1\",\"denom\":\"transfer/channel-101/uphoton\",\"receiver\":\"cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux\",\"sender\":\"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"}"
+                     "value":"{\"amount\":\"1\",\"denom\":\"transfer/channel-101/uphoton\",\"receiver\":\"cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux\",\"sender\":\"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd\"}"
                   },
                   {
                      "key":"packet_timeout_height",
@@ -138,7 +138,7 @@ Sample Response
                   },
                   {
                      "key":"sender",
-                     "value":"sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
+                     "value":"ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
                   },
                   {
                      "key":"amount",

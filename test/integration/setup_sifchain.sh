@@ -6,7 +6,7 @@ set -e
 . $(dirname $0)/vagrantenv.sh
 . ${TEST_INTEGRATION_DIR}/shell_utilities.sh
 
-pkill akiranoded || true
+pkill akhiranoded || true
 pkill ebrelayer || true
 
 sleep 1
@@ -33,14 +33,14 @@ set_persistant_env_var VALIDATOR1_PASSWORD $(cat $NETDEF_JSON | jq -r '.[0].pass
 set_persistant_env_var VALIDATOR1_ADDR $(cat $NETDEF_JSON | jq -r '.[0].address') $envexportfile
 set_persistant_env_var MNEMONIC "$(cat $NETDEF_JSON | jq -r '.[0].mnemonic')" $envexportfile
 set_persistant_env_var CHAINDIR $NETWORKDIR/validators/$CHAINNET/$MONIKER $envexportfile
-set_persistant_env_var SIFNODED_LOG $datadir/logs/akiranoded.log $envexportfile
+set_persistant_env_var SIFNODED_LOG $datadir/logs/akhiranoded.log $envexportfile
 
 . $envexportfile
 
 # now we have to add the validator key to the test keyring so the tests can send aku from validator1
-echo "$MNEMONIC" | akiranoded keys add $MONIKER --keyring-backend test --recover 
-valoper=$(akiranoded keys show -a --bech val $MONIKER --home $CHAINDIR/.akiranoded --keyring-backend test)
-akiranoded add-genesis-validators $valoper --home $CHAINDIR/.akiranoded
+echo "$MNEMONIC" | akhiranoded keys add $MONIKER --keyring-backend test --recover 
+valoper=$(akhiranoded keys show -a --bech val $MONIKER --home $CHAINDIR/.akhiranoded --keyring-backend test)
+akhiranoded add-genesis-validators $valoper --home $CHAINDIR/.akhiranoded
 
 mkdir -p $datadir/logs
 nohup $TEST_INTEGRATION_DIR/sifchain_start_daemon.sh < /dev/null > $SIFNODED_LOG 2>&1 &

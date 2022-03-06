@@ -27,7 +27,7 @@ jobs:
 
       - name: Build docker images
         run: |
-          make IMAGE_TAG=${{ steps.version.outputs.version }} BINARY=akiranoded build-image
+          make IMAGE_TAG=${{ steps.version.outputs.version }} BINARY=akhiranoded build-image
           make IMAGE_TAG=${{ steps.version.outputs.version }} BINARY=ebrelayer build-image
 
       - name: Push docker images
@@ -40,14 +40,14 @@ jobs:
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
-      - name: Release a new akiranoded binary
+      - name: Release a new akhiranoded binary
         uses: ./sifchain-devops/release
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: linux
           goarch: amd64
           goversion: "1.17"
-          project_path: "./cmd/akiranoded"
-          binary_name: "akiranoded"
-          ldflags: "-X github.com/cosmos/cosmos-sdk/version.Name=sifchain -X github.com/cosmos/cosmos-sdk/version.ServerName=akiranoded -X github.com/cosmos/cosmos-sdk/version.ClientName=akiranoded -X github.com/cosmos/cosmos-sdk/version.Version=${{ steps.version.outputs.version }} -X github.com/cosmos/cosmos-sdk/version.Commit=${{ steps.hash.outputs.sha_short }}"
+          project_path: "./cmd/akhiranoded"
+          binary_name: "akhiranoded"
+          ldflags: "-X github.com/cosmos/cosmos-sdk/version.Name=sifchain -X github.com/cosmos/cosmos-sdk/version.ServerName=akhiranoded -X github.com/cosmos/cosmos-sdk/version.ClientName=akhiranoded -X github.com/cosmos/cosmos-sdk/version.Version=${{ steps.version.outputs.version }} -X github.com/cosmos/cosmos-sdk/version.Commit=${{ steps.hash.outputs.sha_short }}"
           sha256sum: true

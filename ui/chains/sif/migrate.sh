@@ -9,8 +9,8 @@ echo "create liquidity pool from catk:aku"
 
 # nativeAmount 10000000 catk
 # externalAmount 10000000 aku
-akiranoded tx clp create-pool \
- --chain-id=sifchain-local \
+akhiranoded tx clp create-pool \
+ --chain-id=akhirachain-local \
  --keyring-backend=test \
  --from akasha \
  --symbol catk \
@@ -26,8 +26,8 @@ echo "create liquidity pool from cbtk:aku"
 # create liquidity pool from cbtk:aku
 # nativeAmount 10000000 cbtk
 # externalAmount 10000000 aku
-akiranoded tx clp create-pool \
- --chain-id=sifchain-local \
+akhiranoded tx clp create-pool \
+ --chain-id=akhirachain-local \
  --keyring-backend=test \
  --from akasha \
  --symbol cbtk \
@@ -43,8 +43,8 @@ sleep 5
 echo "create liquidity pool from ceth:aku"
 # nativeAmount 8300 ceth
 # externalAmount 10000000 aku
-akiranoded tx clp create-pool \
- --chain-id=sifchain-local \
+akhiranoded tx clp create-pool \
+ --chain-id=akhirachain-local \
  --keyring-backend=test \
  --from akasha \
  --symbol ceth \
@@ -58,8 +58,8 @@ akiranoded tx clp create-pool \
 sleep 5
 
 echo "create liquidity pool from cusdc:aku"
-akiranoded tx clp create-pool \
- --chain-id=sifchain-local \
+akhiranoded tx clp create-pool \
+ --chain-id=akhirachain-local \
  --keyring-backend=test \
  --from akasha \
  --symbol cusdc \
@@ -71,8 +71,8 @@ akiranoded tx clp create-pool \
 sleep 5
 
 echo "create liquidity pool from clink:aku"
-akiranoded tx clp create-pool \
- --chain-id=sifchain-local \
+akhiranoded tx clp create-pool \
+ --chain-id=akhirachain-local \
  --keyring-backend=test \
  --from akasha \
  --symbol clink \
@@ -84,8 +84,8 @@ akiranoded tx clp create-pool \
 sleep 5
 
 echo "create liquidity pool from ctest:aku"
-akiranoded tx clp create-pool \
- --chain-id=sifchain-local \
+akhiranoded tx clp create-pool \
+ --chain-id=akhirachain-local \
  --keyring-backend=test \
  --from akasha \
  --symbol ctest \

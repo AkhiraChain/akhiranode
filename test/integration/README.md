@@ -29,7 +29,7 @@ make sifdocker-sh     # gives you a shell in the running container
 ## Execute
 
 [start-integration-env.sh](./start-integration-env.sh) starts 
-akiranoded and ganache.
+akhiranoded and ganache.
 
 Run the tests in a container with:
 
@@ -62,7 +62,7 @@ test/integration/start-integration-env.sh
 ```
 # cd ~/workspace/sifnode/test/integration 
 # source ./exampleenv.sh
-# akiranoded q auth account --node tcp://44.241.55.154:26657 sif1pvnu2kh826vn8r0ttlgt82hsmfknvcnf7qmpvk
+# akhiranoded q auth account --node tcp://44.241.55.154:26657 sif1pvnu2kh826vn8r0ttlgt82hsmfknvcnf7qmpvk
 # ...
 ```
 

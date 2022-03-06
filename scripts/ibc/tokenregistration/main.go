@@ -41,15 +41,15 @@ func main() {
 	var inputs Wrapper
 	files := []File{
 		{
-			chain:     "sifchain-1",
+			chain:     "akhirachain-1",
 			filenames: []string{"tokenregistry", "registry"},
 		},
 		{
-			chain:     "sifchain-devnet-1",
+			chain:     "akhirachain-devnet-1",
 			filenames: []string{"tokenregistry", "registry"},
 		},
 		{
-			chain:     "sifchain-testnet-1",
+			chain:     "akhirachain-testnet-1",
 			filenames: []string{"tokenregistry", "registry"},
 		},
 	}

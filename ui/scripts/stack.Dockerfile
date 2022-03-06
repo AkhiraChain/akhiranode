@@ -38,7 +38,7 @@ RUN apk update && apk add curl jq bash
 
 # Copy the compiled binaires over.
 COPY --from=build-go /go/bin/ebrelayer /usr/bin/ebrelayer
-COPY --from=build-go /go/bin/akiranoded /usr/bin/akiranoded
+COPY --from=build-go /go/bin/akhiranoded /usr/bin/akhiranoded
 COPY --from=build-go /go/bin/akhgen /usr/bin/akhgen
 
 # Required for ebrelayer

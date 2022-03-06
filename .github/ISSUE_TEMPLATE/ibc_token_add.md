@@ -19,7 +19,7 @@ Display Name:
 <!--
 Example:
 
-Sifchain Chain ID: sifchain-devnet-1  
+Sifchain Chain ID: akhirachain-devnet-1  
 Counterparty Chain ID: cosmoshub-4
 Counterparty Base Denom: uatom
 Decimals: 6

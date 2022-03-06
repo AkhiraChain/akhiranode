@@ -36,7 +36,7 @@ type UserClaim struct {
 ### User Flow
 - Create Claim
 ```shell
-akiranoded tx dispensation claim ValidatorSubsidy --from akasha --keyring-backend test --yes
+akhiranoded tx dispensation claim ValidatorSubsidy --from akasha --keyring-backend test --yes
 ```
 
 ### Events Emitted
@@ -46,7 +46,7 @@ akiranoded tx dispensation claim ValidatorSubsidy --from akasha --keyring-backen
             "attributes": [
               {
                 "key": "claim_creator",
-                "value": "sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5"
+                "value": "ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5"
               },
               {
                 "key": "claim_type",
@@ -63,20 +63,20 @@ akiranoded tx dispensation claim ValidatorSubsidy --from akasha --keyring-backen
 ### Queries
 - Query to get claims by type
 ```shell
-akiranoded q dispensation claims-by-type ValidatorSubsidy
+akhiranoded q dispensation claims-by-type ValidatorSubsidy
 ```
 Response 
 ```json
 {
   "claims": [
     {
-      "user_address": "sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5",
+      "user_address": "ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5",
       "user_claim_type": "3",
       "user_claim_time": "2021-05-02T02:43:10.593125Z",
       "locked": false
     },
     {
-      "user_address": "sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
+      "user_address": "ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
       "user_claim_type": "3",
       "user_claim_time": "2021-05-02T02:43:10.593125Z",
       "locked": false

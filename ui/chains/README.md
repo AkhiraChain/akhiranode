@@ -14,7 +14,7 @@ Each chain has a set of scripts to control it:
 
 | script          | description                                                                                                                                                                                 |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `./build.sh`    | Build the chain so it can be ready to run. For example `akiranoded` gets built from source. For ethereum this runs truffle compile. For peggy this doesn't exist as there is nothing to build |
+| `./build.sh`    | Build the chain so it can be ready to run. For example `akhiranoded` gets built from source. For ethereum this runs truffle compile. For peggy this doesn't exist as there is nothing to build |
 | `./config.sh`   | Config env vars used in other scripts for this chain.                                                                                                                                       |
 | `./migrate.sh`  | Send built changes to the running chain. For example push special contracts etc.                                                                                                            |
 | `./pause.sh`    | Stop the chain.                                                                                                                                                                             |

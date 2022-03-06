@@ -6,10 +6,10 @@ from common import *
 def force_kill_processes(cmd):
     cmd.execst(["pkill", "node"], check_exit=False)
     cmd.execst(["pkill", "ebrelayer"], check_exit=False)
-    cmd.execst(["pkill", "akiranoded"], check_exit=False)
+    cmd.execst(["pkill", "akhiranoded"], check_exit=False)
 
 def killall(processes):
-    # TODO Order - ebrelayer, akiranoded, ganache
+    # TODO Order - ebrelayer, akhiranoded, ganache
     for p in processes:
         if p is not None:
             p.kill()
@@ -55,7 +55,7 @@ class Project:
             self.__rm(self.project_dir("test", "integration", "sifchainrelayerdb"))  # TODO move to /tmp
             self.__rm(self.project_dir("smart-contracts", "build"))  # truffle deploy
             self.__rm(self.project_dir("test", "integration", "vagrant", "data"))
-            self.__rm(self.cmd.get_user_home(".akiranoded"))  # Probably needed for "--keyring-backend test"
+            self.__rm(self.cmd.get_user_home(".akhiranoded"))  # Probably needed for "--keyring-backend test"
 
             self.__rm(self.project_dir("deploy", "networks"))  # from running integration tests
 
@@ -85,7 +85,7 @@ class Project:
 
             # rmdir ~/.cache/yarn
         if level >= 1:
-            for file in ["akiranoded", "ebrelayer", "akhgen"]:
+            for file in ["akhiranoded", "ebrelayer", "akhgen"]:
                 self.__rm(os.path.join(self.go_bin_dir, file))
             self.__rm(self.project_dir("smart-contracts", "node_modules"))
 
@@ -97,7 +97,7 @@ class Project:
             self.__rm(self.cmd.get_user_home(".npm"))
             self.__rm(self.cmd.get_user_home(".npm-global"))
             self.__rm(self.cmd.get_user_home(".cache/yarn"))
-            self.__rm(self.cmd.get_user_home(".akiranoded"))
+            self.__rm(self.cmd.get_user_home(".akhiranoded"))
             self.__rm(self.cmd.get_user_home(".sifnode-integration"))
             self.__rm(project_dir("smart-contracts/node_modules"))
 
@@ -148,13 +148,13 @@ class Project:
     def make_go_binaries(self):
         # make go binaries (TODO Makefile needs to be trimmed down, especially "find")
         # cd test/integration; BASEDIR=... make
-        # (checks all *.go files and, runs make in $BASEDIR, touches akiranoded, removes ~/.akiranoded/localnet
+        # (checks all *.go files and, runs make in $BASEDIR, touches akhiranoded, removes ~/.akhiranoded/localnet
         self.cmd.execst(["make"], cwd=project_dir("test", "integration"), env={"BASEDIR": project_dir()}, pipe=False)
 
     # From PeggyEnvironment
     # TODO Merge
     # Main Makefile requires GOBIN to be set to an absolute path. Compiled executables ebrelayer, akhgen and
-    # akiranoded will be written there. The directory will be created if it doesn't exist yet.
+    # akhiranoded will be written there. The directory will be created if it doesn't exist yet.
     #
     def make_go_binaries_2(self):
         # Original: cd smart-contracts; make -C .. install

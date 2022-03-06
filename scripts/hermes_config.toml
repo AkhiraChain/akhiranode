@@ -15,8 +15,8 @@ rpc_addr='http://localhost:27665'
 grpc_addr='http://localhost:9090'
 websocket_addr='ws://localhost:27665/websocket'
 rpc_timeout='10s'
-account_prefix='sif'
-key_name='sif'
+account_prefix='ak'
+key_name='ak'
 store_prefix='ibc'
 max_gas=3000000
 gas_price={ price = 0.5, denom = 'aku' }
@@ -32,8 +32,8 @@ rpc_addr='http://localhost:27666'
 grpc_addr='http://localhost:9091'
 websocket_addr='ws://localhost:27666/websocket'
 rpc_timeout='10s'
-account_prefix='sif'
-key_name='sif'
+account_prefix='ak'
+key_name='ak'
 store_prefix='ibc'
 max_gas=3000000
 gas_price={ price = 0.5, denom = 'aku' }
@@ -49,8 +49,8 @@ rpc_addr='http://localhost:27667'
 grpc_addr='http://localhost:9092'
 websocket_addr='ws://localhost:27667/websocket'
 rpc_timeout='10s'
-account_prefix='sif'
-key_name='sif'
+account_prefix='ak'
+key_name='ak'
 store_prefix='ibc'
 max_gas=3000000
 gas_price={ price = 0.5, denom = 'aku' }

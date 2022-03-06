@@ -1,2 +1,2 @@
-height=$(akiranoded --home $CHAINDIR/.akiranoded q block | jq -r .block.header.height)
-seq $height | parallel -k akiranoded --home $CHAINDIR/.akiranoded q block {}
+height=$(akhiranoded --home $CHAINDIR/.akhiranoded q block | jq -r .block.header.height)
+seq $height | parallel -k akhiranoded --home $CHAINDIR/.akhiranoded q block {}

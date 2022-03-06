@@ -11,11 +11,11 @@
 ### Create Dispensation
 Use the CLI to create a dispensations
 ```shell
-akiranoded tx dispensation create [Distribution Type Airdrop/ValidatorSubsidy/LiquidityMining] [List of output addresses in JSON format] [Address of authorized runner] --from [Address of invester/This private keys is used to sign the tx] --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
+akhiranoded tx dispensation create [Distribution Type Airdrop/ValidatorSubsidy/LiquidityMining] [List of output addresses in JSON format] [Address of authorized runner] --from [Address of invester/This private keys is used to sign the tx] --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
 ```
 sample command
 ```shell
-akiranoded tx dispensation create LiquidityMining output.json sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --from sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
+akhiranoded tx dispensation create LiquidityMining output.json ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --from ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
 ```
 sample output
 ```json
@@ -27,7 +27,7 @@ sample output
 ```
 The Tx hash can then be used to query the blockchain and get the distribution name
 ```shell
-akiranoded q tx A9D019E1080ECD6A012B20B3058534AC6643BD17634F181FBE7F8F5C43B94D8E --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
+akhiranoded q tx A9D019E1080ECD6A012B20B3058534AC6643BD17634F181FBE7F8F5C43B94D8E --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
 ```
 The output from the command would contain the relevant event 
 ```json
@@ -40,7 +40,7 @@ The output from the command would contain the relevant event
         },
         {
         "key": "distribution_name",
-        "value": "1158855_sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
+        "value": "1158855_ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
         },
         {
         "key": "distribution_type",

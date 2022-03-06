@@ -18,7 +18,7 @@ func getDefaultArgs() Args {
 
 	senderName := "sif"
 	path := hd.CreateHDPath(118, 0, 0).String()
-	toAddr, err := sdk.AccAddressFromBech32("sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5")
+	toAddr, err := sdk.AccAddressFromBech32("ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5")
 	if err != nil {
 		panic(toAddr)
 	}
@@ -38,7 +38,7 @@ func getDefaultArgs() Args {
 	}
 
 	return Args{
-		ChainID:          "sifchain-devnet-1",
+		ChainID:          "akhirachain-devnet-1",
 		GasPrice:         "",
 		GasAdjustment:    0,
 		Keybase:          kr,
@@ -66,9 +66,9 @@ func setNetwork(args *Args, network Network) {
 	args.Network = network
 	switch args.Network {
 	case Devnet:
-		args.ChainID = "sifchain-devnet"
+		args.ChainID = "akhirachain-devnet"
 	case TestNet:
-		args.ChainID = "sifchain-testnet"
+		args.ChainID = "akhirachain-testnet"
 	case MainNet:
 		args.ChainID = "sifchain"
 	case LocalNet:

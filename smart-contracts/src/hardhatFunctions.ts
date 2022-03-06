@@ -79,7 +79,7 @@ export async function setupDeployment(c: DependencyContainer) {
     let deploymentName = process.env["DEPLOYMENT_NAME"];
     switch(deploymentName) {
         case "sifchain":
-        case "sifchain-1":
+        case "akhirachain-1":
             setupSifchainMainnetDeployment(c, hre, deploymentName)
             break
         case undefined:
@@ -90,7 +90,7 @@ export async function setupDeployment(c: DependencyContainer) {
     }
 }
 
-export async function setupSifchainMainnetDeployment(c: DependencyContainer, hre: HardhatRuntimeEnvironment, deploymentName: "sifchain" | "sifchain-1") {
+export async function setupSifchainMainnetDeployment(c: DependencyContainer, hre: HardhatRuntimeEnvironment, deploymentName: "sifchain" | "akhirachain-1") {
     c.register(DeploymentDirectory, {useValue: "./deployments"})
     c.register(DeploymentName, {useValue: deploymentName})
     // We'd like to be able to use chainId from the provider,

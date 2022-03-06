@@ -14,7 +14,7 @@ from test_utilities import get_sifchain_addr_balance, advance_n_ethereum_blocks,
     get_eth_balance, send_from_sifchain_to_ethereum, wait_for_eth_balance, \
     wait_for_ethereum_block_number, send_from_sifchain_to_sifchain, wait_for_sif_account, \
     get_shell_output_json, EthereumToSifchainTransferRequest, SifchaincliCredentials, RequestAndCredentials, \
-    akiranoded_binary
+    akhiranoded_binary
 
 default_timeout_for_ganache = 160
 
@@ -48,7 +48,7 @@ def transfer_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRe
     try:
         sifchain_starting_balance = get_sifchain_addr_balance(
             transfer_request.sifchain_address,
-            transfer_request.akiranoded_node,
+            transfer_request.akhiranoded_node,
             transfer_request.sifchain_symbol
         )
     except:
@@ -83,7 +83,7 @@ def transfer_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRe
     try:
         sifchain_balance_before_required_elapsed_blocks = get_sifchain_addr_balance(
             transfer_request.sifchain_address,
-            transfer_request.akiranoded_node,
+            transfer_request.akhiranoded_node,
             transfer_request.sifchain_symbol
         )
     except:
@@ -113,14 +113,14 @@ def transfer_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRe
     logging.debug(f"wait for account {transfer_request.sifchain_address}")
     wait_for_sif_account(
         sif_addr=transfer_request.sifchain_address,
-        sifchaincli_node=transfer_request.akiranoded_node,
+        sifchaincli_node=transfer_request.akhiranoded_node,
         max_seconds=max_seconds
     )
 
     wait_for_sifchain_addr_balance(
         sifchain_address=transfer_request.sifchain_address,
         symbol=transfer_request.sifchain_symbol,
-        sifchaincli_node=transfer_request.akiranoded_node,
+        sifchaincli_node=transfer_request.akhiranoded_node,
         target_balance=target_balance,
         max_seconds=max_seconds,
         debug_prefix=f"transfer_ethereum_to_sifchain waiting for balance {transfer_request}"
@@ -148,7 +148,7 @@ def transfer_sifchain_to_ethereum(
 
     sifchain_starting_balance = get_sifchain_addr_balance(
         transfer_request.sifchain_address,
-        transfer_request.akiranoded_node,
+        transfer_request.akhiranoded_node,
         transfer_request.sifchain_symbol
     )
 
@@ -173,7 +173,7 @@ def transfer_sifchain_to_ethereum(
 
     sifchain_ending_balance = get_sifchain_addr_balance(
         transfer_request.sifchain_address,
-        transfer_request.akiranoded_node,
+        transfer_request.akhiranoded_node,
         transfer_request.sifchain_symbol
     )
 
@@ -197,7 +197,7 @@ def transfer_sifchain_to_sifchain(
     try:
         sifchain_starting_balance = get_sifchain_addr_balance(
             transfer_request.sifchain_destination_address,
-            transfer_request.akiranoded_node,
+            transfer_request.akhiranoded_node,
             transfer_request.sifchain_symbol
         )
     except Exception as e:
@@ -217,14 +217,14 @@ def transfer_sifchain_to_sifchain(
     target_balance = transfer_request.amount + sifchain_starting_balance
     wait_for_sif_account(
         sif_addr=transfer_request.sifchain_destination_address,
-        sifchaincli_node=transfer_request.akiranoded_node,
+        sifchaincli_node=transfer_request.akhiranoded_node,
         max_seconds=max_seconds
     )
     wait_for_sifchain_addr_balance(
         sifchain_address=transfer_request.sifchain_destination_address,
         symbol=transfer_request.sifchain_symbol,
         target_balance=target_balance,
-        sifchaincli_node=transfer_request.akiranoded_node,
+        sifchaincli_node=transfer_request.akhiranoded_node,
         max_seconds=max_seconds,
         debug_prefix=f"transfer_sifchain_to_sifchain {transfer_request}"
     )
@@ -335,7 +335,7 @@ def transfer_argument_parser() -> argparse.ArgumentParser:
         required=True
     )
     parser.add_argument(
-        '--akiranoded_node',
+        '--akhiranoded_node',
         type=str,
         nargs=1,
         default="tcp://localhost:26657",
@@ -364,10 +364,10 @@ def add_credentials_arguments(parser: argparse.ArgumentParser) -> argparse.Argum
         type=str,
         nargs=1,
         default=[""],
-        help="--from argument for akiranoded"
+        help="--from argument for akhiranoded"
     )
     parser.add_argument(
-        '--akiranoded_homedir',
+        '--akhiranoded_homedir',
         type=str,
         nargs=1,
         required=True,
@@ -408,7 +408,7 @@ def process_args(cmdline: List[str]) -> RequestAndCredentials:
         keyring_passphrase=os.environ.get(args.keyring_passphrase_env_var[0]),
         from_key=args.from_key[0],
         keyring_backend=args.keyring_backend[0],
-        akiranoded_homedir=args.akiranoded_homedir[0],
+        akhiranoded_homedir=args.akhiranoded_homedir[0],
     )
 
     return RequestAndCredentials(transfer_request, credentials, args)
@@ -423,5 +423,5 @@ def create_new_sifaddr(
     yes_subcmd = f"yes {keyring_passphrase} |" if keyring_passphrase else ""
     keyring_backend_subcmd = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     # Note that keys-add prints to stderr
-    cmd = f"{yes_subcmd} {akiranoded_binary} keys add {keyname} --home {credentials.akiranoded_homedir} {keyring_backend_subcmd} --output json 2>&1"
+    cmd = f"{yes_subcmd} {akhiranoded_binary} keys add {keyname} --home {credentials.akhiranoded_homedir} {keyring_backend_subcmd} --output json 2>&1"
     return get_shell_output_json(cmd)

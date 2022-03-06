@@ -3,4 +3,4 @@
 addr=$1
 shift
 
-akiranoded q auth account ${addr:=${VALIDATOR1_ADDR}} -o json | jq
+akhiranoded q auth account ${addr:=${VALIDATOR1_ADDR}} -o json | jq

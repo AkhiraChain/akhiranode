@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SIFCHAIN_ID=sifchain-1 \
+SIFCHAIN_ID=akhirachain-1 \
   KEYRING_BACKEND=test \
   SIF_NODE=https://rpc.sifchain.finance:443 \
   COSMOS_BASE_DENOM=uatom \

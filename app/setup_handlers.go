@@ -16,11 +16,11 @@ func SetupHandlers(app *AkhiraApp) {
 		app.Logger().Info("Running upgrade handler for " + releaseVersion)
 		app.IBCKeeper.ConnectionKeeper.SetParams(ctx, ibcconnectiontypes.DefaultParams())
 		/*
-				The exact APR depends on the total Bonded Rowan , and can thus fluctuate a little .
+				The exact APR depends on the total Bonded AkuCoin , and can thus fluctuate a little .
 
 				- Inflation Percentage Required = APR * BondRatio
 					Where
-			        BondRatio = ( Total Bonded Rowan/ Total Supply Rowan)
+			        BondRatio = ( Total Bonded AkuCoin/ Total Supply AkuCoin)
 
 				- Calculations for APR 300 % , assuming the max APR to be 350 and min APR to be 250
 				    - 300% → 41.78

@@ -20,7 +20,7 @@ Network:
 <!--
 Example:
 
-Sifchain Chain ID: sifchain-devnet-1
+Sifchain Chain ID: akhirachain-devnet-1
 Denom: ceth
 Decimals: 18
 Display Name: ETH

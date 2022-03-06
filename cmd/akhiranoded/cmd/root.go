@@ -46,7 +46,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithHomeDir(app.DefaultNodeHome).
 		WithViper("")
 	rootCmd := &cobra.Command{
-		Use:   "akiranoded",
+		Use:   "akhiranoded",
 		Short: "app Daemon (server)",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			initClientCtx = client.ReadHomeFlag(initClientCtx, cmd)

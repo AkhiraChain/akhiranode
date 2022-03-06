@@ -7,7 +7,7 @@ Modify the .env file to include:
 ```
 MAINNET_URL=<mainnet_url>
 MAINNET_PROXY_ADMIN_PRIVATE_KEY=<private_key>
-DEPLOYMENT_NAME="sifchain-1"  
+DEPLOYMENT_NAME="akhirachain-1"  
 ```
 
 Where:
@@ -36,13 +36,13 @@ cd smart-contracts
 3. Run the upgrade:
 
 ```bash
-scripts/upgrade_contracts.sh sifchain-1 mainnet
+scripts/upgrade_contracts.sh akhirachain-1 mainnet
 ```
 
 4. Copy the artifacts into the deployment folder:
 
 ```bash
-cp -r .openzeppelin deployments/sifchain-1/
+cp -r .openzeppelin deployments/akhirachain-1/
 ```
 
 5. Add the files to git and push into the `develop` branch:

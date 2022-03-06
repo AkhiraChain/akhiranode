@@ -315,11 +315,11 @@
       "path": "",
       "ibc_channel_id": "",
       "ibc_counterparty_channel_id": "",
-      "display_name": "Rowan",
+      "display_name": "Aku Coin",
       "display_symbol": "",
       "network": "",
       "address": "",
-      "external_symbol": "eRowan",
+      "external_symbol": "eAku",
       "transfer_limit": "",
       "permissions": [
         "CLP",

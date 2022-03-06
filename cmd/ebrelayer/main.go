@@ -31,7 +31,7 @@ import (
 )
 
 func buildRootCmd() *cobra.Command {
-	// see cmd/akiranoded/cmd/root.go:37 ; we need to do the
+	// see cmd/akhiranoded/cmd/root.go:37 ; we need to do the
 	// same thing in ebrelayer
 	encodingConfig := sifapp.MakeTestEncodingConfig()
 	initClientCtx := client.Context{}.

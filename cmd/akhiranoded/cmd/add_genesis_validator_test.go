@@ -16,7 +16,7 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	"github.com/AkhiraChain/akhiranode/app"
-	//akiranodedcmd "github.com/AkhiraChain/akhiranode/cmd/akiranoded/cmd"
+	//akhiranodedcmd "github.com/AkhiraChain/akhiranode/cmd/akhiranoded/cmd"
 	"github.com/AkhiraChain/akhiranode/x/oracle"
 )
 

@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	NodeHomeDir   = ".akiranoded"
+	NodeHomeDir   = ".akhiranoded"
 	ConfigDir     = "config"
 	GentxsDir     = "gentxs"
 	ValidatorsDir = "validators"

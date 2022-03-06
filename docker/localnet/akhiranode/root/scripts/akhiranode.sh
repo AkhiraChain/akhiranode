@@ -14,7 +14,7 @@ setup() {
 # Run the node under cosmovisor.
 #
 run() {
-  akiranoded start --rpc.laddr=tcp://0.0.0.0:26657 --minimum-gas-prices="$GAS_PRICE"
+  akhiranoded start --rpc.laddr=tcp://0.0.0.0:26657 --minimum-gas-prices="$GAS_PRICE"
 }
 
 setup

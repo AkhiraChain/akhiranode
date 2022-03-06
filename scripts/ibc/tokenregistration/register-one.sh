@@ -6,7 +6,7 @@
 
 TOKEN_REGISTRY_ADMIN_ADDRESS="sif1tpypxpppcf5lea47vcvgy09675nllmcucxydvu"
 
-akiranoded tx tokenregistry register ./$SIFCHAIN_ID/$2.json \
+akhiranoded tx tokenregistry register ./$SIFCHAIN_ID/$2.json \
   --node $SIF_NODE \
   --chain-id $SIFCHAIN_ID \
   --from $TOKEN_REGISTRY_ADMIN_ADDRESS \

@@ -44,7 +44,7 @@ func Reset(chainID, networkDir string) error {
 	}
 
 	for _, node := range nodes {
-		nodeDir := fmt.Sprintf("%s/validators/%s/%s/.akiranoded", networkDir, chainID, node.Moniker)
+		nodeDir := fmt.Sprintf("%s/validators/%s/%s/.akhiranoded", networkDir, chainID, node.Moniker)
 		_, err = utils.NewCLI(chainID, keyring.BackendTest).ResetState(nodeDir)
 		if err != nil {
 			return err
@@ -192,7 +192,7 @@ func (n *Network) createDirs(toCreate []string) error {
 }
 
 func (n *Network) generateKey(validator *Validator) error {
-	output, err := n.CLI.AddKey(validator.Moniker, validator.Mnemonic, validator.Password, fmt.Sprintf("%s/%s", validator.HomeDir, ".akiranoded"))
+	output, err := n.CLI.AddKey(validator.Moniker, validator.Mnemonic, validator.Password, fmt.Sprintf("%s/%s", validator.HomeDir, ".akhiranoded"))
 	if err != nil {
 		return err
 	}
@@ -216,7 +216,7 @@ func (n *Network) generateKey(validator *Validator) error {
 }
 
 func (n *Network) addValidatorKeyToSeed(validator, seedValidator *Validator) error {
-	_, err := n.CLI.AddKey(validator.Moniker, validator.Mnemonic, seedValidator.Password, fmt.Sprintf("%s/%s", seedValidator.HomeDir, ".akiranoded"))
+	_, err := n.CLI.AddKey(validator.Moniker, validator.Mnemonic, seedValidator.Password, fmt.Sprintf("%s/%s", seedValidator.HomeDir, ".akhiranoded"))
 	if err != nil {
 		return err
 	}

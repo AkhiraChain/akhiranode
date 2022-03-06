@@ -1,4 +1,4 @@
 #!/bin/bash
 
-killall akiranoded akiranoded ebrelayer ganache-cli
+killall akhiranoded akhiranoded ebrelayer ganache-cli
 sleep 10

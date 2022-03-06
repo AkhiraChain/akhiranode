@@ -8,7 +8,7 @@ from common import *
 # Sifchain wallets to which we want to distribute
 test_wallets = [
     "sif1fpq67nw66thzmf2a5ng64cd8p8nxa5vl9d3cm4",
-    "sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
+    "ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
     "sif1hjkgsq0wcmwdh8pr3snhswx5xyy4zpgs833akh",
     "sif1ypc5qcq5ha562xlak4xw3g6v352k39t6868jhx",
     "sif1u7cp5e5kty8xwuu7k234ah4jsknvkzazqagvl6",

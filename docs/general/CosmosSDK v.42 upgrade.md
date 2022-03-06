@@ -35,23 +35,23 @@ Key files related to API changes:
 
 CLI commands and related code has undergone various changes, and improvements, including syntax modifications, fixes, and refactoring.
 
-**akiranoded** and **akiranoded** have been combined into **akiranoded** , so all commands previously executed through akiranoded are now executed through **akiranoded**. Aside from the merge into sidnoded, command syntax remains largely unchanged. The changes to scripts in **scripts/demo** are minimal beyond the shift from akiranoded to akiranoded.
+**akhiranoded** and **akhiranoded** have been combined into **akhiranoded** , so all commands previously executed through akhiranoded are now executed through **akhiranoded**. Aside from the merge into sidnoded, command syntax remains largely unchanged. The changes to scripts in **scripts/demo** are minimal beyond the shift from akhiranoded to akhiranoded.
 
 Syntax changes:
 
 - **send** tx is now under the **bank** route rather than a root **tx** command
 
-  - **Old:** akiranoded tx send [from\_key\_or\_address] [to\_address] [amount] [flags]
-  - **New:** akiranoded tx bank send [from\_key\_or\_address] [to\_address] [amount] [flags]
+  - **Old:** akhiranoded tx send [from\_key\_or\_address] [to\_address] [amount] [flags]
+  - **New:** akhiranoded tx bank send [from\_key\_or\_address] [to\_address] [amount] [flags]
 
-Commands are no longer added in **cmd/akiranoded/main.go** , each route is now added in the following files:
+Commands are no longer added in **cmd/akhiranoded/main.go** , each route is now added in the following files:
 
-- **cmd/akiranoded/cmd/root.go**
-- **cmd/akiranoded/cmd/oracle.go**
-- **cmd/akiranoded/cmd/migrate.go**
-- **cmd/akiranoded/cmd/gentx.go**
-- **cmd/akiranoded/cmd/genaccounts.go**
-- **cmd/akiranoded/cmd/clpadmin.go**
+- **cmd/akhiranoded/cmd/root.go**
+- **cmd/akhiranoded/cmd/oracle.go**
+- **cmd/akhiranoded/cmd/migrate.go**
+- **cmd/akhiranoded/cmd/gentx.go**
+- **cmd/akhiranoded/cmd/genaccounts.go**
+- **cmd/akhiranoded/cmd/clpadmin.go**
 
 Compatibility changes for each module&#39;s cli can be found in the modules&#39; **x/module_name/client/cli/** directories.
 

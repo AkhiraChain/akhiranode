@@ -70,19 +70,19 @@ This record is also stored in the keeper for historical records .
 #input.json  : list of funding addresses  -  Input address must be part of the multisig key
 #output.json : list of airdrop receivers.
 
-akiranoded tx dispensation create mkey ar1 input.json output.json --gas 200064128 --generate-only >> offlinetx.json
+akhiranoded tx dispensation create mkey ar1 input.json output.json --gas 200064128 --generate-only >> offlinetx.json
 
 #First user signs
-akiranoded tx sign --multisig $(akiranoded keys show mkey -a) --from $(akiranoded keys show sif -a)  offlinetx.json >> sig1.json
+akhiranoded tx sign --multisig $(akhiranoded keys show mkey -a) --from $(akhiranoded keys show sif -a)  offlinetx.json >> sig1.json
 
 #Second user signs
-akiranoded tx sign --multisig $(akiranoded keys show mkey -a) --from $(akiranoded keys show akasha -a)  offlinetx.json >> sig2.json
+akhiranoded tx sign --multisig $(akhiranoded keys show mkey -a) --from $(akhiranoded keys show akasha -a)  offlinetx.json >> sig2.json
 
 #Multisign created from the above signatures
-akiranoded tx multisign offlinetx.json mkey sig1.json sig2.json >> signedtx.json
+akhiranoded tx multisign offlinetx.json mkey sig1.json sig2.json >> signedtx.json
 
 #transaction broadcast , distribution happens
-akiranoded tx broadcast signedtx.json
+akhiranoded tx broadcast signedtx.json
 ```
 
 ### Events Emitted 
@@ -99,7 +99,7 @@ Transfer events are emitted for each transfer . There are two type of transfers 
     },
     {
       "key": "sender",
-      "value": "sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
+      "value": "ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd"
     },
     {
       "key": "amount",
@@ -147,13 +147,13 @@ Transfer events are emitted for each transfer . There are two type of transfers 
 ### Queries supported
 ```shell
 #Query all distributions
-akiranoded q dispensation distributions-all
+akhiranoded q dispensation distributions-all
 #Query all distribution records by distribution name 
-akiranoded q dispensation records-by-name-all ar1
+akhiranoded q dispensation records-by-name-all ar1
 #Query pending distribution records by distribution name 
-akiranoded q dispensation records-by-name-pending ar1
+akhiranoded q dispensation records-by-name-pending ar1
 #Query completed distribution records by distribution name
-akiranoded q dispensation records-by-name-completed ar1
+akhiranoded q dispensation records-by-name-completed ar1
 #Query distribution records by address
-akiranoded q dispensation records-by-addr sif1cp23ye3h49nl5ty35vewrtvsgwnuczt03jwg00
+akhiranoded q dispensation records-by-addr sif1cp23ye3h49nl5ty35vewrtvsgwnuczt03jwg00
 ```

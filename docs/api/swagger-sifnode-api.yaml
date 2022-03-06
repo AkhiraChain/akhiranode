@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
-  title: Sifnode API
+  title: Akhiranode API
   version: 1.1.1
 servers:
 # Added by API Auto Mocking Plugin
 - url: https://api-devnet-042.sifchain.finance
-  description: Sifnode API
+  description: Akhiranode API
 tags:
 - name: Dispensation
   description: Endpoints for Dispensation module.
@@ -436,7 +436,7 @@ components:
           type: string
       example:
         from: 'sif142ulelgzh0p6wphzhlzuxvt95h7red9lm4rwne'
-        chain_id: 'sifchain-devnet-042'
+        chain_id: 'akhirachain-devnet-042'
     external_asset:
       type: object
       properties:
@@ -482,7 +482,7 @@ components:
           type: string
       example:
         from: 'sif142ulelgzh0p6wphzhlzuxvt95h7red9lm4rwne'
-        chain_id: 'sifchain-devnet-042'
+        chain_id: 'akhirachain-devnet-042'
         account_number: '1'
         sequence: '0'
     DistributionType:

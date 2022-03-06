@@ -96,12 +96,12 @@ def solidity_json_path(smart_contracts_dir):
 
 
 @pytest.fixture
-def akiranoded_homedir(is_ropsten_testnet):
+def akhiranoded_homedir(is_ropsten_testnet):
     if is_ropsten_testnet:
         base = test_utilities.get_required_env_var("HOME")
     else:
         base = test_utilities.get_required_env_var("CHAINDIR")
-    result = f"""{base}/.akiranoded"""
+    result = f"""{base}/.akhiranoded"""
     return result
 
 
@@ -132,7 +132,7 @@ def aku_source_key(is_ropsten_testnet, aku_source):
 
 
 @pytest.fixture
-def akiranoded_node():
+def akhiranoded_node():
     return test_utilities.get_optional_env_var("SIFNODE", None)
 
 
@@ -169,9 +169,9 @@ def ropsten_wait_time():
 
 
 @pytest.fixture
-def is_ropsten_testnet(akiranoded_node):
+def is_ropsten_testnet(akhiranoded_node):
     """if sifnode_clinode is set, we're talking to ropsten/sandpit"""
-    return akiranoded_node
+    return akhiranoded_node
 
 
 @pytest.fixture
@@ -180,16 +180,16 @@ def is_ganache(ethereum_network):
     return not ethereum_network
 
 
-# Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
+# Deprecated: akhiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
 # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
 # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
 @pytest.fixture
 def sifchain_fees(sifchain_fees_int):
-    """returns a string suitable for passing to akiranoded"""
+    """returns a string suitable for passing to akhiranoded"""
     return f"{sifchain_fees_int}aku"
 
 
-# Deprecated: akiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
+# Deprecated: akhiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
 # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
 # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
 @pytest.fixture
@@ -269,7 +269,7 @@ def basic_transfer_request(
         bridgebank_address,
         bridgetoken_address,
         ethereum_network,
-        akiranoded_node,
+        akhiranoded_node,
         chain_id,
         sifchain_fees,
         solidity_json_path,
@@ -284,7 +284,7 @@ def basic_transfer_request(
         bridgebank_address=bridgebank_address,
         bridgetoken_address=bridgetoken_address,
         ethereum_network=ethereum_network,
-        akiranoded_node=akiranoded_node,
+        akhiranoded_node=akhiranoded_node,
         manual_block_advance=is_ganache,
         chain_id=chain_id,
         sifchain_fees=sifchain_fees,
@@ -294,7 +294,7 @@ def basic_transfer_request(
 
 @pytest.fixture(scope="function")
 def aku_source_integrationtest_env_credentials(
-        akiranoded_homedir,
+        akhiranoded_homedir,
         validator_password,
         aku_source_key,
         is_ganache,

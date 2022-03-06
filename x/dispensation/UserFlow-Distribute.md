@@ -94,7 +94,7 @@
 
 - Check local wallet to verify keys 
 ```shell
-akiranoded keys list --keyring-backend file
+akhiranoded keys list --keyring-backend file
 ```
 Sample output ( address will be different )
 ```json
@@ -102,7 +102,7 @@ Sample output ( address will be different )
   {
     "name": "amara",
     "type": "local",
-    "address": "sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
+    "address": "ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
     "pubkey": "sifpub1addwnpepqt6sfvz3mwetudyaxjn958kztxz9j8rvrlsu55fw6fjkjyac2s9z5sc8npe"
   }
 ]
@@ -110,9 +110,9 @@ Sample output ( address will be different )
 ### Create Dispensation transactions
 Amara wants to create an Airdrop which will be executed by Zane. The create transaction would just crete the drops . Zane would need to run the "run" transaction multiple times to distribute the rewards.
 
-Amara can assign Zane `sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5` to be the authorized runner during the create transactions
+Amara can assign Zane `ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5` to be the authorized runner during the create transactions
 ```shell
-akiranoded tx dispensation create Airdrop output.json sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --from sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku
+akhiranoded tx dispensation create Airdrop output.json ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --from ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku
 ```
 Sample output
 ```json
@@ -125,9 +125,9 @@ Sample output
 
 ### Run Dispensation transactions
 Zane can now run the dispensation transactions (The configuration is set to distribute 10 rewards every block)
-Distribution name is automatically assigned to Height_DistributerAddress `2_sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd`
+Distribution name is automatically assigned to Height_DistributerAddress `2_ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd`
 ```shell
-akiranoded tx dispensation run 2_sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd Airdrop --from sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku
+akhiranoded tx dispensation run 2_ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd Airdrop --from ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku
 ```
 Sample output
 ```json

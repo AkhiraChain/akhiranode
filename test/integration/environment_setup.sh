@@ -94,7 +94,7 @@ echo yarn -s --cwd $BASEDIR/smart-contracts \
   --json_path $BASEDIR/smart-contracts/deployments/$DEPLOYMENT_NAME \
   --ethereum_network $ETHEREUM_NETWORK \
 
-sifnodecmd=akiranoded
+sifnodecmd=akhiranoded
 
 echo; echo == sifchain balance
 echo $sifnodecmd q auth account --node $SIFNODE $ROWAN_SOURCE

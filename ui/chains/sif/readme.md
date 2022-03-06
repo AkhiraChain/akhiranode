@@ -3,7 +3,7 @@ For reference when playing with cosmos cain
 # Create liquidity pool catk:aku
 
 ```
-./akiranoded tx clp create-pool \
+./akhiranoded tx clp create-pool \
  --from akasha \
  --symbol catk \
  --nativeAmount 500 \
@@ -13,7 +13,7 @@ For reference when playing with cosmos cain
 # Create liquidity pool cbtk:aku
 
 ```
-./akiranoded tx clp create-pool \
+./akhiranoded tx clp create-pool \
  --from akasha \
  --symbol cbtk \
  --nativeAmount 500 \
@@ -23,13 +23,13 @@ For reference when playing with cosmos cain
 # Verify pool created
 
 ```
-./akiranoded query clp pools
+./akhiranoded query clp pools
 ```
 
 # Execute swap
 
 ```
-./akiranoded tx clp swap \
+./akhiranoded tx clp swap \
  --from shadowfiend \
  --sentSymbol catk \
  --receivedSymbol cbtk \

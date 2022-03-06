@@ -43,7 +43,7 @@ func NewGetStuckTransfersCmd() *cobra.Command {
 
 Example: Getting stuck transfers between sifchain and terra
 
-akiranoded ibc-diag stuck-txs \
+akhiranoded ibc-diag stuck-txs \
   --src-node http://rpc.sifchain.finance:80 \
   --dst-node http://public-node.terra.dev:26657 \
   --src-channel channel-18 \ 

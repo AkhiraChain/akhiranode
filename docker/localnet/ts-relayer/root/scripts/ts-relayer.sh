@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Sifchain: IBC Relayer entrypoint.
+# AkhiraChain: IBC Relayer entrypoint.
 #
 
 TMPDIR=/tmp
@@ -35,14 +35,14 @@ EOF
 }
 
 #
-# Import Sifnode Mnemonic
+# Import AKHIRANODE Mnemonic
 #
 import_mnemonic() {
-  if [ "${SIFNODE0_MNEMONIC}" == "${SIFNODE1_MNEMONIC}" ]; then
-    printf "%s\n\n" "${SIFNODE0_MNEMONIC}" | akiranoded keys add sifnode -i --recover --keyring-backend test
+  if [ "${AKHIRANODE0_MNEMONIC}" == "${AKHIRANODE1_MNEMONIC}" ]; then
+    printf "%s\n\n" "${AKHIRANODE0_MNEMONIC}" | akhiranoded keys add akhiranode -i --recover --keyring-backend test
   else
-    printf "%s\n\n" "${SIFNODE0_MNEMONIC}" | akiranoded keys add "${CHAINNET0}" -i --recover --keyring-backend test
-    printf "%s\n\n" "${SIFNODE1_MNEMONIC}" | akiranoded keys add "${CHAINNET1}" -i --recover --keyring-backend test
+    printf "%s\n\n" "${AKHIRANODE0_MNEMONIC}" | akhiranoded keys add "${CHAINNET0}" -i --recover --keyring-backend test
+    printf "%s\n\n" "${AKHIRANODE1_MNEMONIC}" | akhiranoded keys add "${CHAINNET1}" -i --recover --keyring-backend test
   fi
 }
 
@@ -58,30 +58,30 @@ set_relayer_addrs() {
 # Transfer funds.
 #
 txfr_funds() {
-  if [ "${SIFNODE0_MNEMONIC}" == "${SIFNODE1_MNEMONIC}" ]; then
-    FROM_ADDR=$(akiranoded keys show sifnode --keyring-backend test -a)
-    akiranoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000aku \
-    --from sifnode \
+  if [ "${AKHIRANODE0_MNEMONIC}" == "${AKHIRANODE1_MNEMONIC}" ]; then
+    FROM_ADDR=$(akhiranoded keys show akhiranode --keyring-backend test -a)
+    akhiranoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000aku \
+    --from akhiranode \
     --gas-prices 0.5aku \
     --keyring-backend test \
     --node tcp://"${RPC0}" \
     --chain-id "${CHAINNET0}" -y
 
-    akiranoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000aku \
-    --from sifnode \
+    akhiranoded tx bank send "${FROM_ADDR}" "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000aku \
+    --from akhiranode \
     --gas-prices 0.5aku \
     --keyring-backend test \
     --node tcp://"${RPC1}" \
     --chain-id "${CHAINNET1}" -y
   else
-    akiranoded tx bank send $(akiranoded keys show "${CHAINNET0}" --keyring-backend test -a) "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000aku \
+    akhiranoded tx bank send $(akhiranoded keys show "${CHAINNET0}" --keyring-backend test -a) "${RELAYER_CHAINNET0_ADDR}" 100000000000000000000aku \
     --from "${CHAINNET0}" \
     --gas-prices 0.5aku \
     --keyring-backend test \
     --node tcp://"${RPC0}" \
     --chain-id "${CHAINNET0}" -y
 
-    akiranoded tx bank send $(akiranoded keys show "${CHAINNET1}" --keyring-backend test -a) "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000aku \
+    akhiranoded tx bank send $(akhiranoded keys show "${CHAINNET1}" --keyring-backend test -a) "${RELAYER_CHAINNET1_ADDR}" 100000000000000000000aku \
     --from "${CHAINNET1}" \
     --gas-prices 0.5aku \
     --keyring-backend test \
@@ -109,6 +109,6 @@ run() {
   ibc-relayer start -v --poll 10
 }
 
-echo "wait 30s for sifnodes to warm up" && sleep 30
+echo "wait 30s for akhiranodes to warm up" && sleep 30
 setup
 run

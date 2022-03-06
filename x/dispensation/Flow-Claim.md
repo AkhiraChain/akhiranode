@@ -23,20 +23,20 @@ type CreateClaimReq struct {
 (This step can be done through CLI on friday , or process events throughout the week . Processing events would be the preferred approach)
 This query through the cli would look like
 ```shell
-akiranoded q dispensation claims-by-type ValidatorSubsidy --chain-id sifchain --node tcp://rpc.sifchain.finance:80
+akhiranoded q dispensation claims-by-type ValidatorSubsidy --chain-id sifchain --node tcp://rpc.sifchain.finance:80
 ```
 Which returns 
 ```json
 {
   "claims": [
     {
-      "user_address": "sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5",
+      "user_address": "ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5",
       "user_claim_type": "3",
       "user_claim_time": "2021-05-02T02:43:10.593125Z",
       "locked": false
     },
     {
-      "user_address": "sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
+      "user_address": "ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
       "user_claim_type": "3",
       "user_claim_time": "2021-05-02T02:43:10.593125Z",
       "locked": false
@@ -71,7 +71,7 @@ After parsing should become
             "attributes": [
               {
                 "key": "claim_creator",
-                "value": "sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5"
+                "value": "ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5"
               },
               {
                 "key": "claim_type",
@@ -91,7 +91,7 @@ After parsing should become
 {
  "Output": [
   {
-   "address": "sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5",
+   "address": "ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5",
    "coins": [
     {
      "denom": "aku",
@@ -100,7 +100,7 @@ After parsing should become
    ]
   },
   {
-   "address": "sif1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
+   "address": "ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd",
    "coins": [
     {
      "denom": "aku",
@@ -114,15 +114,15 @@ After parsing should become
 
 ### This file is then used to create a distribution
 ```shell
-akiranoded tx dispensation create mkey ar1 ValidatorSubsidy input.json output.json --gas 200064128 --generate-only >> offlinetx.json
+akhiranoded tx dispensation create mkey ar1 ValidatorSubsidy input.json output.json --gas 200064128 --generate-only >> offlinetx.json
 # First user signs
-akiranoded tx sign --multisig $(akiranoded keys show mkey -a) --from $(akiranoded keys show sif -a)  offlinetx.json >> sig1.json
+akhiranoded tx sign --multisig $(akhiranoded keys show mkey -a) --from $(akhiranoded keys show sif -a)  offlinetx.json >> sig1.json
 # Second user signs
-akiranoded tx sign --multisig $(akiranoded keys show mkey -a) --from $(akiranoded keys show akasha -a)  offlinetx.json >> sig2.json
+akhiranoded tx sign --multisig $(akhiranoded keys show mkey -a) --from $(akhiranoded keys show akasha -a)  offlinetx.json >> sig2.json
 # Multisign created from the above signatures
-akiranoded tx multisign offlinetx.json mkey sig1.json sig2.json >> signedtx.json
+akhiranoded tx multisign offlinetx.json mkey sig1.json sig2.json >> signedtx.json
 # transaction broadcast , distribution happens
-akiranoded tx broadcast signedtx.json
+akhiranoded tx broadcast signedtx.json
 ```
 ### Post Dispensation
 - Suppose we do the dispensation at height X , The block results should contain this event 
@@ -143,7 +143,7 @@ The sender address for the transfers should be the module account in the distrib
  [
           {
             "key": "recipient",
-            "value": "sif1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5"
+            "value": "ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5"
           },
           {
             "key": "sender",
