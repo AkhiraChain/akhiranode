@@ -29,7 +29,7 @@ init:
 	./scripts/init.sh
 
 start:
-	./akhiranoded start
+	akhiranoded start
 
 lint-pre:
 	@test -z $(gofmt -l .)

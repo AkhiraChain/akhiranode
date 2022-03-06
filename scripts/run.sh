@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-killall ./akhiranoded
+killall akhiranoded
 
-./akhiranoded start
+akhiranoded start
