@@ -1,9 +1,9 @@
 syntax = "proto3";
-package sifnode.ethbridge.v1;
+package akhiranode.ethbridge.v1;
 
 import "gogoproto/gogo.proto";
-import "sifnode/ethbridge/v1/types.proto";
-import "sifnode/oracle/v1/types.proto";
+import "akhiranode/ethbridge/v1/types.proto";
+import "akhiranode/oracle/v1/types.proto";
 
 option go_package = "github.com/AkhiraChain/akhiranode/x/ethbridge/types";
 
@@ -31,7 +31,7 @@ message QueryEthProphecyRequest {
 // QueryEthProphecyResponse payload for EthProphecy rpc query
 message QueryEthProphecyResponse {
   string id = 1;
-  sifnode.oracle.v1.Status status = 2;
+  akhiranode.oracle.v1.Status status = 2;
   repeated EthBridgeClaim claims = 3;
 }
 

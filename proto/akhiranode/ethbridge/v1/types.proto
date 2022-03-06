@@ -1,5 +1,5 @@
 syntax = "proto3";
-package sifnode.ethbridge.v1;
+package akhiranode.ethbridge.v1;
 
 import "gogoproto/gogo.proto";
 

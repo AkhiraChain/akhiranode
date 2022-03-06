@@ -38,6 +38,8 @@ func TestAppUpgrade_CannotDeleteLatestVersion(t *testing.T) {
 		encCfg,
 		EmptyAppOptions{},
 	)
+	t.Log(app)
+	t.Log(db)
 	err := app.LoadLatestVersion()
 	require.NoError(t, err)
 
@@ -76,6 +78,7 @@ func TestAppUpgrade_CannotDeleteLatestVersion(t *testing.T) {
 			app.SetCMS(cms)
 		},
 	)
+	t.Log(app)
 	// Mount and load newStore which will be loaded with version 0,
 	// because it did not load with an "add" upgrade to set it's initialVersion,
 	// while the other stores will be at version = blockHeight (i.e 1 here).

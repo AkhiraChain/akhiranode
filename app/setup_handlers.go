@@ -9,7 +9,7 @@ import (
 	ibcconnectiontypes "github.com/cosmos/ibc-go/v2/modules/core/03-connection/types"
 )
 
-const releaseVersion = "0.11.0"
+const releaseVersion = "0.0.1"
 
 func SetupHandlers(app *AkhiraApp) {
 	app.UpgradeKeeper.SetUpgradeHandler(releaseVersion, func(ctx sdk.Context, plan types.Plan, vm m.VersionMap) (m.VersionMap, error) {

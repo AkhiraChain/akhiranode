@@ -1,5 +1,5 @@
 syntax = "proto3";
-package sifnode.dispensation.v1;
+package akhiranode.dispensation.v1;
 
 import "gogoproto/gogo.proto";
 import "cosmos/base/coin.proto";

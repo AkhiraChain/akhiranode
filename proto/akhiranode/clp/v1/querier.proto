@@ -1,8 +1,8 @@
 syntax = "proto3";
-package sifnode.clp.v1;
+package akhiranode.clp.v1;
 
 import "gogoproto/gogo.proto";
-import "sifnode/clp/v1/types.proto";
+import "akhiranode/clp/v1/types.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "google/api/annotations.proto";
 
@@ -10,32 +10,32 @@ option go_package = "github.com/AkhiraChain/akhiranode/x/clp/types";
 
 service Query {
   rpc GetPool(PoolReq) returns (PoolRes) {
-    option (google.api.http).get = "/sifchain/clp/v1/pool/{symbol}";
+    option (google.api.http).get = "/akhirachain/clp/v1/pool/{symbol}";
   };
   rpc GetPools(PoolsReq) returns (PoolsRes) {
-    option (google.api.http).get = "/sifchain/clp/v1/pools";
+    option (google.api.http).get = "/akhirachain/clp/v1/pools";
   };
   rpc GetLiquidityProvider(LiquidityProviderReq)
       returns (LiquidityProviderRes) {
     option (google.api.http).get =
-        "/sifchain/clp/v1/liquidity_provider/{symbol}/{lp_address}";
+        "/akhirachain/clp/v1/liquidity_provider/{symbol}/{lp_address}";
   };
   rpc GetLiquidityProviderData(LiquidityProviderDataReq)
       returns (LiquidityProviderDataRes) {
     option (google.api.http).get =
-        "/sifchain/clp/v1/liquidity_provider_data/{lp_address}";
+        "/akhirachain/clp/v1/liquidity_provider_data/{lp_address}";
   };
   rpc GetAssetList(AssetListReq) returns (AssetListRes) {
-    option (google.api.http).get = "/sifchain/clp/v1/asset_list/{lp_address}";
+    option (google.api.http).get = "/akhirachain/clp/v1/asset_list/{lp_address}";
   };
   rpc GetLiquidityProviders(LiquidityProvidersReq)
       returns (LiquidityProvidersRes) {
-    option (google.api.http).get = "/sifchain/clp/v1/liquidity_providers";
+    option (google.api.http).get = "/akhirachain/clp/v1/liquidity_providers";
   };
   rpc GetLiquidityProviderList(LiquidityProviderListReq)
       returns (LiquidityProviderListRes) {
     option (google.api.http).get =
-        "/sifchain/clp/v1/liquidity_provider_list/{symbol}";
+        "/akhirachain/clp/v1/liquidity_provider_list/{symbol}";
   };
 }
 
@@ -47,7 +47,7 @@ message PoolReq {
 }
 
 message PoolRes {
-  sifnode.clp.v1.Pool pool = 1;
+  akhiranode.clp.v1.Pool pool = 1;
   string clp_module_address = 2;
   int64 height = 3;
 }
@@ -55,7 +55,7 @@ message PoolRes {
 message PoolsReq { cosmos.base.query.v1beta1.PageRequest pagination = 1; }
 
 message PoolsRes {
-  repeated sifnode.clp.v1.Pool pools = 1;
+  repeated akhiranode.clp.v1.Pool pools = 1;
   string clp_module_address = 2;
   int64 height = 3;
 
@@ -71,7 +71,7 @@ message LiquidityProviderReq {
 }
 
 message LiquidityProviderRes {
-  sifnode.clp.v1.LiquidityProvider liquidity_provider = 1;
+  akhiranode.clp.v1.LiquidityProvider liquidity_provider = 1;
   string native_asset_balance = 2;
   string external_asset_balance = 3;
   int64 height = 4;
@@ -86,7 +86,7 @@ message AssetListReq {
 }
 
 message AssetListRes {
-  repeated sifnode.clp.v1.Asset assets = 1;
+  repeated akhiranode.clp.v1.Asset assets = 1;
   int64 height = 2;
   cosmos.base.query.v1beta1.PageResponse pagination = 3;
 }
@@ -100,7 +100,7 @@ message LiquidityProviderDataReq {
 }
 
 message LiquidityProviderDataRes {
-  repeated sifnode.clp.v1.LiquidityProviderData liquidity_provider_data = 1;
+  repeated akhiranode.clp.v1.LiquidityProviderData liquidity_provider_data = 1;
   int64 height = 2;
   cosmos.base.query.v1beta1.PageRequest pagination = 3;
 }
@@ -115,7 +115,7 @@ message LiquidityProviderListReq {
 }
 
 message LiquidityProviderListRes {
-  repeated sifnode.clp.v1.LiquidityProvider liquidity_providers = 1;
+  repeated akhiranode.clp.v1.LiquidityProvider liquidity_providers = 1;
   int64 height = 2;
   // pagination defines the pagination in the response.
   cosmos.base.query.v1beta1.PageResponse pagination = 3;
@@ -129,7 +129,7 @@ message LiquidityProvidersReq {
 }
 
 message LiquidityProvidersRes {
-  repeated sifnode.clp.v1.LiquidityProvider liquidity_providers = 1;
+  repeated akhiranode.clp.v1.LiquidityProvider liquidity_providers = 1;
   int64 height = 2;
   cosmos.base.query.v1beta1.PageResponse pagination = 3;
 }

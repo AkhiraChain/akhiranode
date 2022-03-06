@@ -1,8 +1,8 @@
 syntax = "proto3";
-package sifnode.clp.v1;
+package akhiranode.clp.v1;
 
 import "gogoproto/gogo.proto";
-import "sifnode/clp/v1/types.proto";
+import "akhiranode/clp/v1/types.proto";
 
 option go_package = "github.com/AkhiraChain/akhiranode/x/clp/types";
 
@@ -17,7 +17,7 @@ service Msg {
 
 message MsgRemoveLiquidity {
   string signer = 1 [ (gogoproto.moretags) = "yaml:\"signer\"" ];
-  sifnode.clp.v1.Asset external_asset = 2
+  akhiranode.clp.v1.Asset external_asset = 2
       [ (gogoproto.moretags) = "yaml:\"external_asset\"" ];
   string w_basis_points = 3 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
@@ -35,7 +35,7 @@ message MsgRemoveLiquidityResponse {}
 
 message MsgCreatePool {
   string signer = 1 [ (gogoproto.moretags) = "yaml:\"signer\"" ];
-  sifnode.clp.v1.Asset external_asset = 2
+  akhiranode.clp.v1.Asset external_asset = 2
       [ (gogoproto.moretags) = "yaml:\"external_asset\"" ];
   string native_asset_amount = 3 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Uint",
@@ -53,7 +53,7 @@ message MsgCreatePoolResponse {}
 
 message MsgAddLiquidity {
   string signer = 1 [ (gogoproto.moretags) = "yaml:\"signer\"" ];
-  sifnode.clp.v1.Asset external_asset = 2
+  akhiranode.clp.v1.Asset external_asset = 2
       [ (gogoproto.moretags) = "yaml:\"external_asset\"" ];
   string native_asset_amount = 3 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Uint",
@@ -71,9 +71,9 @@ message MsgAddLiquidityResponse {}
 
 message MsgSwap {
   string signer = 1 [ (gogoproto.moretags) = "yaml:\"signer\"" ];
-  sifnode.clp.v1.Asset sent_asset = 2
+  akhiranode.clp.v1.Asset sent_asset = 2
       [ (gogoproto.moretags) = "yaml:\"sent_asset\"" ];
-  sifnode.clp.v1.Asset received_asset = 3
+  akhiranode.clp.v1.Asset received_asset = 3
       [ (gogoproto.moretags) = "yaml:\"received_asset\"" ];
   string sent_amount = 4 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Uint",

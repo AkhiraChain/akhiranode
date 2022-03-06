@@ -1,6 +1,6 @@
 
 syntax = "proto3";
-package sifnode.clp.v1;
+package akhiranode.clp.v1;
 
 import "gogoproto/gogo.proto";
 
@@ -40,7 +40,7 @@ message LiquidityProvider {
 message WhiteList { repeated string validator_list = 1; }
 
 message LiquidityProviderData {
-  sifnode.clp.v1.LiquidityProvider liquidity_provider = 1;
+  akhiranode.clp.v1.LiquidityProvider liquidity_provider = 1;
   string native_asset_balance = 2;
   string external_asset_balance = 3;
 }
