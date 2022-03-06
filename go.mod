@@ -29,7 +29,7 @@ require (
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/pflag v1.0.5
-	github.com/spf13/viper v1.10.0
+	github.com/spf13/viper v1.10.1
 	github.com/status-im/keycard-go v0.0.0-20200402102358-957c09536969 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/stretchr/testify v1.7.0
@@ -41,7 +41,7 @@ require (
 	github.com/yelinaung/go-haikunator v0.0.0-20150320004105-1249cae259af
 	go.uber.org/zap v1.17.0
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa
-	google.golang.org/grpc v1.42.0
+	google.golang.org/grpc v1.43.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
@@ -134,7 +134,7 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/net v0.0.0-20210903162142-ad29c8ab022f // indirect
-	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
+	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
 	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
