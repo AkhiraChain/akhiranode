@@ -253,7 +253,7 @@ class UIStackEnvironment:
         # rm ui/node_modules/.migrate-complete
 
         # yarn stack --save-snapshot -> ui/scripts/stack.sh -> ui/scripts/stack-save-snapshot.sh => ui/scripts/stack-launch.sh
-        # ui/scripts/stack-launch.sh -> ui/scripts/_sif-build.sh -> ui/chains/sif/build.sh
+        # ui/scripts/stack-launch.sh -> ui/scripts/_sif-build.sh -> ui/chains/ak/build.sh
         # killall akhiranoded
         # rm $(which akhiranoded)
         self.cmd.rmdir(self.akhiranoded_path)
@@ -267,9 +267,9 @@ class UIStackEnvironment:
             port=7545, network_id=self.network_id, gas_price=20000000000, gas_limit=6721975, host=ANY_ADDR)
 
         sifnode = Sifnoded(self.cmd)
-        # ui/scripts/stack-launch.sh -> ui/scripts/_sif.sh -> ui/chains/sif/launch.sh
+        # ui/scripts/stack-launch.sh -> ui/scripts/_sif.sh -> ui/chains/ak/launch.sh
         sifnode.akhiranoded_init("test", self.chain_id)
-        self.cmd.copy_file(project_dir("ui/chains/sif/app.toml"), os.path.join(self.akhiranoded_path, "config/app.toml"))
+        self.cmd.copy_file(project_dir("ui/chains/ak/app.toml"), os.path.join(self.akhiranoded_path, "config/app.toml"))
         log.info(f"Generating deterministic account - {self.shadowfiend_name}...")
         shadowfiend_account = self.cmd.akhiranoded_keys_add(self.shadowfiend_name, self.shadowfiend_mnemonic)
         log.info(f"Generating deterministic account - {self.akasha_name}...")
@@ -315,7 +315,7 @@ class UIStackEnvironment:
         # send through atk and btk tokens to eth chain
         self.project.yarn(["migrate"], cwd=project_dir("ui/chains/eth"))
 
-        # ui/scripts/_migrate.sh -> ui/chains/sif/migrate.sh
+        # ui/scripts/_migrate.sh -> ui/chains/ak/migrate.sh
         # Original scripts say "if we don't sleep there are issues"
         time.sleep(10)
         log.info("Creating liquidity pool from catk:aku...")
@@ -407,7 +407,7 @@ class UIStackEnvironment:
         # mkdir -p smart-contracts/build
         self.cmd.tar_create(project_dir("smart-contracts/build"), os.path.join(snapshots_dir, "peggy_build.tar.gz"))
 
-        # ui/chains/sif/snapshot.sh:
+        # ui/chains/ak/snapshot.sh:
         self.cmd.tar_create(self.akhiranoded_path, os.path.join(snapshots_dir, "sif.tar.gz"))
 
         # ui/chains/etc/snapshot.sh:

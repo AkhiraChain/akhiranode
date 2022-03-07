@@ -1,3 +1,3 @@
 #!/bin/bash 
 
-cd ./chains/sif && ./revert.sh
+cd ./chains/ak && ./revert.sh

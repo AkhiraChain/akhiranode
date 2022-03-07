@@ -67,17 +67,17 @@ Additionally, multiple predefined custom types that were added or imported from 
 
 Key files related to data model changes:
 
-- **proto/sifnode/module_name/v1/\*.proto** - define module-specific types as Protobuf messages/services.
+- **proto/akhiranode/module_name/v1/\*.proto** - define module-specific types as Protobuf messages/services.
 - **x/module_name/types/\*.pb.go** - contain final type definitions, generated from messages and services defined in **\*.proto** files
 - **x/module_name/types/\*.go** - files located in **../types** directory can still contain some factory type definitions and related utility functions
 - **x/module_name/keeper/\*.go** - aforementioned types are being used in multiple files from the **../keeper** directory of each module.
 
 After switching to Protobuf, many custom types were completely removed and replaced with **strings** (where possible). For example:
 
-- **proto/sifnode/clp/v1/types.proto** - **LiquidityProvider.liquidity_provider_address** type has been changed from **sdk.AccAddress** to **string**.
-- **proto/sifnode/clp/v1/querier.proto** - **PoolRes.clp_module_address** type has been changed from **ClpModuleAddress** to **string**
-- **proto/sifnode/clp/v1/querier.proto** - **LiquidityProviderRes.native_asset_balance** type has been changed from **NativeAssetBalance** to **string**
-- **proto/sifnode/clp/v1/querier.proto** - **LiquidityProviderRes.external_asset_balance** type has been changed from **ExternalAssetBalance** to **string**.
+- **proto/akhiranode/clp/v1/types.proto** - **LiquidityProvider.liquidity_provider_address** type has been changed from **sdk.AccAddress** to **string**.
+- **proto/akhiranode/clp/v1/querier.proto** - **PoolRes.clp_module_address** type has been changed from **ClpModuleAddress** to **string**
+- **proto/akhiranode/clp/v1/querier.proto** - **LiquidityProviderRes.native_asset_balance** type has been changed from **NativeAssetBalance** to **string**
+- **proto/akhiranode/clp/v1/querier.proto** - **LiquidityProviderRes.external_asset_balance** type has been changed from **ExternalAssetBalance** to **string**.
 
 Custom types, imported from third-party repos like Cosmos and Google:
 

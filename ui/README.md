@@ -91,8 +91,8 @@ It is rare to have to touch this but if you do, the following outlines how to go
 1. Create a new branch on the `sifnode` repo branching off `develop`.
 1. Now you can make your changes which will probably be in one of the folowing places:
 
-   1. The sifchain genesis code is located here: `./ui/chains/sif/launch.sh` here we specify genesis tokens and amounts. Set up your tokens and amounts in this file.
-   1. The CLP pool genesis code is located here: `./ui/chains/sif/migrate.sh` here we specify the default pools that are created and included in the ui-stack image.
+   1. The sifchain genesis code is located here: `./ui/chains/ak/launch.sh` here we specify genesis tokens and amounts. Set up your tokens and amounts in this file.
+   1. The CLP pool genesis code is located here: `./ui/chains/ak/migrate.sh` here we specify the default pools that are created and included in the ui-stack image.
    1. Lastly the whitelist and burn limits for ethereum tokens is specified in the post migrate hook here: `./ui/chains/post_migrate.sh`
 
 1. Test your changes

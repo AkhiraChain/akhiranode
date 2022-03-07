@@ -1,6 +1,6 @@
 {
-  "name": "sifchain-monorepo",
-  "version": "0.0.0",
+  "name": "akhirachain-monorepo",
+  "version": "0.0.1",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "workspaces": {
     "packages": [
-      "chains/etherium"
+      "chains/eth"
     ]
   },
   "resolutions": {
