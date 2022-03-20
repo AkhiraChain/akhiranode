@@ -1,4 +1,4 @@
-CHAINNET?=betanet
+CHAINNET?=sudannet
 BINARY?=akhiranoded
 GOBIN?=${GOPATH}/bin
 NOW=$(shell date +'%Y-%m-%d_%T')
@@ -44,9 +44,16 @@ lint-verbose: lint-pre
 install: go.sum
 	go install ${BUILD_FLAGS} ${BINARIES}
 
+build-ebrelayer: go.sum
+	go build  ${BUILD_FLAGS} ./cmd/ebrelayer
+
 build-akd: go.sum
 	go build  ${BUILD_FLAGS} ./cmd/akhiranoded
 
+
+build-akhgen: go.sum
+	go build  ${BUILD_FLAGS} ./cmd/akhgen
+	
 clean:
 	@rm -rf ${GOBIN}/ak*
 
