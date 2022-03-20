@@ -1,6 +1,6 @@
 # This is a replacement for test/integration/inflate_tokens.sh.
-# The original script had a lot of problems as described in https://app.zenhub.com/workspaces/current-sprint---engineering-615a2e9fe2abd5001befc7f9/issues/sifchain/issues/719.
-# See https://www.notion.so/sifchain/TEST-TOKEN-DISTRIBUTION-PROCESS-41ad0861560c4be58918838dbd292497
+# The original script had a lot of problems as described in https://app.zenhub.com/workspaces/current-sprint---engineering-615a2e9fe2abd5001befc7f9/issues/akhirachain/issues/719.
+# See https://www.notion.so/akhirachain/TEST-TOKEN-DISTRIBUTION-PROCESS-41ad0861560c4be58918838dbd292497
 
 import json
 import logging
@@ -65,7 +65,7 @@ class InflateTokens:
         # their addresses appear in BridgeBank's past events implies that the corresponding ERC20 smart contracts have
         # been deployed, hence there is no need to deploy them.
 
-        # This assumes that requested token symbols are in sifchain format (c-prefixed, i.e. "cusdt", "csushi" etc.).
+        # This assumes that requested token symbols are in akhirachain format (c-prefixed, i.e. "cusdt", "csushi" etc.).
         # There can also be "ceth" and "aku" in this list, which we ignore as they represent special cases.
         # To compare it to entries on existing_whitelist, we need to prefix entries on existing_whitelist with "c".
         # TODO It would be better if the requested tokens didn't have "c" prefixes. For now we keep it for
@@ -164,7 +164,7 @@ class InflateTokens:
         return self.wait_for_all(pending_txs)
 
     def transfer_from_eth_to_sifnode(self, eth_addr, sif_addr, tokens_to_transfer, amount):
-        sif_balances_before = self.ctx.get_sifchain_balance(sif_addr)
+        sif_balances_before = self.ctx.get_akhirachain_balance(sif_addr)
         self.approve_and_lock([t["address"] for t in tokens_to_transfer], eth_addr, sif_addr, amount)
 
         # Wait for intermediate_sif_account to receive all funds across the bridge
@@ -182,8 +182,8 @@ class InflateTokens:
         # account to show changes for all denoms after each send.
         send_amounts = [[amount, t["sif_denom"]] for t in tokens_to_transfer]
         for sif_acct in target_sif_accounts:
-            sif_balance_before = self.ctx.get_sifchain_balance(sif_acct)
-            self.ctx.send_from_sifchain_to_sifchain(from_sif_account, sif_acct, send_amounts)
+            sif_balance_before = self.ctx.get_akhirachain_balance(sif_acct)
+            self.ctx.send_from_akhirachain_to_akhirachain(from_sif_account, sif_acct, send_amounts)
             self.ctx.wait_for_sif_balance_change(sif_acct, sif_balance_before, min_changes=send_amounts)
 
     def export(self):
@@ -209,7 +209,7 @@ class InflateTokens:
 
         amount_per_token = amount * len(target_sif_accounts)
         fund_aku = [5 * test_utils.sifnode_funds_for_transfer_peggy1, "aku"]
-        sif_broker_account = self.ctx.create_sifchain_addr(fund_amounts=[fund_aku])
+        sif_broker_account = self.ctx.create_akhirachain_addr(fund_amounts=[fund_aku])
         eth_broker_account = self.ctx.operator
 
         log.info("Using eth_broker_account {}".format(eth_broker_account))

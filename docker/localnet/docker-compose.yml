@@ -1,8 +1,8 @@
-version: '3'
+version: '1'
 
 services:
   akhiranode0:
-    image: AkhiraChain/akhiranode:latest
+    image: akhirachain/akhiranode:latest
     ports:
       - 1317:1317
       - 26656:26656
@@ -16,11 +16,11 @@ services:
       - ./sifnode/root/scripts:/root/scripts:Z
     command: /root/scripts/akhiranode.sh
     networks:
-      sifchain:
+      akhirachain:
         ipv4_address: ${IPADDR0}
 
   akhiranode1:
-    image: AkhiraChain/akhiranode:latest
+    image: akhirachain/akhiranode:latest
     ports:
       - 2317:1317
       - 36656:26656
@@ -31,7 +31,7 @@ services:
       MNEMONIC: ${MNEMONIC}
       BIND_IP_ADDRESS: ${IPADDR1}
     volumes:
-      - ./akhira/root/scripts:/root/scripts:Z
+      - ./akhiranode/root/scripts:/root/scripts:Z
     command: /root/scripts/akhiranode.sh
     networks:
       akhirachain:

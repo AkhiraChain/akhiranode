@@ -6,21 +6,21 @@ import pytest
 
 import burn_lock_functions
 import test_utilities
-from integration_env_credentials import sifchain_cli_credentials_for_test
+from integration_env_credentials import akhirachain_cli_credentials_for_test
 from pytest_utilities import generate_minimal_test_account
 from test_utilities import EthereumToSifchainTransferRequest, SifchaincliCredentials
 
 
 def create_new_sifaddr():
     new_account_key = test_utilities.get_shell_output("uuidgen")
-    credentials = sifchain_cli_credentials_for_test(new_account_key)
+    credentials = akhirachain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     return new_addr["address"]
 
 
 def create_new_sifaddr_and_key():
     new_account_key = test_utilities.get_shell_output("uuidgen")
-    credentials = sifchain_cli_credentials_for_test(new_account_key)
+    credentials = akhirachain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     return new_addr["address"], new_addr["name"]
 
@@ -48,7 +48,7 @@ def test_bulk_transfers(
     requests = list(map(lambda addr: {
         "amount": amount,
         "symbol": test_utilities.NULL_ADDRESS,
-        "sifchain_address": addr
+        "akhirachain_address": addr
     }, new_addresses))
     json_requests = json.dumps(requests)
     test_utilities.run_yarn_command(
@@ -58,7 +58,7 @@ def test_bulk_transfers(
             f"--amount {amount}",
             f"--symbol eth",
             f"--json_path {request.solidity_json_path}",
-            f"--sifchain_address {new_addresses[0]}",
+            f"--akhirachain_address {new_addresses[0]}",
             f"--transactions \'{json_requests}\'",
             f"--ethereum_address {source_ethereum_address}",
             f"--bridgebank_address {bridgebank_address}",
@@ -68,7 +68,7 @@ def test_bulk_transfers(
     requests = list(map(lambda addr: {
         "amount": amount,
         "symbol": bridgetoken_address,
-        "sifchain_address": addr
+        "akhirachain_address": addr
     }, new_addresses))
     json_requests = json.dumps(requests)
     yarn_result = test_utilities.run_yarn_command(
@@ -79,7 +79,7 @@ def test_bulk_transfers(
             "--lock_or_burn burn",
             f"--symbol {bridgetoken_address}",
             f"--json_path {request.solidity_json_path}",
-            f"--sifchain_address {new_addresses[0]}",
+            f"--akhirachain_address {new_addresses[0]}",
             f"--transactions \'{json_requests}\'",
             f"--ethereum_address {source_ethereum_address}",
             f"--bridgebank_address {bridgebank_address}",
@@ -93,8 +93,8 @@ def test_bulk_transfers(
     test_utilities.wait_for_ethereum_block_number(yarn_result["blockNumber"] + test_utilities.n_wait_blocks, basic_transfer_request);
     for a in new_addresses:
         test_utilities.wait_for_sif_account(a, basic_transfer_request.akhiranoded_node, 90)
-        test_utilities.wait_for_sifchain_addr_balance(a, "ceth", amount, basic_transfer_request.akhiranoded_node, 180)
-        test_utilities.wait_for_sifchain_addr_balance(a, "aku", amount, basic_transfer_request.akhiranoded_node, 180)
+        test_utilities.wait_for_akhirachain_addr_balance(a, "ceth", amount, basic_transfer_request.akhiranoded_node, 180)
+        test_utilities.wait_for_akhirachain_addr_balance(a, "aku", amount, basic_transfer_request.akhiranoded_node, 180)
     text_file = open("pfile.cmds", "w")
     simple_credentials = SifchaincliCredentials(
         keyring_passphrase=None,
@@ -102,14 +102,14 @@ def test_bulk_transfers(
         from_key=None,
         akhiranoded_homedir=None
     )
-    logging.info(f"all accounts are on sifchain and have the correct balance")
+    logging.info(f"all accounts are on akhirachain and have the correct balance")
     for sifaddr, ethaddr in zip(new_addresses_and_keys, new_eth_addrs):
         r = copy.deepcopy(basic_transfer_request)
-        r.sifchain_address = sifaddr[0]
+        r.akhirachain_address = sifaddr[0]
         r.ethereum_address = ethaddr["address"]
         r.amount = 100
         simple_credentials.from_key = sifaddr[1]
-        c = test_utilities.send_from_sifchain_to_ethereum_cmd(r, simple_credentials)
+        c = test_utilities.send_from_akhirachain_to_ethereum_cmd(r, simple_credentials)
         text_file.write(f"{c}\n")
     text_file.close()
     # test_utilities.get_shell_output("cat pfile.cmds | parallel --trim lr -v {}")

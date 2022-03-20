@@ -5,7 +5,7 @@ from command import buildcmd
 from common import *
 
 
-def sifchain_denom_hash(network_descriptor, token_contract_address):
+def akhirachain_denom_hash(network_descriptor, token_contract_address):
     assert on_peggy2_branch
     assert token_contract_address.startswith("0x")
     s = str(network_descriptor) + token_contract_address.lower()

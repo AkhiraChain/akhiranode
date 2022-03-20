@@ -1,9 +1,9 @@
 module.exports = async (cb) => {
-    const sifchainUtilities = require('./sifchainUtilities')
+    const akhirachainUtilities = require('./akhirachainUtilities')
     const contractUtilites = require('./contractUtilities');
 
-    const argv = sifchainUtilities.processArgs(this, {
-        ...sifchainUtilities.sharedYargOptions,
+    const argv = akhirachainUtilities.processArgs(this, {
+        ...akhirachainUtilities.sharedYargOptions,
         'block_number': {
             type: "number",
             demandOption: true
@@ -16,7 +16,7 @@ module.exports = async (cb) => {
         },
     });
 
-    const logging = sifchainUtilities.configureLogging(this);
+    const logging = akhirachainUtilities.configureLogging(this);
 
     const web3 = contractUtilites.buildWeb3(this, argv, logging);
 

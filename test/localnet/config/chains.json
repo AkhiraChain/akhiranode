@@ -1,22 +1,22 @@
 {
-  "sifchain": {
+  "akhirachain": {
     "binary": "akhiranoded",
     "binaryUrl": "https://github.com/AkhiraChain/akhiranode/releases/download/betanet-0.9.10/akhiranoded-betanet-0.9.10-linux-amd64.zip",
     "denom": "aku",
     "prefix": "sif",
     "fees": 100000,
-    "node": "https://rpc-testnet.sifchain.finance:443",
+    "node": "https://rpc-testnet.akhirachain.finance:443",
     "chainId": "akhirachain-testnet-1",
     "devnet-1": {
-      "node": "https://rpc-devnet.sifchain.finance:443",
+      "node": "https://rpc-devnet.akhirachain.finance:443",
       "chainId": "akhirachain-devnet-1"
     },
     "testnet-1": {
-      "node": "https://rpc-testnet.sifchain.finance:443",
+      "node": "https://rpc-testnet.akhirachain.finance:443",
       "chainId": "akhirachain-testnet-1"
     },
     "betanet": {
-      "node": "https://rpc.sifchain.finance:443",
+      "node": "https://rpc.akhirachain.finance:443",
       "chainId": "akhirachain-1"
     }
   },

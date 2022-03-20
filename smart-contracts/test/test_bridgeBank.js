@@ -168,11 +168,11 @@ contract("BridgeBank", function (accounts) {
       ).should.be.fulfilled;
     });
 
-    it("should return true if a sifchain address prefix is correct", async function () {
+    it("should return true if a akhirachain address prefix is correct", async function () {
       (await this.bridgeBank.verifySifPrefix(this.sender)).should.be.equal(true);
     })
 
-    it("should return false if a sifchain address has an incorrect `sif` prefix", async function () {
+    it("should return false if a akhirachain address has an incorrect `sif` prefix", async function () {
       const incorrectSifAddress = web3.utils.utf8ToHex(
         "eif1nx650s8q9w28f2g3t9ztxyg48ugldptuwzpace"
       );
@@ -946,7 +946,7 @@ contract("BridgeBank", function (accounts) {
   });
 
   // This entire scenario is mimicking the mainnet scenario where there will be
-  // cosmos assets on sifchain, and then we hook into an existing ERC20 contract on mainnet
+  // cosmos assets on akhirachain, and then we hook into an existing ERC20 contract on mainnet
   // that is eRowan. Then we will try to transfer aku to eRowan to ensure that
   // everything is set up correctly.
   // We will do this by making a new prophecy claim, validating it with the validators
@@ -1009,7 +1009,7 @@ contract("BridgeBank", function (accounts) {
       tokenAddress.should.be.equal(this.token.address);
     });
 
-    it("should burn eRowan to create aku on sifchain", async function () {
+    it("should burn eRowan to create aku on akhirachain", async function () {
       function convertToHex(str) {
         let hex = '';
         for (let i = 0; i < str.length; i++) {
@@ -1034,7 +1034,7 @@ contract("BridgeBank", function (accounts) {
       (tx.receipt.logs[0].args['3']).should.be.equal(symbol);
     });
 
-    it("should NOT burn eRowan to create aku on sifchain if user is blocklisted", async function () {
+    it("should NOT burn eRowan to create aku on akhirachain if user is blocklisted", async function () {
       // Add sender to the blocklist
       await this.blocklist.addToBlocklist(operator);
 
@@ -1059,7 +1059,7 @@ contract("BridgeBank", function (accounts) {
       )).to.be.rejectedWith('Address is blocklisted');
     });
 
-    it("should mint eRowan to transfer Rowan from sifchain to ethereum", async function () {
+    it("should mint eRowan to transfer Rowan from akhirachain to ethereum", async function () {
       function convertToHex(str) {
         let hex = '';
         for (let i = 0; i < str.length; i++) {

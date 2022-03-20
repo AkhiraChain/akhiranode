@@ -10,7 +10,7 @@ Make sure that the OWNER address is set properly in the .env file so that you ha
 
 This symbol is hard coded in the eRowan token repo so as long as you use that implementation, you should be good.
 
-2. You will need to set the BridgeBank contract as an admin and minter role so that it can mint new tokens when assets are locked on the sifchain side.
+2. You will need to set the BridgeBank contract as an admin and minter role so that it can mint new tokens when assets are locked on the akhirachain side.
 
 Follow step 6 in Deployment.md to do this.
 

@@ -144,10 +144,10 @@ Object {
       "counterpartyChannelId": 2,
     },
   },
-  "sifchain": Object {
+  "akhirachain": Object {
     "betanet": Object {
       "chainId": "akhirachain-1",
-      "node": "https://rpc.sifchain.finance:443",
+      "node": "https://rpc.akhirachain.finance:443",
     },
     "binary": "akhiranoded",
     "binaryUrl": "https://github.com/AkhiraChain/akhiranode/releases/download/betanet-0.9.10/akhiranoded-betanet-0.9.10-linux-amd64.zip",
@@ -155,18 +155,18 @@ Object {
     "denom": "aku",
     "devnet-1": Object {
       "chainId": "akhirachain-devnet-1",
-      "node": "https://rpc-devnet.sifchain.finance:443",
+      "node": "https://rpc-devnet.akhirachain.finance:443",
     },
     "fees": 100000,
-    "home": "/tmp/localnet/config/sifchain/akhirachain-testnet-1",
-    "node": "https://rpc-testnet.sifchain.finance:443",
+    "home": "/tmp/localnet/config/akhirachain/akhirachain-testnet-1",
+    "node": "https://rpc-testnet.akhirachain.finance:443",
     "p2pPort": 12000,
     "pprofPort": 13000,
     "prefix": "sif",
     "rpcPort": 11000,
     "testnet-1": Object {
       "chainId": "akhirachain-testnet-1",
-      "node": "https://rpc-testnet.sifchain.finance:443",
+      "node": "https://rpc-testnet.akhirachain.finance:443",
     },
   },
   "terra": Object {

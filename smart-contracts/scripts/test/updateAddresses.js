@@ -6,9 +6,9 @@
 // (this will be obsolete when the frontend just gets it from the smart contracts
 // directly)
 //
-// For example, to get the sifchain version:
+// For example, to get the akhirachain version:
 // 
-//   node scripts/test/updateAddresses.js $BASEDIR/ui/core/src/tokenwhitelist.sandpit.json $BASEDIR/ui/core/src/assets.ethereum.ropsten.json | jq .sifchain
+//   node scripts/test/updateAddresses.js $BASEDIR/ui/core/src/tokenwhitelist.sandpit.json $BASEDIR/ui/core/src/assets.ethereum.ropsten.json | jq .akhirachain
 //
 //
 
@@ -35,17 +35,17 @@ const assets = targets["assets"].map(t => {
     return newElement;
 });
 
-const sifchainAssets = assets.map(t => {
+const akhirachainAssets = assets.map(t => {
     return {
         ...t,
         symbol: ((t.symbol === "eaku") ? "aku" : `c${t.symbol}`).toLowerCase(),
-        network: "sifchain",
+        network: "akhirachain",
     }
 });
 
 const result = {
     ethereum: {assets},
-    sifchain: {assets: sifchainAssets},
+    akhirachain: {assets: akhirachainAssets},
 }
 
 console.log(JSON.stringify(result))

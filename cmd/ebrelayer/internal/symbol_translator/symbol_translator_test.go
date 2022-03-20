@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	sifchainDenomFeedface = "ibc/FEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACE"
-	ethereumSymbolFeeface = "Face"
+	akhirachainDenomFeedface = "ibc/FEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACEFEEDFACE"
+	ethereumSymbolFeeface    = "Face"
 )
 
 func TestNewSymbolTranslatorFromJsonBytes(t *testing.T) {
@@ -18,8 +18,8 @@ func TestNewSymbolTranslatorFromJsonBytes(t *testing.T) {
 	x, err := NewSymbolTranslatorFromJSONBytes([]byte(q))
 	assert.NoError(t, err)
 	assert.NotNil(t, x)
-	assert.Equal(t, x.SifchainToEthereum(sifchainDenomFeedface), ethereumSymbolFeeface)
-	assert.Equal(t, x.EthereumToSifchain(ethereumSymbolFeeface), sifchainDenomFeedface)
+	assert.Equal(t, x.SifchainToEthereum(akhirachainDenomFeedface), ethereumSymbolFeeface)
+	assert.Equal(t, x.EthereumToSifchain(ethereumSymbolFeeface), akhirachainDenomFeedface)
 	assert.Equal(t, x.SifchainToEthereum("verbatim"), "verbatim")
 	assert.Equal(t, x.EthereumToSifchain("verbatim"), "verbatim")
 }

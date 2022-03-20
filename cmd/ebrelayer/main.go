@@ -73,7 +73,7 @@ func buildRootCmd() *cobra.Command {
 	rootCmd.PersistentFlags().String(
 		ebrelayertypes.FlagSymbolTranslatorFile,
 		"",
-		"Path to a json file containing an array of sifchain denom => Ethereum symbol pairs",
+		"Path to a json file containing an array of akhirachain denom => Ethereum symbol pairs",
 	)
 	rootCmd.PersistentFlags().String(
 		ebrelayertypes.FlagRelayerDbPath,

@@ -6,7 +6,7 @@ import time
 
 import burn_lock_functions
 import test_utilities
-from integration_env_credentials import sifchain_cli_credentials_for_test
+from integration_env_credentials import akhirachain_cli_credentials_for_test
 from test_utilities import EthereumToSifchainTransferRequest, SifchaincliCredentials
 
 
@@ -35,9 +35,9 @@ def test_token_distribution(
                 destination_symbol = "aku"
             request.amount = int(amount_in_tokens * (10 ** int(t["decimals"])))
             request.ethereum_symbol = t["token"]
-            request.sifchain_symbol = destination_symbol
-            request.sifchain_address = aku_source
-            request.sifchain_destination_address = test_utilities.get_required_env_var("DESTINATION_ACCOUNT")
-            test_utilities.send_from_sifchain_to_sifchain(request, aku_source_integrationtest_env_credentials)
+            request.akhirachain_symbol = destination_symbol
+            request.akhirachain_address = aku_source
+            request.akhirachain_destination_address = test_utilities.get_required_env_var("DESTINATION_ACCOUNT")
+            test_utilities.send_from_akhirachain_to_akhirachain(request, aku_source_integrationtest_env_credentials)
         except Exception as e:
             logging.error(f"error: {e}")

@@ -6,7 +6,7 @@ from eth import NULL_ADDRESS
 from truffle import Ganache
 from command import Command
 from hardhat import Hardhat
-from sifchain import Akhgen, Sifnoded, Ebrelayer, sifchain_denom_hash
+from akhirachain import Akhgen, Sifnoded, Ebrelayer, akhirachain_denom_hash
 from project import Project, killall, force_kill_processes
 from test_utils import get_env_ctx
 from common import *
@@ -125,18 +125,18 @@ class Integrator(Ganache, Command):
         self.truffle_exec("setTokenLockBurnLimit", str(amount), env=env)
 
     # @TODO Merge
-    def sifchain_init_integration(self, sifnode, validator_moniker, validator_mnemonic, denom_whitelist_file):
+    def akhirachain_init_integration(self, sifnode, validator_moniker, validator_mnemonic, denom_whitelist_file):
         # now we have to add the validator key to the test keyring so the tests can send aku from validator1
         sifnode0 = Sifnoded(self)
         sifnode0.keys_add(validator_moniker, validator_mnemonic)
         valoper = sifnode.keys_show(validator_moniker, bech="val")[0]["address"]
-        assert valoper == sifnode0.get_val_address(validator_moniker)  # This does not use "home"; if it the assertion holds it could be grouped with sifchain_init_peggy
+        assert valoper == sifnode0.get_val_address(validator_moniker)  # This does not use "home"; if it the assertion holds it could be grouped with akhirachain_init_peggy
 
-        # This was deleted in commit f00242302dd226bc9c3060fb78b3de771e3ff429 from sifchain_start_daemon.sh because
+        # This was deleted in commit f00242302dd226bc9c3060fb78b3de771e3ff429 from akhirachain_start_daemon.sh because
         # it was not working. But we assume that we want to keep it.
         sifnode.akhiranoded_exec(["add-genesis-validators", valoper], akhiranoded_home=sifnode.home)
 
-        adminuser_addr = self.sifchain_init_common(sifnode, denom_whitelist_file)
+        adminuser_addr = self.akhirachain_init_common(sifnode, denom_whitelist_file)
         return adminuser_addr
 
     def akhiranoded_peggy2_init_validator(self, sifnode, validator_moniker, validator_mnemonic, evm_network_descriptor, validator_power, chain_dir_base):
@@ -161,7 +161,7 @@ class Integrator(Ganache, Command):
 
     # TODO Not any longer shared between IntegrationEnvironment and PeggyEnvironment
     # Peggy2Environment calls akhiranoded_peggy2_add_account
-    def sifchain_init_common(self, sifnode, denom_whitelist_file):
+    def akhirachain_init_common(self, sifnode, denom_whitelist_file):
         # Add sifnodeadmin to ~/.akhiranoded
         sifnode0 = Sifnoded(self)
         sifnodeadmin_addr = sifnode0.keys_add_1("sifnodeadmin")["address"]
@@ -538,7 +538,7 @@ class IntegrationTestsEnvironment:
         bridge_token_sc_addr, bridge_registry_sc_addr, bridge_bank_sc_addr = \
             self.cmd.get_bridge_smart_contract_addresses(self.network_id)
 
-        # # TODO This should be last (after return from setup_sifchain.sh)
+        # # TODO This should be last (after return from setup_akhirachain.sh)
         # burn_limits = [
         #     [NULL_ADDRESS, 31*10**18],
         #     [bridge_token_sc_addr, 10**25],
@@ -553,7 +553,7 @@ class IntegrationTestsEnvironment:
         #         env_file_vars["LOCAL_PROVIDER"],  # for web3.js to connect to ganache
         #     )
 
-        # test/integration/setup_sifchain.sh:
+        # test/integration/setup_akhirachain.sh:
         networks_dir = project_dir("deploy/networks")
         self.cmd.rmdir(networks_dir)  # networks_dir has many directories without write permission, so change those before deleting it
         self.cmd.mkdir(networks_dir)
@@ -583,7 +583,7 @@ class IntegrationTestsEnvironment:
 
         sifnode = Sifnoded(self.cmd, home=akhiranoded_home)
 
-        adminuser_addr = self.cmd.sifchain_init_integration(sifnode, validator1_moniker, validator1_mnemonic,
+        adminuser_addr = self.cmd.akhirachain_init_integration(sifnode, validator1_moniker, validator1_mnemonic,
             denom_whitelist_file)
 
         # Start akhiranoded
@@ -591,18 +591,18 @@ class IntegrationTestsEnvironment:
             log_file=akhiranoded_log_file)
 
         # TODO: wait for akhiranoded to come up before continuing
-        # in sifchain_start_daemon.sh: "sleep 10"
-        # in sifchain_run_ebrelayer.sh (also run_ebrelayer here) we already wait for connection to port 26657 and sif account validator1_addr
+        # in akhirachain_start_daemon.sh: "sleep 10"
+        # in akhirachain_run_ebrelayer.sh (also run_ebrelayer here) we already wait for connection to port 26657 and sif account validator1_addr
 
         # Removed
         # # TODO Process exits immediately with returncode 1
         # # TODO Why does it not stop start-integration-env.sh?
         # # rest_server_proc = self.cmd.popen(["akhiranoded", "rest-server", "--laddr", "tcp://0.0.0.0:1317"])  # TODO cwd
 
-        # test/integration/sifchain_start_ebrelayer.sh -> test/integration/sifchain_run_ebrelayer.sh
+        # test/integration/akhirachain_start_ebrelayer.sh -> test/integration/akhirachain_run_ebrelayer.sh
         # This script is also called from tests
 
-        relayer_db_path = os.path.join(self.test_integration_dir, "sifchainrelayerdb")
+        relayer_db_path = os.path.join(self.test_integration_dir, "akhirachainrelayerdb")
         ebrelayer_proc = self.run_ebrelayer(netdef_json, validator1_address, validator1_moniker, validator1_mnemonic,
             ebrelayer_ethereum_private_key, bridge_registry_sc_addr, relayer_db_path, log_file=ebrelayer_log_file)
 
@@ -625,7 +625,7 @@ class IntegrationTestsEnvironment:
             "GANACHE_DB_DIR": ganache_db_path,
             # export GANACHE_KEYS_JSON="/home/jurez/work/projects/sif/sifnode/local/test/integration/vagrant/data/ganachekeys.json"
             "EBRELAYER_ETHEREUM_ADDR": ebrelayer_ethereum_addr,
-            "EBRELAYER_ETHEREUM_PRIVATE_KEY": ebrelayer_ethereum_private_key,  # Needed by sifchain_run_ebrelayer.sh
+            "EBRELAYER_ETHEREUM_PRIVATE_KEY": ebrelayer_ethereum_private_key,  # Needed by akhirachain_run_ebrelayer.sh
             # # BRIDGE_REGISTRY_ADDRESS and ETHEREUM_CONTRACT_ADDRESS are synonyms
             "BRIDGE_REGISTRY_ADDRESS": bridge_registry_sc_addr,
             "BRIDGE_TOKEN_ADDRESS": bridge_token_sc_addr,
@@ -638,7 +638,7 @@ class IntegrationTestsEnvironment:
             "MNEMONIC": " ".join(validator1_mnemonic),
             "CHAINDIR": os.path.join(networks_dir, "validators", self.chainnet, validator1_moniker),
             "SIFCHAIN_ADMIN_ACCOUNT": adminuser_addr,  # Needed by test_peggy_fees.py (via conftest.py)
-            "EBRELAYER_DB": relayer_db_path,  # Created by sifchain_run_ebrelayer.sh, does not appear to be used anywhere at the moment
+            "EBRELAYER_DB": relayer_db_path,  # Created by akhirachain_run_ebrelayer.sh, does not appear to be used anywhere at the moment
         }
         self.project.write_vagrantenv_sh(self.state_vars, self.data_dir, self.ethereum_websocket_address, self.chainnet)
 
@@ -690,7 +690,7 @@ class IntegrationTestsEnvironment:
             raise Exception(f"Directory '{named_snapshot_dir}' already exists")
         self.cmd.mkdir(named_snapshot_dir)
         self.cmd.tar_create(self.state_vars["GANACHE_DB_DIR"], os.path.join(named_snapshot_dir, "ganache.tar.gz"))
-        self.cmd.tar_create(self.state_vars["EBRELAYER_DB"], os.path.join(named_snapshot_dir, "sifchainrelayerdb.tar.gz"))
+        self.cmd.tar_create(self.state_vars["EBRELAYER_DB"], os.path.join(named_snapshot_dir, "akhirachainrelayerdb.tar.gz"))
         self.cmd.tar_create(project_dir("deploy/networks"), os.path.join(named_snapshot_dir, "networks.tar.gz"))
         self.cmd.tar_create(project_dir("smart-contracts/build"), os.path.join(named_snapshot_dir, "smart-contracts.tar.gz"))
         self.cmd.tar_create(self.cmd.get_user_home(".akhiranoded"), os.path.join(named_snapshot_dir, "akhiranoded.tar.gz"))
@@ -707,9 +707,9 @@ class IntegrationTestsEnvironment:
 
         ganache_db_dir = self.cmd.mktempdir()
         relayer_db_path = state_vars["EBRELAYER_DB"]  # TODO use /tmp
-        assert os.path.realpath(relayer_db_path) == os.path.realpath(os.path.join(self.test_integration_dir, "sifchainrelayerdb"))
+        assert os.path.realpath(relayer_db_path) == os.path.realpath(os.path.join(self.test_integration_dir, "akhirachainrelayerdb"))
         extract("ganache.tar.gz", ganache_db_dir)
-        extract("sifchainrelayerdb.tar.gz", relayer_db_path)
+        extract("akhirachainrelayerdb.tar.gz", relayer_db_path)
         deploy_networks_dir = project_dir("deploy/networks")
         extract("networks.tar.gz", deploy_networks_dir)
         smart_contracts_build_dir = project_dir("smart-contracts/build")
@@ -786,9 +786,9 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         # self.project._make_go_binaries()
 
         # Ordering (for possible parallelisation):
-        # - build_golang_binaries before start_sifchain
+        # - build_golang_binaries before start_akhirachain
         # - start_hardhat before deploy_smart_contracts
-        # - start_sifchain before start_witnesses_and_relayers
+        # - start_akhirachain before start_witnesses_and_relayers
         # - deploy_smart_contracts before start_witnesses_and_relayers
         # - start_witnesses_and_relayers before return
         # - write_env_file before return
@@ -824,7 +824,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
 
         admin_account_name = "sifnodeadmin"
         chain_id = "localnet"
-        ceth_symbol = sifchain_denom_hash(hardhat_chain_id, NULL_ADDRESS)
+        ceth_symbol = akhirachain_denom_hash(hardhat_chain_id, NULL_ADDRESS)
         assert ceth_symbol == "sif5ebfaf95495ceb5a3efbd0b0c63150676ec71e023b1043c40bcaaf91c00e15b2"
         # Mint goes to validator
         mint_amount = [
@@ -846,7 +846,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         self.cmd.mkdir(akhiranoded_network_dir)
         network_config_file, akhiranoded_exec_args, akhiranoded_proc, tcp_url, admin_account_address, sifnode_validators, \
             sifnode_relayers, sifnode_witnesses, sifnode_validator0_home, chain_dir = \
-                self.init_sifchain(akhiranoded_network_dir, akhiranoded_log_file, chain_id, hardhat_chain_id, mint_amount,
+                self.init_akhirachain(akhiranoded_network_dir, akhiranoded_log_file, chain_id, hardhat_chain_id, mint_amount,
                     validator_power, seed_ip_address, tendermint_port, denom_whitelist_file, tokens, registry_json,
                     admin_account_name)
 
@@ -894,7 +894,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
 
         return hardhat_proc, akhiranoded_proc, relayer0_proc, witness0_proc
 
-    def init_sifchain(self, akhiranoded_network_dir, akhiranoded_log_file, chain_id, hardhat_chain_id, mint_amount,
+    def init_akhirachain(self, akhiranoded_network_dir, akhiranoded_log_file, chain_id, hardhat_chain_id, mint_amount,
         validator_power, seed_ip_address, tendermint_port, denom_whitelist_file, tokens, registry_json,
         admin_account_name
     ):
@@ -1002,7 +1002,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         cross_chain_fee_base = 1
         cross_chain_lock_fee = 1
         cross_chain_burn_fee = 1
-        ethereum_cross_chain_fee_token = sifchain_denom_hash(hardhat_chain_id, NULL_ADDRESS)
+        ethereum_cross_chain_fee_token = akhirachain_denom_hash(hardhat_chain_id, NULL_ADDRESS)
         gas_prices = [0.5, "aku"]
         gas_adjustment = 1.5
         sifnode.peggy2_set_cross_chain_fee(admin_account_address, hardhat_chain_id,
@@ -1425,8 +1425,8 @@ class IBCEnvironment(IntegrationTestsEnvironment):
         super().__init__(cmd)
 
     def run(self):
-        chainnet0 = "sifchain-ibc-0"
-        chainnet1 = "sifchain-ibc-1"
+        chainnet0 = "akhirachain-ibc-0"
+        chainnet1 = "akhirachain-ibc-1"
         ipaddr0 = "192.168.65.2"
         ipaddr1 = "192.168.65.3"
         subnet = "192.168.65.1/24"

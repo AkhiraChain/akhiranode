@@ -7,7 +7,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
 
 /**
  * @title BridgeToken
- * @dev Mintable, ERC20Burnable, ERC20 compatible token for use in sifchain integration tests
+ * @dev Mintable, ERC20Burnable, ERC20 compatible token for use in akhirachain integration tests
  **/
 
 contract SifchainTestToken is ERC20Mintable, ERC20Burnable, ERC20Detailed {

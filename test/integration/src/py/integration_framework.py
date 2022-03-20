@@ -21,4 +21,4 @@ import hardhat
 import truffle
 import test_utils
 import inflate_tokens
-import sifchain
+import akhirachain

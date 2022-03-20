@@ -3,7 +3,7 @@ import { getChainProps } from "../utils/getChainProps.mjs";
 import { getAddress } from "./getAddress.mjs";
 
 export async function ibc(props) {
-  const sifChainProps = getChainProps({ chain: "sifchain" });
+  const sifChainProps = getChainProps({ chain: "akhirachain" });
 
   const {
     node,
@@ -24,7 +24,7 @@ export async function ibc(props) {
     memo = undefined,
   } = getChainProps({
     ...props,
-    chain: props.type === "issuer" ? props.chain : "sifchain",
+    chain: props.type === "issuer" ? props.chain : "akhirachain",
     node: props.type === "issuer" ? props.node : undefined,
     chainId: props.type === "issuer" ? props.chainId : undefined,
     binary: props.type === "issuer" ? props.binary : undefined,

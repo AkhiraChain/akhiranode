@@ -80,7 +80,7 @@ Set up your environment as if you were going to run tests, then run:
 TOKEN_AMOUNT=120000000000 python3 -m pytest --color=yes -x -olog_cli=true -olog_level=DEBUG -v -olog_file=vagrant/data/pytest.log src/py/token_refresh.py
 ```
 
-This creates a new sifchain account with 120000000000 tokens of each of the tokens in the whitelist.  
+This creates a new akhirachain account with 120000000000 tokens of each of the tokens in the whitelist.  
 
 ### To set up all test accounts with tokens:
 

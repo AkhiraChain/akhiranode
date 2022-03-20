@@ -80,7 +80,7 @@ interface IAsset {
   readonly label: string; // Eg. cETH
   readonly name: string; // Eg. Ethereum
   readonly decimals: number; // 18
-  readonly network: "ethereum" | "sifchain"; // | "bitcoin"; etc
+  readonly network: "ethereum" | "akhirachain"; // | "bitcoin"; etc
   readonly address: string; // All assets must have an address with (0x0000000000000000000000000000000000000000 for a native coin)
   readonly imageUrl?: string;
 }

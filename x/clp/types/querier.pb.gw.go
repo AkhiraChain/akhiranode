@@ -780,19 +780,19 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_GetPool_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sifchain", "clp", "v1", "pool", "symbol"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetPool_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"akhirachain", "clp", "v1", "pool", "symbol"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetPools_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"sifchain", "clp", "v1", "pools"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetPools_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"akhirachain", "clp", "v1", "pools"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetLiquidityProvider_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"sifchain", "clp", "v1", "liquidity_provider", "symbol", "lp_address"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetLiquidityProvider_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"akhirachain", "clp", "v1", "liquidity_provider", "symbol", "lp_address"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetLiquidityProviderData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sifchain", "clp", "v1", "liquidity_provider_data", "lp_address"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetLiquidityProviderData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"akhirachain", "clp", "v1", "liquidity_provider_data", "lp_address"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetAssetList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sifchain", "clp", "v1", "asset_list", "lp_address"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetAssetList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"akhirachain", "clp", "v1", "asset_list", "lp_address"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetLiquidityProviders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"sifchain", "clp", "v1", "liquidity_providers"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetLiquidityProviders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"akhirachain", "clp", "v1", "liquidity_providers"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetLiquidityProviderList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sifchain", "clp", "v1", "liquidity_provider_list", "symbol"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetLiquidityProviderList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"akhirachain", "clp", "v1", "liquidity_provider_list", "symbol"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

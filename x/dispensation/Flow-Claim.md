@@ -23,7 +23,7 @@ type CreateClaimReq struct {
 (This step can be done through CLI on friday , or process events throughout the week . Processing events would be the preferred approach)
 This query through the cli would look like
 ```shell
-akhiranoded q dispensation claims-by-type ValidatorSubsidy --chain-id sifchain --node tcp://rpc.sifchain.finance:80
+akhiranoded q dispensation claims-by-type ValidatorSubsidy --chain-id akhirachain --node tcp://rpc.akhirachain.finance:80
 ```
 Which returns 
 ```json

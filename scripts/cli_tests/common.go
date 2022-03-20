@@ -23,7 +23,7 @@ func getDefaultArgs() Args {
 		panic(toAddr)
 	}
 
-	kr, err := keyring.New("sifchain", "test", os.TempDir(), nil)
+	kr, err := keyring.New("akhirachain", "test", os.TempDir(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -70,7 +70,7 @@ func setNetwork(args *Args, network Network) {
 	case TestNet:
 		args.ChainID = "akhirachain-testnet"
 	case MainNet:
-		args.ChainID = "sifchain"
+		args.ChainID = "akhirachain"
 	case LocalNet:
 		args.ChainID = "localnet"
 	default:

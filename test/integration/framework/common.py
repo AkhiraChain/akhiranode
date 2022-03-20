@@ -54,7 +54,7 @@ def project_dir(*paths):
 def yaml_load(s):
     return yaml.load(s, Loader=yaml.SafeLoader)
 
-# TODO Move to sifchain.py
+# TODO Move to akhirachain.py
 def sif_format_amount(amount, denom):
     return "{}{}".format(amount, denom)
 

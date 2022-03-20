@@ -5,20 +5,20 @@ import pytest
 
 import burn_lock_functions
 import test_utilities
-from integration_env_credentials import sifchain_cli_credentials_for_test
+from integration_env_credentials import akhirachain_cli_credentials_for_test
 from test_utilities import EthereumToSifchainTransferRequest, SifchaincliCredentials
 
 
 def create_new_sifaddr():
     new_account_key = test_utilities.get_shell_output("uuidgen")
-    credentials = sifchain_cli_credentials_for_test(new_account_key)
+    credentials = akhirachain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     return new_addr["address"]
 
 
 def create_new_sifaddr_and_key():
     new_account_key = test_utilities.get_shell_output("uuidgen")
-    credentials = sifchain_cli_credentials_for_test(new_account_key)
+    credentials = akhirachain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     return new_addr["address"], new_addr["name"]
 
@@ -27,7 +27,7 @@ def create_new_sifaddr_and_key():
     not test_utilities.get_optional_env_var("NTRANSFERS", None),
     reason="run by hand and specify NTRANSFERS"
 )
-def test_bulk_transfers_from_sifchain(
+def test_bulk_transfers_from_akhirachain(
         basic_transfer_request: EthereumToSifchainTransferRequest,
         aku_source_integrationtest_env_credentials: SifchaincliCredentials,
         aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
@@ -38,12 +38,12 @@ def test_bulk_transfers_from_sifchain(
         bridgebank_address,
         bridgetoken_address,
         ethereum_network,
-        sifchain_fees_int,
+        akhirachain_fees_int,
 ):
     test_transfer_amount = 100  # just a tiny number of wei to move to confirm things are working
     tokens = test_utilities.get_required_env_var("TOKENS", "ceth,aku").split(",")
     logging.info(f"tokens to be transferred are: {tokens}")
-    logging.info("create new ethereum and sifchain addresses")
+    logging.info("create new ethereum and akhirachain addresses")
     basic_transfer_request.ethereum_address = source_ethereum_address
     n_transfers = int(test_utilities.get_optional_env_var("NTRANSFERS", 2))
     n_transactions = n_transfers * len(tokens)
@@ -54,30 +54,30 @@ def test_bulk_transfers_from_sifchain(
     ceth_amount = n_transactions * (test_utilities.highest_gas_cost + 100)
     request.amount = ceth_amount
     request.ethereum_address = source_ethereum_address
-    request.sifchain_address = aku_source
+    request.akhirachain_address = aku_source
     addresses_to_populate = copy.deepcopy(new_addresses_and_keys)
     test_transfers = []
     for a in range(n_transfers):
         for t in tokens:
-            request.sifchain_destination_address, from_key = addresses_to_populate.pop()
+            request.akhirachain_destination_address, from_key = addresses_to_populate.pop()
 
             # send ceth to pay for the burn
             request.amount = test_utilities.burn_gas_cost
-            request.sifchain_symbol = "ceth"
-            burn_lock_functions.transfer_sifchain_to_sifchain(request, credentials_for_account_with_ceth)
+            request.akhirachain_symbol = "ceth"
+            burn_lock_functions.transfer_akhirachain_to_akhirachain(request, credentials_for_account_with_ceth)
 
             # send aku to pay the fee
-            request.amount = sifchain_fees_int
-            request.sifchain_symbol = "aku"
-            burn_lock_functions.transfer_sifchain_to_sifchain(request, credentials_for_account_with_ceth)
+            request.amount = akhirachain_fees_int
+            request.akhirachain_symbol = "aku"
+            burn_lock_functions.transfer_akhirachain_to_akhirachain(request, credentials_for_account_with_ceth)
 
             # send the token itself
             request.amount = test_transfer_amount
-            request.sifchain_symbol = t
-            burn_lock_functions.transfer_sifchain_to_sifchain(request, credentials_for_account_with_ceth)
-            transfer = (request.sifchain_destination_address, from_key, request.sifchain_symbol, request.amount)
+            request.akhirachain_symbol = t
+            burn_lock_functions.transfer_akhirachain_to_akhirachain(request, credentials_for_account_with_ceth)
+            transfer = (request.akhirachain_destination_address, from_key, request.akhirachain_symbol, request.amount)
 
-            test_utilities.get_sifchain_addr_balance(request.sifchain_destination_address, request.akhiranoded_node, t)
+            test_utilities.get_akhirachain_addr_balance(request.akhirachain_destination_address, request.akhiranoded_node, t)
 
             test_transfers.append(transfer)
 
@@ -91,7 +91,7 @@ def test_bulk_transfers_from_sifchain(
         akhiranoded_homedir=None
     )
 
-    logging.info(f"all accounts are on sifchain and have the correct balance")
+    logging.info(f"all accounts are on akhirachain and have the correct balance")
 
     new_eth_addrs = test_utilities.create_ethereum_addresses(
         smart_contracts_dir,
@@ -104,13 +104,13 @@ def test_bulk_transfers_from_sifchain(
     for sifaddr, from_key, sifsymbol, amount in test_transfers:
         destination_ethereum_address_element = new_eth_addrs.pop()
         r = copy.deepcopy(basic_transfer_request)
-        r.sifchain_symbol = sifsymbol
-        r.sifchain_address = sifaddr
+        r.akhirachain_symbol = sifsymbol
+        r.akhirachain_address = sifaddr
         r.ethereum_address = destination_ethereum_address_element["address"]
         r.amount = amount
         simple_credentials.from_key = from_key
-        c = test_utilities.send_from_sifchain_to_ethereum_cmd(r, simple_credentials)
-        ethereum_symbol = test_utilities.sifchain_symbol_to_ethereum_symbol(sifsymbol)
+        c = test_utilities.send_from_akhirachain_to_ethereum_cmd(r, simple_credentials)
+        ethereum_symbol = test_utilities.akhirachain_symbol_to_ethereum_symbol(sifsymbol)
         transfer = (r.ethereum_address, ethereum_symbol, amount)
         ethereum_transfers.append(transfer)
         text_file.write(f"{c}\n")

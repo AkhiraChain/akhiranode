@@ -14,7 +14,7 @@ After both scripts are completed, you will se the message "~~~ DONE ~~~" in your
 The last step is to create a new UI PR with the newly added tokens. Verify the generated file in the data folder and make sure all tokens have an imageUrl property with an URL assigned to it. If any token doesn't, you'll need to manually find out that token's icon URL and add it there.  
 
 Finally, copy all tokens from that file and add them to this file:  
-`https://github.com/Sifchain/sifchain-ui/blob/develop/ui/core/src/config/networks/ethereum/assets.ethereum.mainnet.json`  
+`https://github.com/Sifchain/akhirachain-ui/blob/develop/ui/core/src/config/networks/ethereum/assets.ethereum.mainnet.json`  
 (it's in a different repo). Open a PR there and you're done.
 
 ## Testing with a mainnet fork

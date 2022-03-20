@@ -30,7 +30,7 @@ type CreateClaimReq struct {
 
 #### CLI
 ```shell
-akhiranoded tx dispensation claim LiquidityMining --from ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.sifchain.finance:80 --chain-id sifchain
+akhiranoded tx dispensation claim LiquidityMining --from ak1l7hypmqk2yc334vc6vmdwzp5sdefygj2ad93p5 --yes --gas auto --gas-adjustment=1.5 --gas-prices 1.0aku --node tcp://rpc.akhirachain.finance:80 --chain-id akhirachain
 ```
 
 The relevant event 

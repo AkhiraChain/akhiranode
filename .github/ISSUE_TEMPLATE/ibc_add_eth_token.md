@@ -1,7 +1,7 @@
 ---
 name: "[Token Registry] Add new ETH token to registry"
 about: "[Token Registry] Add a new ETH token to registry"
-title: '[Token Registry] Add ... ETH token on ...sifchain network'
+title: '[Token Registry] Add ... ETH token on ...akhirachain network'
 labels: 'Sifnode, Token Registry'
 assignees: '@sifnode'
 ---

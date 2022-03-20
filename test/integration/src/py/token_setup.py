@@ -10,19 +10,19 @@ from test_utilities import create_new_currency
 
 
 # This file is for setting up an installation with a set of currencies given
-# in a json file like ui/core/src/assets.sifchain.mainnet.json.
+# in a json file like ui/core/src/assets.akhirachain.mainnet.json.
 #
 # Run example:
 #
-#  TOKENS_FILE=$BASEDIR/ui/core/src/assets.sifchain.mainnet.json python3 -m pytest src/py/token_setup.py
+#  TOKENS_FILE=$BASEDIR/ui/core/src/assets.akhirachain.mainnet.json python3 -m pytest src/py/token_setup.py
 
-def build_request_for_new_sifchain_address(basic_transfer_request, source_ethereum_address, new_currency, amount):
+def build_request_for_new_akhirachain_address(basic_transfer_request, source_ethereum_address, new_currency, amount):
     sifaddress, credentials = create_new_sifaddr_and_credentials()
     request = copy.deepcopy(basic_transfer_request)
     request.ethereum_symbol = new_currency["newtoken_address"]
     request.ethereum_address = source_ethereum_address
-    request.sifchain_symbol = "c" + new_currency["newtoken_symbol"]
-    request.sifchain_address = sifaddress
+    request.akhirachain_symbol = "c" + new_currency["newtoken_symbol"]
+    request.akhirachain_address = sifaddress
     request.amount = amount
     return request, credentials
 
@@ -44,7 +44,7 @@ def test_can_create_a_new_token_and_peg_it(
 
     sifaddress, credentials = create_new_sifaddr_and_credentials()
     request = copy.deepcopy(basic_transfer_request)
-    request.sifchain_address = sifaddress
+    request.akhirachain_address = sifaddress
     request.ethereum_address = source_ethereum_address
     amount_in_tokens = 10 ** 9  # one billion of the token; note that this is not 1/(10 **18) of a token
 

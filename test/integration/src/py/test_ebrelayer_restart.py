@@ -20,12 +20,12 @@ def test_ebrelayer_restart(
         base_transfer_request=basic_transfer_request,
         target_ceth_balance=10 ** 15
     )
-    balance = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akhiranoded_node, "ceth")
+    balance = test_utilities.get_akhirachain_addr_balance(request.akhirachain_address, request.akhiranoded_node, "ceth")
     logging.info("restart ebrelayer normally, leaving the last block db in place")
     test_utilities.start_ebrelayer()
     test_utilities.advance_n_ethereum_blocks(test_utilities.n_wait_blocks * 2, request.smart_contracts_dir)
     time.sleep(5)
-    assert balance == test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akhiranoded_node,
+    assert balance == test_utilities.get_akhirachain_addr_balance(request.akhirachain_address, request.akhiranoded_node,
                                                                "ceth")
 
 
@@ -55,7 +55,7 @@ def test_ethereum_transactions_with_offline_relayer(
     requests = list(map(lambda addr: {
         "amount": amount,
         "symbol": test_utilities.NULL_ADDRESS,
-        "sifchain_address": addr
+        "akhirachain_address": addr
     }, new_addresses))
     json_requests = json.dumps(requests)
 
@@ -67,7 +67,7 @@ def test_ethereum_transactions_with_offline_relayer(
             f"--amount {amount}",
             f"--symbol eth",
             f"--json_path {request.solidity_json_path}",
-            f"--sifchain_address {new_addresses[0]}",
+            f"--akhirachain_address {new_addresses[0]}",
             f"--transactions \'{json_requests}\'",
             f"--ethereum_address {source_ethereum_address}",
             f"--bridgebank_address {bridgebank_address}"
@@ -82,11 +82,11 @@ def test_ethereum_transactions_with_offline_relayer(
         test_utilities.advance_n_ethereum_blocks(test_utilities.n_wait_blocks, request.smart_contracts_dir)
     for a in new_addresses:
         test_utilities.wait_for_sif_account(a, basic_transfer_request.akhiranoded_node, 90)
-        test_utilities.wait_for_sifchain_addr_balance(a, "ceth", amount, basic_transfer_request.akhiranoded_node, 90)
+        test_utilities.wait_for_akhirachain_addr_balance(a, "ceth", amount, basic_transfer_request.akhiranoded_node, 90)
 
 
 @pytest.mark.usefixtures("ensure_relayer_restart")
-def test_sifchain_transactions_with_offline_relayer(
+def test_akhirachain_transactions_with_offline_relayer(
         basic_transfer_request: EthereumToSifchainTransferRequest,
         aku_source_integrationtest_env_credentials: test_utilities.SifchaincliCredentials,
         aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
@@ -116,17 +116,17 @@ def test_sifchain_transactions_with_offline_relayer(
     )
 
     request.amount = amount
-    request.sifchain_symbol = "ceth"
+    request.akhirachain_symbol = "ceth"
     request.ethereum_symbol = "eth"
 
     logging.info("send transactions while ebrelayer is offline")
 
     for a in new_eth_addrs:
         request.ethereum_address = a["address"]
-        sifchain_balance = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akhiranoded_node,
+        akhirachain_balance = test_utilities.get_akhirachain_addr_balance(request.akhirachain_address, request.akhiranoded_node,
                                                                     "ceth")
-        logging.info(f"sifchain balance is {sifchain_balance}, request is {request}")
-        test_utilities.send_from_sifchain_to_ethereum(
+        logging.info(f"akhirachain balance is {akhirachain_balance}, request is {request}")
+        test_utilities.send_from_akhirachain_to_ethereum(
             transfer_request=request,
             credentials=credentials
         )

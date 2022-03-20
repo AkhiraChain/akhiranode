@@ -10,7 +10,7 @@ import burn_lock_functions
 from burn_lock_functions import EthereumToSifchainTransferRequest
 import test_utilities
 from pytest_utilities import generate_test_account
-from integration_env_credentials import sifchain_cli_credentials_for_test
+from integration_env_credentials import akhirachain_cli_credentials_for_test
 from test_utilities import get_required_env_var, SifchaincliCredentials, get_optional_env_var, ganache_owner_account, \
     get_shell_output_json, get_shell_output, detect_errors_in_akhiranoded_output, get_transaction_result, amount_in_wei
 
@@ -23,7 +23,7 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 # CODE TO GENERATE NEW ADDRESS AND ADD IT IN THE KEYRING
 def create_new_sifaddr_and_key():
     new_account_key = test_utilities.get_shell_output("uuidgen").replace("-", "")
-    credentials = sifchain_cli_credentials_for_test(new_account_key)
+    credentials = akhirachain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     return new_addr["address"], new_addr["name"]
 
@@ -31,7 +31,7 @@ def create_new_sifaddr_and_key():
 # CODE TO SEND SOME SAMPLE TOKEN TO NEW ADDRESS
 def send_sample_aku(from_address, to_address, amount, keyring_backend, chain_id, offline):
     logging.debug(f"transfer_aku")
-    sifchain_fees_entry = f"--fees 100000000000000000aku"
+    akhirachain_fees_entry = f"--fees 100000000000000000aku"
     keyring_backend_entry = f"--keyring-backend {keyring_backend}"
     cmd = " ".join([
         "akhiranoded tx bank send",
@@ -39,7 +39,7 @@ def send_sample_aku(from_address, to_address, amount, keyring_backend, chain_id,
         f"{to_address}",
         f"{amount}",
         keyring_backend_entry,
-        sifchain_fees_entry,
+        akhirachain_fees_entry,
         f"--chain-id {chain_id}",
         f"--yes -o json"
     ])
@@ -81,16 +81,16 @@ def create_online_singlekey_txn(
         chain_id
 ):
     logging.debug(f"create_online_dispensation")
-    sifchain_gas_entry = f"--gas auto"
-    sifchain_fees_entry = f"--fees 50000aku"
+    akhirachain_gas_entry = f"--gas auto"
+    akhirachain_fees_entry = f"--fees 50000aku"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
         "akhiranoded tx dispensation create",
         f"{claimType}",
         output,
-        sifchain_gas_entry,
-        sifchain_fees_entry,
+        akhirachain_gas_entry,
+        akhirachain_fees_entry,
         f"--from {signing_address}",
         f"--chain-id {chain_id}",
         keyring_backend_entry,
@@ -109,16 +109,16 @@ def create_online_singlekey_async_txn(
         chain_id
 ):
     logging.debug(f"create_online_dispensation")
-    sifchain_fees_entry = f"--fees 150000aku"
-    sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
+    akhirachain_fees_entry = f"--fees 150000aku"
+    akhirachain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
         "akhiranoded tx dispensation create",
         f"{claimType}",
         output,
-        sifchain_fees_entry,
-        sifchain_gas_entry,
+        akhirachain_fees_entry,
+        akhirachain_gas_entry,
         f"--from {signing_address}",
         f"--chain-id {chain_id}",
         keyring_backend_entry,
@@ -138,8 +138,8 @@ def create_offline_singlekey_txn(
         chain_id,
     ):
     logging.debug(f"create_unsigned_offline_dispensation_txn")
-    sifchain_fees_entry = f"--fees 150000aku"
-    sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
+    akhirachain_fees_entry = f"--fees 150000aku"
+    akhirachain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     output = 'output.json'
     cmd = " ".join([
         "akhiranoded tx dispensation create",
@@ -147,8 +147,8 @@ def create_offline_singlekey_txn(
         output,
         f"--from {signing_address}",
         f"--chain-id {chain_id}",
-        sifchain_fees_entry,
-        sifchain_gas_entry,
+        akhirachain_fees_entry,
+        akhirachain_gas_entry,
         f"--generate-only", 
         f"--yes -o json"  
     ])
@@ -204,8 +204,8 @@ def create_online_singlekey_txn_with_runner(
         chain_id
 ):
     logging.debug(f"create_online_dispensation")
-    sifchain_fees_entry = f"--fees 150000aku"
-    sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
+    akhirachain_fees_entry = f"--fees 150000aku"
+    akhirachain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
@@ -213,8 +213,8 @@ def create_online_singlekey_txn_with_runner(
         f"{claimType}",
         output,
         runner_address,
-        sifchain_fees_entry,
-        sifchain_gas_entry,
+        akhirachain_fees_entry,
+        akhirachain_gas_entry,
         f"--from {distributor_address}",
         f"--chain-id {chain_id}",
         keyring_backend_entry,
@@ -234,8 +234,8 @@ def create_offline_singlekey_txn_with_runner(
         chain_id
     ):
     logging.debug(f"create_unsigned_offline_dispensation_txn")
-    sifchain_fees_entry = f"--fees 150000aku"
-    sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
+    akhirachain_fees_entry = f"--fees 150000aku"
+    akhirachain_gas_entry = f"--gas auto --gas-adjustment=1.5"
     keyring_backend_entry = f"--keyring-backend test"
     output = 'output.json'
     cmd = " ".join([
@@ -245,8 +245,8 @@ def create_offline_singlekey_txn_with_runner(
         runner_address,
         f"--from {distributor_address}",
         f"--chain-id {chain_id}",
-        sifchain_fees_entry,
-        sifchain_gas_entry,
+        akhirachain_fees_entry,
+        akhirachain_gas_entry,
         keyring_backend_entry,
         f"--generate-only", 
         f"--yes -o json"
@@ -264,8 +264,8 @@ def run_dispensation(
         chain_id
     ):
     logging.debug(f"RUN DISPENSATION CLI LOGGING")
-    sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
-    sifchain_fees_entry = f"--fees 200000aku"
+    akhirachain_gas_entry = f"--gas auto --gas-adjustment=1.5"
+    akhirachain_fees_entry = f"--fees 200000aku"
     keyring_backend_entry = f"--keyring-backend test"
     cmd = " ".join([
         "akhiranoded tx dispensation run",
@@ -273,8 +273,8 @@ def run_dispensation(
         f"{claimType}",
         f"--from {runner_address}",
         f"--chain-id {chain_id}",
-        sifchain_gas_entry,
-        sifchain_fees_entry,
+        akhirachain_gas_entry,
+        akhirachain_fees_entry,
         keyring_backend_entry,
         f"--yes -o json"
     ])
@@ -298,21 +298,21 @@ def query_created_claim(claimType):
 
 #CODE TO CREATE A NEW CLAIM
 def create_claim(
-        sifchain_address,
+        akhirachain_address,
         claimType,
         keyring_backend,
         chain_id
     ):
     logging.debug(f"create_claim")
     keyring_backend_entry = f"--keyring-backend {keyring_backend}"
-    sifchain_gas_entry = f"--gas auto --gas-adjustment=1.5"
-    sifchain_fees_entry = f"--fees 100000000000000000aku"
+    akhirachain_gas_entry = f"--gas auto --gas-adjustment=1.5"
+    akhirachain_fees_entry = f"--fees 100000000000000000aku"
     cmd = " ".join([
         "akhiranoded tx dispensation claim",
         f"{claimType}",
-        f"--from {sifchain_address}",
-        sifchain_fees_entry,
-        sifchain_gas_entry,
+        f"--from {akhirachain_address}",
+        akhirachain_fees_entry,
+        akhirachain_gas_entry,
         f"--chain-id {chain_id}",
         keyring_backend_entry,
         f"--yes -o json"

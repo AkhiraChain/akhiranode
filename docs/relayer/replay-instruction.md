@@ -7,18 +7,18 @@ We have two sub-commands 'ebrelayer replayCosmos' and 'ebrelayer replayEthereum'
 For replayEthereum, the algorithm is the same, just on the opposite direction.
 
 ## Command sample
-ebrelayer replayCosmos tcp://localhost:26657 ws://localhost:7545/ 0xFB88dE099e13c3ED21F80a7a1E49f8CAEcF10df6 100 200  20 25 --chain-id=sifchain
+ebrelayer replayCosmos tcp://localhost:26657 ws://localhost:7545/ 0xFB88dE099e13c3ED21F80a7a1E49f8CAEcF10df6 100 200  20 25 --chain-id=akhirachain
 
 
-ebrelayer replayEthereum tcp://localhost:26657 ws://localhost:7545/ 0xFB88dE099e13c3ED21F80a7a1E49f8CAEcF10df6 sif "race draft rival universe maid cheese steel logic crowd fork comic easy truth drift tomorrow eye buddy head time cash swing swift midnight borrow" 15 20 10 20 --chain-id=sifchain
+ebrelayer replayEthereum tcp://localhost:26657 ws://localhost:7545/ 0xFB88dE099e13c3ED21F80a7a1E49f8CAEcF10df6 sif "race draft rival universe maid cheese steel logic crowd fork comic easy truth drift tomorrow eye buddy head time cash swing swift midnight borrow" 15 20 10 20 --chain-id=akhirachain
 
 ## Recovery process
 After noticed the ebrelayer down, can't get new message or can't send transaction to Ethereum/Sifchain. We need record the timestamp and estimate the block height, then restart the ebrealyer immediately. 
 
 The block scope you input is not neccessary to be very accurate. But must include the blocks when ebrelayer not working. Otherwise we can't gunratee all messages will be replayed.
 
-### replay sifchain step by step
-1. If notice the ebrelayer is offline, have some errors to send prophecy to smart contract in Ethereum or cross-chain transfer from Sifchain to Ethereum doesn't work, we need check the timestamp and estimate the block scope in sifchain side.
+### replay akhirachain step by step
+1. If notice the ebrelayer is offline, have some errors to send prophecy to smart contract in Ethereum or cross-chain transfer from Sifchain to Ethereum doesn't work, we need check the timestamp and estimate the block scope in akhirachain side.
 2. We choose those failed ebrelayer nodes, check their voting power and compute how many nodes we need run replay scripts on those nodes.
 3. We also need check the blocks in Ethereum side to find out all prophecies transaction already sent by the ebrelayer, avoid send the same transaction again. It will not mint or burn the token twice since we have the unique prophecy ID. but it will waste of some gas fee. 
 4. After confirm the from/to block number in both Ethereum and Sifchain, we can run ebrelayer replayEthereum. the command usage could be found in Command sample segment.

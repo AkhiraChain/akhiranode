@@ -2,14 +2,14 @@ module.exports = async (cb) => {
     const Web3 = require("web3");
     const BN = require('bn.js');
 
-    const sifchainUtilities = require('./sifchainUtilities')
+    const akhirachainUtilities = require('./akhirachainUtilities')
     const contractUtilites = require('./contractUtilities');
 
-    const logging = sifchainUtilities.configureLogging(this);
+    const logging = akhirachainUtilities.configureLogging(this);
 
-    const argv = sifchainUtilities.processArgs(this, {
-        ...sifchainUtilities.sharedYargOptions,
-        ...sifchainUtilities.symbolYargOption,
+    const argv = akhirachainUtilities.processArgs(this, {
+        ...akhirachainUtilities.sharedYargOptions,
+        ...akhirachainUtilities.symbolYargOption,
         'ethereum_address': {
             type: "string",
             demandOption: true
@@ -20,7 +20,7 @@ module.exports = async (cb) => {
     const result = {};
     try {
         const web3instance = contractUtilites.buildWeb3(this, argv, logging);
-        if (argv.symbol === sifchainUtilities.NULL_ADDRESS) {
+        if (argv.symbol === akhirachainUtilities.NULL_ADDRESS) {
             balanceWei = await web3instance.eth.getBalance(argv.ethereum_address);
             result.symbol = "eth";
         } else {

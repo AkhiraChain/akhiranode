@@ -10,7 +10,7 @@ cd into the smart-contracts directory and run ```yarn install```. Once those dep
 
 ## Deployments
 
-1. You will first have to set up the accounts that you want to use as validators on the bridge. Each of these accounts should run a relayer that listens to sifchain for incoming transactions that need to go to ethereum.
+1. You will first have to set up the accounts that you want to use as validators on the bridge. Each of these accounts should run a relayer that listens to akhirachain for incoming transactions that need to go to ethereum.
 
 2. Currently there are 2 user roles in peggy, more are planned to come. There is an operator role, this person can add and remove validators from the ethereum smart contract so that they can no longer unlock or mint assets on the ethereum peggy smart contracts. When you set up your env file, remove the mnemonic and all local variables. Your readme should now look like this.
 

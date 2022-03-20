@@ -10,14 +10,14 @@ const BN = require('bn.js');
 module.exports = async (cb) => {
     const Web3 = require("web3");
 
-    const sifchainUtilities = require('./sifchainUtilities')
+    const akhirachainUtilities = require('./akhirachainUtilities')
     const contractUtilites = require('./contractUtilities');
 
-    const logging = sifchainUtilities.configureLogging(this);
+    const logging = akhirachainUtilities.configureLogging(this);
 
-    const argv = sifchainUtilities.processArgs(this, {
-        ...sifchainUtilities.sharedYargOptions,
-        ...sifchainUtilities.bridgeBankAddressYargOptions,
+    const argv = akhirachainUtilities.processArgs(this, {
+        ...akhirachainUtilities.sharedYargOptions,
+        ...akhirachainUtilities.bridgeBankAddressYargOptions,
     });
 
     const bridgeBankContract = await contractUtilites.buildContract(this, argv, logging, "BridgeBank", argv.bridgebank_address);

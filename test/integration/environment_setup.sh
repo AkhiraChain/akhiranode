@@ -53,7 +53,7 @@ echo yarn -s --cwd /home/james/workspace/sifnode/smart-contracts integrationtest
   --amount 100000000000000000000000000
 
 echo; echo == lock eth
-echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:sendLockTx --sifchain_address $ROWAN_SOURCE \
+echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:sendLockTx --akhirachain_address $ROWAN_SOURCE \
   --symbol eth \
   --ethereum_private_key_env_var "ETHEREUM_PRIVATE_KEY" \
   --json_path $BASEDIR/smart-contracts/deployments/$DEPLOYMENT_NAME \
@@ -72,7 +72,7 @@ echo yarn -s --cwd $BASEDIR/smart-contracts integrationtest:sendBurnTx \
   --ethereum_network $ETHEREUM_NETWORK \
   --bridgebank_address $BRIDGE_BANK_ADDRESS \
   --ethereum_address $ETHEREUM_ADDRESS \
-  --sifchain_address $ROWAN_SOURCE \
+  --akhirachain_address $ROWAN_SOURCE \
   --amount 17
 
 echo; echo == burn eaku from operator account
@@ -84,7 +84,7 @@ echo yarn -s --cwd /home/james/workspace/sifnode/smart-contracts integrationtest
   --ethereum_network $ETHEREUM_NETWORK \
   --bridgebank_address $BRIDGE_BANK_ADDRESS \
   --ethereum_address $OPERATOR_ADDRESS \
-  --sifchain_address $ROWAN_SOURCE \
+  --akhirachain_address $ROWAN_SOURCE \
   --amount 100000000000000000000000000
 
 echo; echo == whitelisted tokens
@@ -96,10 +96,10 @@ echo yarn -s --cwd $BASEDIR/smart-contracts \
 
 sifnodecmd=akhiranoded
 
-echo; echo == sifchain balance
+echo; echo == akhirachain balance
 echo $sifnodecmd q auth account --node $SIFNODE $ROWAN_SOURCE
 
-echo; echo == sifchain transaction
+echo; echo == akhirachain transaction
 echo $sifnodecmd q tx --node $SIFNODE --chain-id $DEPLOYMENT_NAME 193EFB4A5D20BEC58ADE8BACEB38264870ADD8BAFEA9D6DAABE554B0ACBC0C93
 
 echo; echo == all account balances
@@ -128,6 +128,6 @@ echo; echo == Simple test run against $DEPLOYMENT_NAME:
 echo python3 -m pytest --color=yes -x -olog_cli=true -olog_level=DEBUG -v -olog_file=vagrant/data/pytest.log -v src/py/test_eth_transfers.py
 
 echo; echo == Load test run against $DEPLOYMENT_NAME - change NTRANSFERS to a large number:
-echo TOKENS=ceth,aku NTRANSFERS=2 python3 -m pytest -olog_level=DEBUG -olog_file=vagrant/data/pytest.log -v src/py/test_bulk_transfers_to_ethereum.py::test_bulk_transfers_from_sifchain
+echo TOKENS=ceth,aku NTRANSFERS=2 python3 -m pytest -olog_level=DEBUG -olog_file=vagrant/data/pytest.log -v src/py/test_bulk_transfers_to_ethereum.py::test_bulk_transfers_from_akhirachain
 
 echo; echo

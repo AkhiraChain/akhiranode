@@ -2,7 +2,7 @@
 
 SIFCHAIN_ID=akhirachain-1 \
   KEYRING_BACKEND=test \
-  SIF_NODE=https://rpc.sifchain.finance:443 \
+  SIF_NODE=https://rpc.akhirachain.finance:443 \
   COSMOS_BASE_DENOM=uatom \
   COSMOS_CHANNEL_ID=channel-0 \
   COSMOS_COUNTERPARTY_CHANNEL_ID=channel-192 \

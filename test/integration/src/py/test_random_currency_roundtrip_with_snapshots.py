@@ -36,17 +36,17 @@ def do_currency_test(
         target_ceth_balance=10**17,
         target_aku_balance=10**18)
     test_amount = 39000
-    logging.info(f"transfer some of the new currency {new_currency_symbol} to the test sifchain address")
+    logging.info(f"transfer some of the new currency {new_currency_symbol} to the test akhirachain address")
     request.ethereum_symbol = new_currency["newtoken_address"]
-    request.sifchain_symbol = ("c" + new_currency["newtoken_symbol"]).lower()
+    request.akhirachain_symbol = ("c" + new_currency["newtoken_symbol"]).lower()
     request.amount = test_amount
-    burn_lock_functions.transfer_ethereum_to_sifchain(request)
+    burn_lock_functions.transfer_ethereum_to_akhirachain(request)
 
     logging.info("send some new currency to ethereum")
     request.ethereum_address, _ = test_utilities.create_ethereum_address(
         ctx.smart_contracts_dir, ctx.ethereum_network)
     request.amount = test_amount - 1
-    burn_lock_functions.transfer_sifchain_to_ethereum(request, credentials)
+    burn_lock_functions.transfer_akhirachain_to_ethereum(request, credentials)
 
 
 @pytest.mark.usefixtures("with_snapshot")

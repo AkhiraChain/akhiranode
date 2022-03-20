@@ -1,15 +1,15 @@
 module.exports = async (cb) => {
     const Web3 = require("web3");
 
-    const sifchainUtilities = require('./sifchainUtilities')
+    const akhirachainUtilities = require('./akhirachainUtilities')
     const contractUtilites = require('./contractUtilities');
 
-    const logging = sifchainUtilities.configureLogging(this);
+    const logging = akhirachainUtilities.configureLogging(this);
 
     try {
-        const argv = sifchainUtilities.processArgs(this, {
-            ...sifchainUtilities.sharedYargOptions,
-            ...sifchainUtilities.transactionYargOptions,
+        const argv = akhirachainUtilities.processArgs(this, {
+            ...akhirachainUtilities.sharedYargOptions,
+            ...akhirachainUtilities.transactionYargOptions,
         });
 
         logging.info(`sendBurnTx: ${JSON.stringify(argv, undefined, 2)}`);
@@ -27,7 +27,7 @@ module.exports = async (cb) => {
         logging.info(`sendBurnTx ${JSON.stringify(argv)}}`);
 
         result.burn = await bridgeBankContract.burn(
-            Web3.utils.utf8ToHex(argv.sifchain_address),
+            Web3.utils.utf8ToHex(argv.akhirachain_address),
             argv.symbol,
             argv.amount,
             transactionParameters,

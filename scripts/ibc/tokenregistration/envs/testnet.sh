@@ -2,7 +2,7 @@
 
 SIFCHAIN_ID=akhirachain-testnet-1 \
   KEYRING_BACKEND=test \
-  SIF_NODE=https://rpc-testnet.sifchain.finance:443 \
+  SIF_NODE=https://rpc-testnet.akhirachain.finance:443 \
   COSMOS_BASE_DENOM=uphoton \
   COSMOS_CHANNEL_ID=channel-11 \
   COSMOS_COUNTERPARTY_CHANNEL_ID=channel-27 \

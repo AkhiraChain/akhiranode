@@ -18,16 +18,16 @@ akhiranoded_binary = "akhiranoded"
 
 @dataclass
 class EthereumToSifchainTransferRequest:
-    sifchain_address: str = ""
-    sifchain_destination_address: str = ""
+    akhirachain_address: str = ""
+    akhirachain_destination_address: str = ""
     ethereum_address: str = ""
     ethereum_private_key_env_var: str = "not required for localnet"
-    sifchain_symbol: str = "ceth"
+    akhirachain_symbol: str = "ceth"
     ethereum_symbol: str = "eth"
     ethereum_network: str = ""  # mainnet, ropsten, http:// for localnet
     amount: int = 0
     ceth_amount: int = 0
-    sifchain_fees: str = ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
+    akhirachain_fees: str = ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     smart_contracts_dir: str = ""
     ethereum_chain_id: str = "5777"
     chain_id: str = "localnet"  # cosmos chain id
@@ -51,10 +51,10 @@ class EthereumToSifchainTransferRequest:
     @staticmethod
     def from_args(args):
         return EthereumToSifchainTransferRequest(
-            sifchain_address=args.sifchain_address[0],
-            sifchain_destination_address=args.sifchain_destination_address[0],
+            akhirachain_address=args.akhirachain_address[0],
+            akhirachain_destination_address=args.akhirachain_destination_address[0],
             ethereum_address=args.ethereum_address[0],
-            sifchain_symbol=args.sifchain_symbol[0],
+            akhirachain_symbol=args.akhirachain_symbol[0],
             ethereum_symbol=args.ethereum_symbol[0],
             bridgebank_address=args.bridgebank_address[0],
             amount=int(args.amount[0]),
@@ -184,7 +184,7 @@ def kill_ebrelayer():
 
 def start_ebrelayer():
     integration_dir = get_required_env_var("TEST_INTEGRATION_DIR")
-    return get_shell_output(f"{integration_dir}/sifchain_start_ebrelayer.sh")
+    return get_shell_output(f"{integration_dir}/akhirachain_start_ebrelayer.sh")
 
 
 # converts a key to a sif address.
@@ -263,7 +263,7 @@ def mint_tokens(transfer_request: EthereumToSifchainTransferRequest, operator_ad
     return run_yarn_command(command_line)
 
 
-def get_sifchain_addr_balance(sifaddress, akhiranoded_node, denom):
+def get_akhirachain_addr_balance(sifaddress, akhiranoded_node, denom):
     node = f"--node {akhiranoded_node}" if akhiranoded_node else ""
     command_line = f"{akhiranoded_binary} query bank balances {node} {sifaddress} --output json --limit 100000000"
     json_str = get_shell_output_json(command_line)
@@ -340,20 +340,20 @@ def normalize_symbol(symbol: str):
     return symbol.lower()
 
 
-def wait_for_sifchain_addr_balance(
-        sifchain_address,
+def wait_for_akhirachain_addr_balance(
+        akhirachain_address,
         symbol,
         target_balance,
-        sifchaincli_node,
+        akhirachaincli_node,
         max_seconds=30,
         debug_prefix=""
 ):
     normalized_symbol = normalize_symbol(symbol)
     if not max_seconds:
         max_seconds = 90
-    logging.debug(f"wait_for_sifchain_addr_balance for node {sifchaincli_node}, {normalized_symbol}, {target_balance}")
+    logging.debug(f"wait_for_akhirachain_addr_balance for node {akhirachaincli_node}, {normalized_symbol}, {target_balance}")
     return wait_for_balance(
-        lambda: int(get_sifchain_addr_balance(sifchain_address, sifchaincli_node, normalized_symbol)),
+        lambda: int(get_akhirachain_addr_balance(akhirachain_address, akhirachaincli_node, normalized_symbol)),
         int(target_balance),
         max_seconds,
         debug_prefix
@@ -368,27 +368,27 @@ def detect_errors_in_akhiranoded_output(result):
             raise Exception(f"should not have error in output: {result}")
 
 
-def send_from_sifchain_to_sifchain_cmd(
+def send_from_akhirachain_to_akhirachain_cmd(
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials
 ):
-    logging.debug(f"send_from_sifchain_to_sifchain {transfer_request} {credentials}")
+    logging.debug(f"send_from_akhirachain_to_akhirachain {transfer_request} {credentials}")
     yes_entry = f"yes {credentials.keyring_passphrase} | " if credentials.keyring_passphrase else ""
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     chain_id_entry = f"--chain-id {transfer_request.chain_id}" if transfer_request.chain_id else ""
     node = f"--node {transfer_request.akhiranoded_node}" if transfer_request.akhiranoded_node else ""
-    sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
+    akhirachain_fees_entry = f"--fees {transfer_request.akhirachain_fees}" if transfer_request.akhirachain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     home_entry = f"--home {credentials.akhiranoded_homedir}" if credentials.akhiranoded_homedir else ""
     cmd = " ".join([
         yes_entry,
         f"{akhiranoded_binary} tx bank send",
-        transfer_request.sifchain_address,
-        transfer_request.sifchain_destination_address,
+        transfer_request.akhirachain_address,
+        transfer_request.akhirachain_destination_address,
         keyring_backend_entry,
         chain_id_entry,
         node,
-        f"{transfer_request.amount}{transfer_request.sifchain_symbol}",
-        sifchain_fees_entry,
+        f"{transfer_request.amount}{transfer_request.akhirachain_symbol}",
+        akhirachain_fees_entry,
         home_entry,
         "--gas auto",
         "-y -o json",
@@ -396,11 +396,11 @@ def send_from_sifchain_to_sifchain_cmd(
     return cmd
 
 
-def send_from_sifchain_to_sifchain(
+def send_from_akhirachain_to_akhirachain(
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials
 ):
-    cmd = send_from_sifchain_to_sifchain_cmd(transfer_request, credentials)
+    cmd = send_from_akhirachain_to_akhirachain_cmd(transfer_request, credentials)
     result = get_shell_output_json(cmd)
     # detect_errors_in_akhiranoded_output(result)
     time.sleep(4)
@@ -408,7 +408,7 @@ def send_from_sifchain_to_sifchain(
     return result
 
 
-def send_from_sifchain_to_ethereum_cmd(
+def send_from_akhirachain_to_ethereum_cmd(
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials,
 ):
@@ -421,8 +421,8 @@ def send_from_sifchain_to_ethereum_cmd(
     yes_entry = f"yes {credentials.keyring_passphrase} | " if credentials.keyring_passphrase else ""
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     node = f"--node {transfer_request.akhiranoded_node}" if transfer_request.akhiranoded_node else ""
-    sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
-    direction = "lock" if transfer_request.sifchain_symbol == "aku" else "burn"
+    akhirachain_fees_entry = f"--fees {transfer_request.akhirachain_fees}" if transfer_request.akhirachain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
+    direction = "lock" if transfer_request.akhirachain_symbol == "aku" else "burn"
     home_entry = f"--home {credentials.akhiranoded_homedir}" if credentials.akhiranoded_homedir else ""
     from_entry = f"--from {credentials.from_key} " if credentials.from_key else ""
     if not transfer_request.ceth_amount:
@@ -432,13 +432,13 @@ def send_from_sifchain_to_ethereum_cmd(
             ceth_charge = burn_gas_cost
     command_line = f"{yes_entry} " \
                    f"{akhiranoded_binary} tx ethbridge {direction} {node} " \
-                   f"{transfer_request.sifchain_address} " \
+                   f"{transfer_request.akhirachain_address} " \
                    f"{transfer_request.ethereum_address} " \
                    f"{int(transfer_request.amount):0} " \
-                   f"{transfer_request.sifchain_symbol} " \
+                   f"{transfer_request.akhirachain_symbol} " \
                    f"{ceth_charge} " \
                    f"{keyring_backend_entry} " \
-                   f"{sifchain_fees_entry} " \
+                   f"{akhirachain_fees_entry} " \
                    f"--ethereum-chain-id={transfer_request.ethereum_chain_id} " \
                    f"--chain-id={transfer_request.chain_id} " \
                    f"{home_entry} " \
@@ -447,19 +447,19 @@ def send_from_sifchain_to_ethereum_cmd(
     return command_line
 
 
-def send_from_sifchain_to_ethereum(transfer_request: EthereumToSifchainTransferRequest,
+def send_from_akhirachain_to_ethereum(transfer_request: EthereumToSifchainTransferRequest,
                                    credentials: SifchaincliCredentials):
-    command_line = send_from_sifchain_to_ethereum_cmd(transfer_request, credentials)
+    command_line = send_from_akhirachain_to_ethereum_cmd(transfer_request, credentials)
     result = get_shell_output(command_line)
     detect_errors_in_akhiranoded_output(result)
     return result
 
 
 # this does not wait for the transaction to complete
-def send_from_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRequest) -> int:
-    direction = "sendBurnTx" if transfer_request.sifchain_symbol == "aku" else "sendLockTx"
+def send_from_ethereum_to_akhirachain(transfer_request: EthereumToSifchainTransferRequest) -> int:
+    direction = "sendBurnTx" if transfer_request.akhirachain_symbol == "aku" else "sendLockTx"
     command_line = f"yarn -s --cwd {transfer_request.smart_contracts_dir} integrationtest:{direction} " \
-                   f"--sifchain_address {transfer_request.sifchain_address} " \
+                   f"--akhirachain_address {transfer_request.akhirachain_address} " \
                    f"--symbol {transfer_request.ethereum_symbol} " \
                    f"--amount {int(transfer_request.amount):0} " \
                    f"--bridgebank_address {transfer_request.bridgebank_address} " \
@@ -488,10 +488,10 @@ def mirror_of(currency):
     return currency_pairs.get(currency)
 
 
-def wait_for_sif_account(sif_addr, sifchaincli_node, max_seconds=90):
+def wait_for_sif_account(sif_addr, akhirachaincli_node, max_seconds=90):
     def fn():
         try:
-            get_sifchain_addr_balance(sif_addr, sifchaincli_node, "eth")
+            get_akhirachain_addr_balance(sif_addr, akhirachaincli_node, "eth")
             return True
         except:
             return False
@@ -686,7 +686,7 @@ def ganache_private_key(ganache_private_keys_file: str, address):
     return pks[address]
 
 
-def sifchain_symbol_to_ethereum_symbol(s: str):
+def akhirachain_symbol_to_ethereum_symbol(s: str):
     if s == "aku":
         return "eaku"
     elif s == "ceth":
@@ -701,7 +701,7 @@ def update_ceth_receiver_account(
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials
 ):
-    cmd = build_sifchain_command(
+    cmd = build_akhirachain_command(
         f"{akhiranoded_binary} tx ethbridge update_ceth_receiver_account -y {admin_account} {receiver_account}",
         transfer_request=transfer_request,
         credentials=credentials
@@ -717,7 +717,7 @@ def rescue_ceth(
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials
 ):
-    cmd = build_sifchain_command(
+    cmd = build_akhirachain_command(
         f"{akhiranoded_binary} tx ethbridge rescue_ceth -y {admin_account} {receiver_account} {amount:d}",
         transfer_request=transfer_request,
         credentials=credentials
@@ -725,7 +725,7 @@ def rescue_ceth(
     return get_shell_output(cmd)
 
 
-def build_sifchain_command(
+def build_akhirachain_command(
         command_contents: str,
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials
@@ -736,7 +736,7 @@ def build_sifchain_command(
     node_entry = f"--node {transfer_request.akhiranoded_node}" if transfer_request.akhiranoded_node else ""
     home_entry = f"--home {credentials.akhiranoded_homedir}" if credentials.akhiranoded_homedir else ""
     from_entry = f"--from {credentials.from_key} " if credentials.from_key else ""
-    sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
+    akhirachain_fees_entry = f"--fees {transfer_request.akhirachain_fees}" if transfer_request.akhirachain_fees else ""  # Deprecated, see https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     return " ".join([
         yes_entry,
         command_contents,
@@ -745,5 +745,5 @@ def build_sifchain_command(
         node_entry,
         home_entry,
         from_entry,
-        sifchain_fees_entry,
+        akhirachain_fees_entry,
     ])

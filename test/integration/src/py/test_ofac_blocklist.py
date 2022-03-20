@@ -37,7 +37,7 @@ def test_blocklist_eth(ctx):
 
     acct1, acct2 = [ctx.create_and_fund_eth_account(fund_amount=amount_to_fund) for _ in range(2)]
 
-    to_sif_acct = ctx.create_sifchain_addr()
+    to_sif_acct = ctx.create_akhirachain_addr()
     sif_symbol = test_utils.CETH
 
     bridge_bank = ctx.get_bridge_bank_sc()
@@ -56,11 +56,11 @@ def test_blocklist_eth(ctx):
 
         assert len(filter.get_new_entries()) == 0
 
-    # Valid positive test outcome: event emitted, optionally: funds appear on sifchain
+    # Valid positive test outcome: event emitted, optionally: funds appear on akhirachain
     def assert_not_blocked(addr):
         assert len(filter.get_new_entries()) == 0
 
-        balances_before = ctx.get_sifchain_balance(to_sif_acct)
+        balances_before = ctx.get_akhirachain_balance(to_sif_acct)
         txrcpt = bridge_bank_lock_eth(ctx, addr, to_sif_acct, amount_to_send)
         ctx.advance_blocks()
         balances_after = ctx.wait_for_sif_balance_change(to_sif_acct, balances_before)
@@ -120,7 +120,7 @@ def test_blocklist_erc20(ctx):
         # TODO Move to Peggy1EnvCtx.bridge_bank_lock_erc20() as they should always be together
         ctx.eth.transact_sync(test_token.functions.approve, acct)(bridge_bank.address, 10)
 
-    to_sif_acct = ctx.create_sifchain_addr()
+    to_sif_acct = ctx.create_akhirachain_addr()
 
     filter = bridge_bank.events.LogLock.createFilter(fromBlock="latest")
 
@@ -138,7 +138,7 @@ def test_blocklist_erc20(ctx):
     def assert_not_blocked(addr):
         assert len(filter.get_new_entries()) == 0
 
-        balances_before = ctx.get_sifchain_balance(to_sif_acct)
+        balances_before = ctx.get_akhirachain_balance(to_sif_acct)
         txrcpt = bridge_bank_lock_erc20(ctx, test_token, addr, to_sif_acct, amount_to_send)
         ctx.advance_blocks()
         balances_after = ctx.wait_for_sif_balance_change(to_sif_acct, balances_before)

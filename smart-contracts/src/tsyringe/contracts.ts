@@ -4,7 +4,7 @@ import {BigNumber, ContractFactory} from "ethers";
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {EthereumAddress, NotNativeCurrencyAddress} from "../ethereumAddress";
 import {HardhatRuntimeEnvironmentToken,} from "./injectionTokens";
-import {SifchainAccounts, SifchainAccountsPromise} from "./sifchainAccounts";
+import {SifchainAccounts, SifchainAccountsPromise} from "./akhirachainAccounts";
 import {
     BridgeBank,
     BridgeBank__factory,
@@ -60,10 +60,10 @@ export class CosmosBridgeProxy {
 
     constructor(
         @inject(HardhatRuntimeEnvironmentToken) hardhatRuntimeEnvironment: HardhatRuntimeEnvironment,
-        sifchainContractFactories: SifchainContractFactories,
+        akhirachainContractFactories: SifchainContractFactories,
         cosmosBridgeArgumentsPromise: CosmosBridgeArgumentsPromise,
     ) {
-        this.contract = sifchainContractFactories.cosmosBridge.then(async cosmosBridgeFactory => {
+        this.contract = akhirachainContractFactories.cosmosBridge.then(async cosmosBridgeFactory => {
             const args = await cosmosBridgeArgumentsPromise.cosmosBridgeArguments
             const cosmosBridgeProxy = await hardhatRuntimeEnvironment.upgrades.deployProxy(cosmosBridgeFactory, args.asArray())
             await cosmosBridgeProxy.deployed()
@@ -72,13 +72,13 @@ export class CosmosBridgeProxy {
     }
 }
 
-export function defaultCosmosBridgeArguments(sifchainAccounts: SifchainAccounts, power: number = 100): CosmosBridgeArguments {
-    const powers = sifchainAccounts.validatatorAccounts.map(_ => power)
+export function defaultCosmosBridgeArguments(akhirachainAccounts: SifchainAccounts, power: number = 100): CosmosBridgeArguments {
+    const powers = akhirachainAccounts.validatatorAccounts.map(_ => power)
     const threshold = powers.reduce((acc, x) => acc + x)
     return new CosmosBridgeArguments(
-        new NotNativeCurrencyAddress(sifchainAccounts.operatorAccount.address),
+        new NotNativeCurrencyAddress(akhirachainAccounts.operatorAccount.address),
         threshold,
-        sifchainAccounts.validatatorAccounts.map(x => new NotNativeCurrencyAddress(x.address)),
+        akhirachainAccounts.validatatorAccounts.map(x => new NotNativeCurrencyAddress(x.address)),
         powers
     )
 }
@@ -99,13 +99,13 @@ export function defaultCosmosBridgeArguments(sifchainAccounts: SifchainAccounts,
 export class BridgeBankArguments {
     constructor(
         private readonly cosmosBridgeProxy: CosmosBridgeProxy,
-        private readonly sifchainAccountsPromise: SifchainAccountsPromise
+        private readonly akhirachainAccountsPromise: SifchainAccountsPromise
     ) {
     }
 
     async asArray() {
         const cosmosBridge = await this.cosmosBridgeProxy.contract
-        const accts = await this.sifchainAccountsPromise.accounts
+        const accts = await this.akhirachainAccountsPromise.accounts
         const result = [
             accts.operatorAccount.address,
             cosmosBridge.address,
@@ -122,10 +122,10 @@ export class BridgeBankProxy {
 
     constructor(
         @inject(HardhatRuntimeEnvironmentToken) h: HardhatRuntimeEnvironment,
-        private sifchainContractFactories: SifchainContractFactories,
+        private akhirachainContractFactories: SifchainContractFactories,
         private bridgeBankArguments: BridgeBankArguments,
     ) {
-        this.contract = sifchainContractFactories.bridgeBank.then(async bridgeBankFactory => {
+        this.contract = akhirachainContractFactories.bridgeBank.then(async bridgeBankFactory => {
             const bridgeBankArguments = await this.bridgeBankArguments.asArray()
             const bridgeBankProxy = await h.upgrades.deployProxy(bridgeBankFactory, bridgeBankArguments, {initializer: "initialize(address,address,address,address)"}) as BridgeBank
             await bridgeBankProxy.deployed()
@@ -142,11 +142,11 @@ export class BridgeRegistryProxy {
 
     constructor(
         @inject(HardhatRuntimeEnvironmentToken) h: HardhatRuntimeEnvironment,
-        private sifchainContractFactories: SifchainContractFactories,
+        private akhirachainContractFactories: SifchainContractFactories,
         private cosmosBridgeProxy: CosmosBridgeProxy,
         private bridgeBankProxy: BridgeBankProxy,
     ) {
-        this.contract = sifchainContractFactories.bridgeRegistry.then(async bridgeRegistryFactory => {
+        this.contract = akhirachainContractFactories.bridgeRegistry.then(async bridgeRegistryFactory => {
             const bridgeRegistryProxy = await h.upgrades.deployProxy(bridgeRegistryFactory, [
                 (await cosmosBridgeProxy.contract).address,
                 (await bridgeBankProxy.contract).address
@@ -165,9 +165,9 @@ export class RowanContract {
     readonly contract: Promise<BridgeToken>
 
     constructor(
-        private sifchainContractFactories: SifchainContractFactories,
+        private akhirachainContractFactories: SifchainContractFactories,
     ) {
-        this.contract = sifchainContractFactories.bridgeToken.then(async bridgeToken => {
+        this.contract = akhirachainContractFactories.bridgeToken.then(async bridgeToken => {
             return await (bridgeToken as BridgeToken__factory).deploy("eaku") as BridgeToken
         })
     }
@@ -180,15 +180,15 @@ export class BridgeTokenSetup {
     private async build(
         aku: RowanContract,
         bridgeBankProxy: BridgeBankProxy,
-        sifchainAccounts: SifchainAccountsPromise
+        akhirachainAccounts: SifchainAccountsPromise
     ) {
         const eaku = await aku.contract
-        const owner = (await sifchainAccounts.accounts).ownerAccount
+        const owner = (await akhirachainAccounts.accounts).ownerAccount
         const bridgebank = (await bridgeBankProxy.contract).connect(owner)
         await bridgebank.addExistingBridgeToken(eaku.address)
         await eaku.approve(bridgebank.address, "10000000000000000000")
         await eaku.addMinter(owner.address)
-        const accounts = await sifchainAccounts.accounts
+        const accounts = await akhirachainAccounts.accounts
         const muchRowan = BigNumber.from(100000000).mul(BigNumber.from(10).pow(18))
         await eaku.mint(accounts.operatorAccount.address, muchRowan)
         return true
@@ -197,8 +197,8 @@ export class BridgeTokenSetup {
     constructor(
         aku: RowanContract,
         bridgeBankProxy: BridgeBankProxy,
-        sifchainAccounts: SifchainAccountsPromise
+        akhirachainAccounts: SifchainAccountsPromise
     ) {
-        this.complete = this.build(aku, bridgeBankProxy, sifchainAccounts)
+        this.complete = this.build(aku, bridgeBankProxy, akhirachainAccounts)
     }
 }

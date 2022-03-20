@@ -1,7 +1,7 @@
 ---
 name: "[Token Registry] Add new IBC chain channel and token"
 about: "[Token Registry] Add a new IBC chain, channel and token"
-title: '[Token Registry] Add ... chain on ... sifchain network'
+title: '[Token Registry] Add ... chain on ... akhirachain network'
 labels: 'Sifnode, Token Registry'
 assignees: '@sifnode'
 

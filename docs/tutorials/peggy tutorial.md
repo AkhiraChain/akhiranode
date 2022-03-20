@@ -22,7 +22,7 @@ npm install dotenv
 
 #### What is it
 
-Peggy is a cross-chain ethereum bridge for cosmos-sdk based chains such as sifchain. This enables the pegging of ethereum assets that can then be used within the sifchain and ecosystem. 
+Peggy is a cross-chain ethereum bridge for cosmos-sdk based chains such as akhirachain. This enables the pegging of ethereum assets that can then be used within the akhirachain and ecosystem. 
 #### Setup 
 0. Follow the `readme.md` and make sure your `akhiranoded` is running and synced 
 1. Create a MetaMask ethereum address on the ropsten network and fund from a faucet: `https://faucet.metamask.io/`
@@ -36,7 +36,7 @@ Peggy is a cross-chain ethereum bridge for cosmos-sdk based chains such as sifch
 2. Change into the smart-contacts directory `cd ./smart-contracts` 
 3. Execute the sendLockTx.js script (Send funds from your metaMask wallet into SifChain/Peggy) `truffle exec scripts/sendLockTx.js --network ropsten sif130ak88ylwxd6krketcsvurgydyva5wjp3ueunl eth 500000000000000000
 ` Note; uUpdate this command with your local address. Numbers are in wei. Use `https://eth-converter.com/` if needed. 
-4. Check sifchain address for the now pegged ethereum called `ceth`:  ` akhiranoded q account sif130ak88ylwxd6krketcsvurgydyva5wjp3ueunl`  Note: again, update with your local address
+4. Check akhirachain address for the now pegged ethereum called `ceth`:  ` akhiranoded q account sif130ak88ylwxd6krketcsvurgydyva5wjp3ueunl`  Note: again, update with your local address
 #### Send ceth back to your MetaMask address
 1. Execute a ethbridge burn tx (un-peg funds) `akhiranoded tx ethbridge burn sif130ak88ylwxd6krketcsvurgydyva5wjp3ueunl 0xdA6Df58317E6bf25F9B707E1BA27E41689e2229F 500000000000000000 ceth --ethereum-chain-id=3 --from=withered-sky --yes` Note: Update with your local sif address and ethereum receiver address
 2. Check account balance has been reduced `akhiranoded q account sif130ak88ylwxd6krketcsvurgydyva5wjp3ueunl`

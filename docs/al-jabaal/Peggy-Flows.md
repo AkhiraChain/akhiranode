@@ -20,7 +20,7 @@ Note that the next type of transactions require approving the BridgeBank contrac
 
 
 3. Ethereum Native Asset on Ethereum Being Transferred to Sifchain
-- A user sends a lock tx on ethereum to the BridgeBank contract specifying the token address, the amount of tokens to send, and the desired address of the sifchain recipient. This TX emits an ethereum event with all of these data fields.
+- A user sends a lock tx on ethereum to the BridgeBank contract specifying the token address, the amount of tokens to send, and the desired address of the akhirachain recipient. This TX emits an ethereum event with all of these data fields.
 
 ```
 event LogLock(
@@ -37,7 +37,7 @@ event LogLock(
 
 
 4. Cosmos Native Pegged Asset on Ethereum Being Transferred Back to Sifchain
-- A user sends a burn tx on ethereum to the BridgeBank contract specifying the token address, the amount of tokens to send, and the desired address of the sifchain recipient. This TX emits an ethereum event with all of these data fields.
+- A user sends a burn tx on ethereum to the BridgeBank contract specifying the token address, the amount of tokens to send, and the desired address of the akhirachain recipient. This TX emits an ethereum event with all of these data fields.
 ```
 event LogBurn(
     address _from,

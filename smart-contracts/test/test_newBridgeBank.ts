@@ -11,7 +11,7 @@ import {
     SifchainContractFactories
 } from "../src/tsyringe/contracts";
 import {BridgeBank, BridgeBank__factory, BridgeToken} from "../build";
-import {SifchainAccounts, SifchainAccountsPromise} from "../src/tsyringe/sifchainAccounts";
+import {SifchainAccounts, SifchainAccountsPromise} from "../src/tsyringe/akhirachainAccounts";
 import {
     DeploymentChainId,
     DeploymentDirectory,

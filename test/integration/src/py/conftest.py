@@ -21,14 +21,14 @@ def sifnode_base_dir():
 
 
 @pytest.fixture
-def sifchain_admin_account():
+def akhirachain_admin_account():
     return test_utilities.get_required_env_var("SIFCHAIN_ADMIN_ACCOUNT")
 
 
 @pytest.fixture
-def sifchain_admin_account_credentials(sifchain_admin_account):
+def akhirachain_admin_account_credentials(akhirachain_admin_account):
     return test_utilities.SifchaincliCredentials(
-        from_key=sifchain_admin_account
+        from_key=akhirachain_admin_account
     )
 
 
@@ -80,7 +80,7 @@ def ethereum_network():
 
 
 @pytest.fixture
-def n_sifchain_accounts():
+def n_akhirachain_accounts():
     return int(test_utilities.get_optional_env_var("N_SIFCHAIN_ACCOUNTS", 1))
 
 
@@ -107,7 +107,7 @@ def akhiranoded_homedir(is_ropsten_testnet):
 
 @pytest.fixture
 def aku_source(is_ropsten_testnet, validator_address):
-    """A sifchain address or key that has aku and can send that aku to other address"""
+    """A akhirachain address or key that has aku and can send that aku to other address"""
     result = test_utilities.get_optional_env_var("ROWAN_SOURCE", None)
     if result:
         return result
@@ -120,7 +120,7 @@ def aku_source(is_ropsten_testnet, validator_address):
 
 @pytest.fixture
 def aku_source_key(is_ropsten_testnet, aku_source):
-    """A sifchain address or key that has aku and can send that aku to other address"""
+    """A akhirachain address or key that has aku and can send that aku to other address"""
     result = test_utilities.get_optional_env_var("ROWAN_SOURCE_KEY", aku_source)
     if result:
         return result
@@ -184,16 +184,16 @@ def is_ganache(ethereum_network):
 # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
 # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
 @pytest.fixture
-def sifchain_fees(sifchain_fees_int):
+def akhirachain_fees(akhirachain_fees_int):
     """returns a string suitable for passing to akhiranoded"""
-    return f"{sifchain_fees_int}aku"
+    return f"{akhirachain_fees_int}aku"
 
 
 # Deprecated: akhiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
 # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
 # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
 @pytest.fixture
-def sifchain_fees_int():
+def akhirachain_fees_int():
     return 100000000000000000
 
 
@@ -271,7 +271,7 @@ def basic_transfer_request(
         ethereum_network,
         akhiranoded_node,
         chain_id,
-        sifchain_fees,
+        akhirachain_fees,
         solidity_json_path,
         is_ganache,
 ):
@@ -287,7 +287,7 @@ def basic_transfer_request(
         akhiranoded_node=akhiranoded_node,
         manual_block_advance=is_ganache,
         chain_id=chain_id,
-        sifchain_fees=sifchain_fees,
+        akhirachain_fees=akhirachain_fees,
         solidity_json_path=solidity_json_path
     )
 
@@ -321,8 +321,8 @@ def aku_source_integrationtest_env_transfer_request(
     for a transfer of aku from an account that already has aku.
     """
     result: test_utilities.EthereumToSifchainTransferRequest = copy.deepcopy(basic_transfer_request)
-    result.sifchain_address = aku_source
-    result.sifchain_symbol = "aku"
+    result.akhirachain_address = aku_source
+    result.akhirachain_symbol = "aku"
     return result
 
 
@@ -335,17 +335,17 @@ def ethbridge_module_address():
 @pytest.fixture(scope="function")
 def restore_default_rescue_location(
         ethbridge_module_address,
-        sifchain_admin_account,
-        sifchain_admin_account_credentials,
+        akhirachain_admin_account,
+        akhirachain_admin_account_credentials,
         basic_transfer_request
 ):
     """Restores the ethbridge module as the destination for ceth fees"""
     yield None
     test_utilities.update_ceth_receiver_account(
         receiver_account=ethbridge_module_address,
-        admin_account=sifchain_admin_account,
+        admin_account=akhirachain_admin_account,
         transfer_request=basic_transfer_request,
-        credentials=sifchain_admin_account_credentials
+        credentials=akhirachain_admin_account_credentials
     )
 
 

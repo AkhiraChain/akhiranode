@@ -9,10 +9,10 @@ from typing import List
 import sys
 import time
 
-from test_utilities import get_sifchain_addr_balance, advance_n_ethereum_blocks, \
-    n_wait_blocks, print_error_message, wait_for_sifchain_addr_balance, send_from_ethereum_to_sifchain, \
-    get_eth_balance, send_from_sifchain_to_ethereum, wait_for_eth_balance, \
-    wait_for_ethereum_block_number, send_from_sifchain_to_sifchain, wait_for_sif_account, \
+from test_utilities import get_akhirachain_addr_balance, advance_n_ethereum_blocks, \
+    n_wait_blocks, print_error_message, wait_for_akhirachain_addr_balance, send_from_ethereum_to_akhirachain, \
+    get_eth_balance, send_from_akhirachain_to_ethereum, wait_for_eth_balance, \
+    wait_for_ethereum_block_number, send_from_akhirachain_to_akhirachain, wait_for_sif_account, \
     get_shell_output_json, EthereumToSifchainTransferRequest, SifchaincliCredentials, RequestAndCredentials, \
     akhiranoded_binary
 
@@ -34,11 +34,11 @@ def force_log_level(new_level):
     return existing_level
 
 
-def transfer_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRequest,
+def transfer_ethereum_to_akhirachain(transfer_request: EthereumToSifchainTransferRequest,
                                   max_seconds: int = default_timeout_for_ganache):
-    logging.debug(f"transfer_ethereum_to_sifchain {transfer_request.as_json()}")
+    logging.debug(f"transfer_ethereum_to_akhirachain {transfer_request.as_json()}")
     assert transfer_request.ethereum_address
-    assert transfer_request.sifchain_address
+    assert transfer_request.akhirachain_address
 
     # it's possible that this is the first transfer to the address, so there's
     # no balance to retrieve.  Catch that exception.
@@ -46,26 +46,26 @@ def transfer_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRe
     original_log_level = decrease_log_level()
 
     try:
-        sifchain_starting_balance = get_sifchain_addr_balance(
-            transfer_request.sifchain_address,
+        akhirachain_starting_balance = get_akhirachain_addr_balance(
+            transfer_request.akhirachain_address,
             transfer_request.akhiranoded_node,
-            transfer_request.sifchain_symbol
+            transfer_request.akhirachain_symbol
         )
     except:
-        logging.debug(f"transfer_ethereum_to_sifchain failed to get starting balance, this is probably a new account")
-        sifchain_starting_balance = 0
+        logging.debug(f"transfer_ethereum_to_akhirachain failed to get starting balance, this is probably a new account")
+        akhirachain_starting_balance = 0
 
     status = {
-        "action": "transfer_ethereum_to_sifchain",
-        "sifchain_starting_balance": sifchain_starting_balance,
+        "action": "transfer_ethereum_to_akhirachain",
+        "akhirachain_starting_balance": akhirachain_starting_balance,
         "transfer_request": transfer_request.__dict__,
     }
-    logging.debug(f"transfer_ethereum_to_sifchain_json: {json.dumps(status)}", )
+    logging.debug(f"transfer_ethereum_to_akhirachain_json: {json.dumps(status)}", )
 
     force_log_level(original_log_level)
-    starting_block = send_from_ethereum_to_sifchain(transfer_request)
+    starting_block = send_from_ethereum_to_akhirachain(transfer_request)
     original_log_level = decrease_log_level()
-    logging.debug(f"send_from_ethereum_to_sifchain ethereum block number: {starting_block}")
+    logging.debug(f"send_from_ethereum_to_akhirachain ethereum block number: {starting_block}")
 
     half_n_wait_blocks = n_wait_blocks / 2
     logging.debug("wait half the blocks, transfer should not complete")
@@ -81,21 +81,21 @@ def transfer_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRe
 
     # we still may not have an account
     try:
-        sifchain_balance_before_required_elapsed_blocks = get_sifchain_addr_balance(
-            transfer_request.sifchain_address,
+        akhirachain_balance_before_required_elapsed_blocks = get_akhirachain_addr_balance(
+            transfer_request.akhirachain_address,
             transfer_request.akhiranoded_node,
-            transfer_request.sifchain_symbol
+            transfer_request.akhirachain_symbol
         )
     except:
-        sifchain_balance_before_required_elapsed_blocks = 0
+        akhirachain_balance_before_required_elapsed_blocks = 0
 
     # need to be able to turn off checking the balance after waiting half the blocks
     # because we want to be able to run some tests in parallel.  If parallel tests
     # are manually advancing blocks, you can't be sure where you are.
-    if transfer_request.check_wait_blocks and sifchain_balance_before_required_elapsed_blocks != sifchain_starting_balance:
+    if transfer_request.check_wait_blocks and akhirachain_balance_before_required_elapsed_blocks != akhirachain_starting_balance:
         print_error_message(
-            f"balance should not have changed yet.  Starting balance {sifchain_starting_balance},"
-            f" current balance {sifchain_balance_before_required_elapsed_blocks}"
+            f"balance should not have changed yet.  Starting balance {akhirachain_starting_balance},"
+            f" current balance {akhirachain_balance_before_required_elapsed_blocks}"
         )
 
     if transfer_request.manual_block_advance:
@@ -106,61 +106,61 @@ def transfer_ethereum_to_sifchain(transfer_request: EthereumToSifchainTransferRe
             transfer_request=transfer_request
         )
 
-    target_balance = sifchain_starting_balance + transfer_request.amount
+    target_balance = akhirachain_starting_balance + transfer_request.amount
 
     # You can't get the balance of an account that doesn't exist yet,
     # so wait for the account to be there before asking for the balance
-    logging.debug(f"wait for account {transfer_request.sifchain_address}")
+    logging.debug(f"wait for account {transfer_request.akhirachain_address}")
     wait_for_sif_account(
-        sif_addr=transfer_request.sifchain_address,
-        sifchaincli_node=transfer_request.akhiranoded_node,
+        sif_addr=transfer_request.akhirachain_address,
+        akhirachaincli_node=transfer_request.akhiranoded_node,
         max_seconds=max_seconds
     )
 
-    wait_for_sifchain_addr_balance(
-        sifchain_address=transfer_request.sifchain_address,
-        symbol=transfer_request.sifchain_symbol,
-        sifchaincli_node=transfer_request.akhiranoded_node,
+    wait_for_akhirachain_addr_balance(
+        akhirachain_address=transfer_request.akhirachain_address,
+        symbol=transfer_request.akhirachain_symbol,
+        akhirachaincli_node=transfer_request.akhiranoded_node,
         target_balance=target_balance,
         max_seconds=max_seconds,
-        debug_prefix=f"transfer_ethereum_to_sifchain waiting for balance {transfer_request}"
+        debug_prefix=f"transfer_ethereum_to_akhirachain waiting for balance {transfer_request}"
     )
 
     force_log_level(original_log_level)
 
     result = {
         **status,
-        "sifchain_ending_balance": target_balance,
+        "akhirachain_ending_balance": target_balance,
     }
-    logging.debug(f"transfer_ethereum_to_sifchain completed {json.dumps(result)}")
+    logging.debug(f"transfer_ethereum_to_akhirachain completed {json.dumps(result)}")
     return result
 
 
-def transfer_sifchain_to_ethereum(
+def transfer_akhirachain_to_ethereum(
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials,
         max_seconds: int = 90
 ):
-    logging.debug(f"transfer_sifchain_to_ethereum_json: {transfer_request.as_json()}")
+    logging.debug(f"transfer_akhirachain_to_ethereum_json: {transfer_request.as_json()}")
 
     original_log_level = decrease_log_level()
     ethereum_starting_balance = get_eth_balance(transfer_request)
 
-    sifchain_starting_balance = get_sifchain_addr_balance(
-        transfer_request.sifchain_address,
+    akhirachain_starting_balance = get_akhirachain_addr_balance(
+        transfer_request.akhirachain_address,
         transfer_request.akhiranoded_node,
-        transfer_request.sifchain_symbol
+        transfer_request.akhirachain_symbol
     )
 
     status = {
-        "action": "transfer_sifchain_to_ethereum",
+        "action": "transfer_akhirachain_to_ethereum",
         "ethereum_starting_balance": ethereum_starting_balance,
-        "sifchain_starting_balance": sifchain_starting_balance,
+        "akhirachain_starting_balance": akhirachain_starting_balance,
     }
     logging.debug(status)
 
     force_log_level(original_log_level)
-    raw_output = send_from_sifchain_to_ethereum(transfer_request, credentials)
+    raw_output = send_from_akhirachain_to_ethereum(transfer_request, credentials)
     original_log_level = decrease_log_level()
 
     target_balance = ethereum_starting_balance + transfer_request.amount
@@ -171,67 +171,67 @@ def transfer_sifchain_to_ethereum(
         max_seconds=max_seconds
     )
 
-    sifchain_ending_balance = get_sifchain_addr_balance(
-        transfer_request.sifchain_address,
+    akhirachain_ending_balance = get_akhirachain_addr_balance(
+        transfer_request.akhirachain_address,
         transfer_request.akhiranoded_node,
-        transfer_request.sifchain_symbol
+        transfer_request.akhirachain_symbol
     )
 
     result = {
         **status,
-        "sifchain_ending_balance": sifchain_ending_balance,
+        "akhirachain_ending_balance": akhirachain_ending_balance,
         "ethereum_ending_balance": target_balance,
     }
-    logging.debug(f"transfer_sifchain_to_ethereum_complete_json: {json.dumps(result)}")
+    logging.debug(f"transfer_akhirachain_to_ethereum_complete_json: {json.dumps(result)}")
     force_log_level(original_log_level)
     return result
 
 
-def transfer_sifchain_to_sifchain(
+def transfer_akhirachain_to_akhirachain(
         transfer_request: EthereumToSifchainTransferRequest,
         credentials: SifchaincliCredentials,
         max_seconds: int = 30
 ):
-    logging.debug(f"transfer_sifchain_to_sifchain: {transfer_request.as_json()}")
+    logging.debug(f"transfer_akhirachain_to_akhirachain: {transfer_request.as_json()}")
 
     try:
-        sifchain_starting_balance = get_sifchain_addr_balance(
-            transfer_request.sifchain_destination_address,
+        akhirachain_starting_balance = get_akhirachain_addr_balance(
+            transfer_request.akhirachain_destination_address,
             transfer_request.akhiranoded_node,
-            transfer_request.sifchain_symbol
+            transfer_request.akhirachain_symbol
         )
     except Exception as e:
         # this is a new account, so the balance is 0
-        sifchain_starting_balance = 0
+        akhirachain_starting_balance = 0
 
     status = {
-        "action": "transfer_sifchain_to_sifchain",
-        "sifchain_starting_balance": sifchain_starting_balance,
+        "action": "transfer_akhirachain_to_akhirachain",
+        "akhirachain_starting_balance": akhirachain_starting_balance,
     }
     logging.info(status)
 
-    send_from_sifchain_to_sifchain(
+    send_from_akhirachain_to_akhirachain(
         transfer_request,
         credentials
     )
-    target_balance = transfer_request.amount + sifchain_starting_balance
+    target_balance = transfer_request.amount + akhirachain_starting_balance
     wait_for_sif_account(
-        sif_addr=transfer_request.sifchain_destination_address,
-        sifchaincli_node=transfer_request.akhiranoded_node,
+        sif_addr=transfer_request.akhirachain_destination_address,
+        akhirachaincli_node=transfer_request.akhiranoded_node,
         max_seconds=max_seconds
     )
-    wait_for_sifchain_addr_balance(
-        sifchain_address=transfer_request.sifchain_destination_address,
-        symbol=transfer_request.sifchain_symbol,
+    wait_for_akhirachain_addr_balance(
+        akhirachain_address=transfer_request.akhirachain_destination_address,
+        symbol=transfer_request.akhirachain_symbol,
         target_balance=target_balance,
-        sifchaincli_node=transfer_request.akhiranoded_node,
+        akhirachaincli_node=transfer_request.akhiranoded_node,
         max_seconds=max_seconds,
-        debug_prefix=f"transfer_sifchain_to_sifchain {transfer_request}"
+        debug_prefix=f"transfer_akhirachain_to_akhirachain {transfer_request}"
     )
 
     return {
         **status,
-        "sifchain_ending_balance": target_balance,
+        "akhirachain_ending_balance": target_balance,
     }
 
 
@@ -242,19 +242,19 @@ def transfer_argument_parser() -> argparse.ArgumentParser:
     Transfer from Ethereum to Sifchain
     """))
     parser.add_argument(
-        '--sifchain_address',
+        '--akhirachain_address',
         type=str,
         nargs=1,
         required=True,
         help="A SifChain address like sif132tc0acwt8klntn53xatchqztl3ajfxxxsawn8"
     )
     parser.add_argument(
-        '--sifchain_destination_address',
+        '--akhirachain_destination_address',
         type=str,
         nargs=1,
         required=False,
         default=[""],
-        help="A SifChain address like sif132tc0acwt8klntn53xatchqztl3ajfxxxsawn8, used for transferring between sifchain addresses"
+        help="A SifChain address like sif132tc0acwt8klntn53xatchqztl3ajfxxxsawn8, used for transferring between akhirachain addresses"
     )
     parser.add_argument(
         '--ethereum_address',
@@ -271,7 +271,7 @@ def transfer_argument_parser() -> argparse.ArgumentParser:
         help="An ethereum symbol like eth"
     )
     parser.add_argument(
-        '--sifchain_symbol',
+        '--akhirachain_symbol',
         type=str,
         nargs=1,
         required=True,

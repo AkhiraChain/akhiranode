@@ -5,14 +5,14 @@ General Flow
 2. The Sending Chain
     - if is is the token source chain (origin chain), then the exported tokens are locked up in an escrow address
     - if the token did **not** orginate in the sending chain, then the tokens are burned on the sending chain, so that they can be unlocked on the other chain
-3. If the sending chain is sifchain, the token is checked against the tokenregistry for the following:
+3. If the sending chain is akhirachain, the token is checked against the tokenregistry for the following:
     - Check if we need to modify decimal precision
     - Check if the token has permission for IBCEXPORT
 4. The transfer packet then goes through the IBC Send,Receive,Ack flow. More details on events https://github.com/cosmos/ibc-go/v2/blob/main/modules/core/spec/06_events.md
 5. The Receiving Chain
     - if is is the token source chain (origin chain), then the tokens are unlocked from the escrow address
     - if the token did **not** originate in the sending chain, then the tokens are minted with a new denom. The new denom is created by appending the port and the channel to the existing denom to create the denom trace.
-6. If the receiving chain is sifchain, the token is checked against the token registry 
+6. If the receiving chain is akhirachain, the token is checked against the token registry 
     - Check if we need to modify the decimal precision
     - Check if the token has IBCIMPORT permission
     - Check if the token is Whitelisted
@@ -27,7 +27,7 @@ channel-101  -> Channel
 cosmos1syavy2npfyt9tcncdtsdzf7kny9lh777pahuux  -> Receiver( in Chain-2)
 1ibc/C782C1DE5F380BC8A5B7D490684894B439D31847A004B271D7B7BA07751E582A (Tokens sent)
 --from=ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd (Sender in Chain-1)
---node=https://rpc-devnet.sifchain.finance:443 (Broadcasting Node for Chain-1)
+--node=https://rpc-devnet.akhirachain.finance:443 (Broadcasting Node for Chain-1)
 --chain-id=akhirachain-devnet-1  (chainID for Chain-1)
 --gas-prices=1aku (Gas Prices to pay in Chain-1)
 --gas=5000000 (Max gas the Sender is willing to pay)

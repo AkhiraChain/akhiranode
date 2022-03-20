@@ -6,7 +6,7 @@ import time
 import burn_lock_functions
 import test_utilities
 from burn_lock_functions import EthereumToSifchainTransferRequest
-from integration_env_credentials import sifchain_cli_credentials_for_test
+from integration_env_credentials import akhirachain_cli_credentials_for_test
 from pytest_utilities import generate_test_account
 from test_utilities import get_required_env_var, get_shell_output, SifchaincliCredentials
 
@@ -17,11 +17,11 @@ def build_request(
         solidity_json_path,
 ) -> (EthereumToSifchainTransferRequest, SifchaincliCredentials):
     new_account_key = get_shell_output("uuidgen")
-    credentials = sifchain_cli_credentials_for_test(new_account_key)
+    credentials = akhirachain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     credentials.from_key = new_addr["name"]
     request = EthereumToSifchainTransferRequest(
-        sifchain_address=new_addr["address"],
+        akhirachain_address=new_addr["address"],
         smart_contracts_dir=smart_contracts_dir,
         ethereum_address=ethereum_address,
         ethereum_private_key_env_var="ETHEREUM_PRIVATE_KEY",
@@ -55,28 +55,28 @@ def test_transfer_eth_to_ceth_using_replay_blocks(
         target_aku_balance=10 ** 19
     )
     aku_transfer_request = copy.deepcopy(request)
-    aku_transfer_request.sifchain_symbol = "aku"
+    aku_transfer_request.akhirachain_symbol = "aku"
     small_amount = 9
     aku_transfer_request.amount = small_amount
-    test_utilities.send_from_sifchain_to_ethereum(aku_transfer_request, credentials)
+    test_utilities.send_from_akhirachain_to_ethereum(aku_transfer_request, credentials)
 
     starting_block = test_utilities.current_ethereum_block_number(smart_contracts_dir)
     logging.info("stopping ebrelayer")
     test_utilities.kill_ebrelayer()
     request, credentials = build_request(smart_contracts_dir, source_ethereum_address, solidity_json_path)
-    request.sifchain_symbol = "aku"
+    request.akhirachain_symbol = "aku"
     request.ethereum_symbol = bridgetoken_address
     request.amount = small_amount
     logging.info("(no transactions should happen without a relayer)")
-    logging.info(f"send {small_amount} aku to {request.sifchain_address}")
-    test_utilities.send_from_ethereum_to_sifchain(request)
+    logging.info(f"send {small_amount} aku to {request.akhirachain_address}")
+    test_utilities.send_from_ethereum_to_akhirachain(request)
 
     logging.info("make sure no balances changed while the relayer was offline")
     test_utilities.advance_n_ethereum_blocks(test_utilities.n_wait_blocks, smart_contracts_dir)
     time.sleep(5)
-    balance_with_no_relayer = test_utilities.get_sifchain_addr_balance(
-        request.sifchain_address, request.akhiranoded_node,
-        request.sifchain_symbol
+    balance_with_no_relayer = test_utilities.get_akhirachain_addr_balance(
+        request.akhirachain_address, request.akhiranoded_node,
+        request.akhirachain_symbol
     )
     assert (balance_with_no_relayer == 0)
 
@@ -91,14 +91,14 @@ def test_transfer_eth_to_ceth_using_replay_blocks(
  --keyring-backend test --node tcp://0.0.0.0:26657 --from {mon}  --symbol-translator-file {integration_dir}/config/symbol_translator.json"""
     test_utilities.get_shell_output(cmd)
     time.sleep(5)
-    logging.info(f"check the ending balance of {request.sifchain_address} after replaying blocks")
-    ending_balance = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akhiranoded_node,
-                                                              request.sifchain_symbol)
+    logging.info(f"check the ending balance of {request.akhirachain_address} after replaying blocks")
+    ending_balance = test_utilities.get_akhirachain_addr_balance(request.akhirachain_address, request.akhiranoded_node,
+                                                              request.akhirachain_symbol)
     assert (ending_balance == request.amount)
 
     # now do it again
     test_utilities.get_shell_output(cmd)
     time.sleep(5)
-    ending_balance2 = test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akhiranoded_node,
-                                                               request.sifchain_symbol)
+    ending_balance2 = test_utilities.get_akhirachain_addr_balance(request.akhirachain_address, request.akhiranoded_node,
+                                                               request.akhirachain_symbol)
     assert (ending_balance2 == request.amount)

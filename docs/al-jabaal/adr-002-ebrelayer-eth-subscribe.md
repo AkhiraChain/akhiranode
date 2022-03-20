@@ -14,10 +14,10 @@ In this ADR, we discuss the solution for ebrelayer how to subscribe the events f
 
 For ebrelayer, it just needs to subscribe to the events from the BridgeBank smart contract, both LogLock event and LogBurn event, then process both events and send transaction to Sifchain. Basically, there are two problems.
 1. The block produced in Ethereum maybe be reorganized, most of system opt to confirm the finalization of block after 6 blocks.
-2. How to store the events. The way that this is accomplished is anytime we see a new block, we look back 50 blocks, look at all of the events in that block, then package them up as prophecy claims and send them to sifchain.
+2. How to store the events. The way that this is accomplished is anytime we see a new block, we look back 50 blocks, look at all of the events in that block, then package them up as prophecy claims and send them to akhirachain.
 
 ## Current solution
-We start to process the events happened 50 blocks before. 50 blocks can guarantee the finalization of block. Then there is no impact from block reorganization. Whenever a new block comes in, we look back 50 blocks ago, and relay events from that block to sifchain.
+We start to process the events happened 50 blocks before. 50 blocks can guarantee the finalization of block. Then there is no impact from block reorganization. Whenever a new block comes in, we look back 50 blocks ago, and relay events from that block to akhirachain.
 
 ### Pros and Cons
 

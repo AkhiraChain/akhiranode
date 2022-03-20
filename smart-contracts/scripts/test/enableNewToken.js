@@ -3,16 +3,16 @@ const BN = require('bn.js');
 module.exports = async (cb) => {
     const Web3 = require("web3");
 
-    const sifchainUtilities = require('./sifchainUtilities')
+    const akhirachainUtilities = require('./akhirachainUtilities')
     const contractUtilites = require('./contractUtilities');
 
-    const logging = sifchainUtilities.configureLogging(this);
+    const logging = akhirachainUtilities.configureLogging(this);
 
-    const argv = sifchainUtilities.processArgs(this, {
-        ...sifchainUtilities.sharedYargOptions,
-        ...sifchainUtilities.bridgeBankAddressYargOptions,
-        ...sifchainUtilities.symbolYargOption,
-        ...sifchainUtilities.amountYargOption,
+    const argv = akhirachainUtilities.processArgs(this, {
+        ...akhirachainUtilities.sharedYargOptions,
+        ...akhirachainUtilities.bridgeBankAddressYargOptions,
+        ...akhirachainUtilities.symbolYargOption,
+        ...akhirachainUtilities.amountYargOption,
         'limit_amount': {
             describe: 'an amount',
             demandOption: true

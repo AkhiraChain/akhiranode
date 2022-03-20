@@ -83,7 +83,7 @@ if we had written these scripts in javascript each chain would probably be a cla
 
 Here is a recipe for how to work with the `ui` scripts in `sifnode`.
 
-### I want to change the sifchain genesis information within the ui-stack.
+### I want to change the akhirachain genesis information within the ui-stack.
 
 It is rare to have to touch this but if you do, the following outlines how to go about it. You will want to do this because of a need within the e2e branch you will probably have a branch on the ui repo that requires a change to genesis amounts.
 
@@ -91,7 +91,7 @@ It is rare to have to touch this but if you do, the following outlines how to go
 1. Create a new branch on the `sifnode` repo branching off `develop`.
 1. Now you can make your changes which will probably be in one of the folowing places:
 
-   1. The sifchain genesis code is located here: `./ui/chains/ak/launch.sh` here we specify genesis tokens and amounts. Set up your tokens and amounts in this file.
+   1. The akhirachain genesis code is located here: `./ui/chains/ak/launch.sh` here we specify genesis tokens and amounts. Set up your tokens and amounts in this file.
    1. The CLP pool genesis code is located here: `./ui/chains/ak/migrate.sh` here we specify the default pools that are created and included in the ui-stack image.
    1. Lastly the whitelist and burn limits for ethereum tokens is specified in the post migrate hook here: `./ui/chains/post_migrate.sh`
 
@@ -127,7 +127,7 @@ Initially we were not using docker to create snapshots and when we added docker 
 
 #### What happens when the backend has breaking changes for the frontend?
 
-In this case the backend will merge their breaking change to develop. Our GHA will run building the stack based on the latest change. After this the sifchain-ui repo will be checked out and its tests applied to the built ui-stack within the github action. If this fails then the backend team know they have broken frontend.
+In this case the backend will merge their breaking change to develop. Our GHA will run building the stack based on the latest change. After this the akhirachain-ui repo will be checked out and its tests applied to the built ui-stack within the github action. If this fails then the backend team know they have broken frontend.
 
 #### How do we know the frontend that is about to be deployed is compatible with master?
 

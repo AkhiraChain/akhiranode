@@ -9,7 +9,7 @@ The transaction is privileged, and only the admin account can set it.
 The admin account is the oracle admin account. The command is as follows:
 
 ```bash
-akhiranoded tx ethbridge update_ceth_receiver_account $oracle_admin_address $ceth_receiver_account --node tcp://rpc.sifchain.finance:80 --keyring-backend=file --chain-id=sifchain --from=$oracle_admin_moniker --fees=100000aku
+akhiranoded tx ethbridge update_ceth_receiver_account $oracle_admin_address $ceth_receiver_account --node tcp://rpc.akhirachain.finance:80 --keyring-backend=file --chain-id=akhirachain --from=$oracle_admin_moniker --fees=100000aku
 ```
 
 ## Rescue the Ceth
@@ -18,5 +18,5 @@ Similar to the account setting method, the transaction is privileged and only th
 It will transfer the cEth from ethbridge module to an specific account.
 
 ```bash
-akhiranoded tx ethbridge rescue_ceth $oracle_admin_address $ceth_receiver_account $ceth_amount --node tcp://rpc.sifchain.finance:80 --keyring-backend=file --chain-id=sifchain --from=$oracle_admin_moniker --fees=100000aku
+akhiranoded tx ethbridge rescue_ceth $oracle_admin_address $ceth_receiver_account $ceth_amount --node tcp://rpc.akhirachain.finance:80 --keyring-backend=file --chain-id=akhirachain --from=$oracle_admin_moniker --fees=100000aku
 ```

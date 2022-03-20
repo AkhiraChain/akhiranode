@@ -5,7 +5,7 @@ import {inject, injectable} from "tsyringe";
 import {isHardhatRuntimeEnvironment} from "./hardhatSupport";
 
 /**
- * The accounts necessary for testing a sifchain system
+ * The accounts necessary for testing a akhirachain system
  */
 export class SifchainAccounts {
     constructor(

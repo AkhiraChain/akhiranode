@@ -61,7 +61,7 @@ func RelayToCosmos(factory tx.Factory, claims []*types.EthBridgeClaim, cliCtx cl
 	//        if so, how many times do we try?
 	if err != nil {
 		sugaredLogger.Errorw(
-			"failed to broadcast tx to sifchain.",
+			"failed to broadcast tx to akhirachain.",
 			errorMessageKey, err.Error(),
 		)
 		return err

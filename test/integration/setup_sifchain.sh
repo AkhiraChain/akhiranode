@@ -43,8 +43,8 @@ valoper=$(akhiranoded keys show -a --bech val $MONIKER --home $CHAINDIR/.akhiran
 akhiranoded add-genesis-validators $valoper --home $CHAINDIR/.akhiranoded
 
 mkdir -p $datadir/logs
-nohup $TEST_INTEGRATION_DIR/sifchain_start_daemon.sh < /dev/null > $SIFNODED_LOG 2>&1 &
-# we don't have a great way to make sure sifchain itself has started
+nohup $TEST_INTEGRATION_DIR/akhirachain_start_daemon.sh < /dev/null > $SIFNODED_LOG 2>&1 &
+# we don't have a great way to make sure akhirachain itself has started
 sleep 10
 set_persistant_env_var SIFNODED_PID $! $envexportfile
-bash $TEST_INTEGRATION_DIR/sifchain_start_ebrelayer.sh
+bash $TEST_INTEGRATION_DIR/akhirachain_start_ebrelayer.sh

@@ -85,16 +85,16 @@ class IntegrationTestContext:
     # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
     # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     @property
-    def sifchain_fees_int(self):
+    def akhirachain_fees_int(self):
         return 100000000000000000
 
     # Deprecated: akhiranoded accepts --gas-prices=0.5aku along with --gas-adjustment=1.5 instead of a fixed fee.
     # Using those parameters is the best way to have the fees set robustly after the .42 upgrade.
     # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     @property
-    def sifchain_fees(self):
+    def akhirachain_fees(self):
         """returns a string suitable for passing to akhiranoded"""
-        return f"{self.sifchain_fees_int}aku"
+        return f"{self.akhirachain_fees_int}aku"
 
     @property
     def solidity_json_path(self):
@@ -134,7 +134,7 @@ class IntegrationTestContext:
 
     @property
     def aku_source(self):
-        """A sifchain address or key that has aku and can send that aku to other address"""
+        """A akhirachain address or key that has aku and can send that aku to other address"""
         result = self.get_optional_var("ROWAN_SOURCE", None)
         if result:
             return result
@@ -192,8 +192,8 @@ class IntegrationTestContext:
         for a transfer of aku from an account that already has aku.
         """
         result: test_utilities.EthereumToSifchainTransferRequest = copy.deepcopy(basic_transfer_request)
-        result.sifchain_address = self.aku_source
-        result.sifchain_symbol = "aku"
+        result.akhirachain_address = self.aku_source
+        result.akhirachain_symbol = "aku"
         return result
 
     @property
@@ -210,5 +210,5 @@ class IntegrationTestContext:
             akhiranoded_node=self.akhiranoded_node,
             manual_block_advance=self.is_ganache,
             chain_id=self.chain_id,
-            sifchain_fees=self.sifchain_fees,
+            akhirachain_fees=self.akhirachain_fees,
             solidity_json_path=self.solidity_json_path)

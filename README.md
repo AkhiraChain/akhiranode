@@ -6,7 +6,7 @@ Built using the Cosmos SDK and Tendermint, and generated with [Starport](https:/
 
 ## Getting Started
 
-To launch a validator or full-node on Sifchain, on either TestNet or BetaNet, then please see [here](https://github.com/Sifchain/sifchain-validators).
+To launch a validator or full-node on Sifchain, on either TestNet or BetaNet, then please see [here](https://github.com/Sifchain/akhirachain-validators).
 
 ## Additional Resources
 

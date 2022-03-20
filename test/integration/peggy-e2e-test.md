@@ -12,7 +12,7 @@ akhiranoded start
 
 1. open new console
 cd smart-contracts
-ebrelayer init tcp://localhost:26657 ws://localhost:7545/ 0x30753E4A8aad7F8597332E813735Def5dD395028 user1 --chain-id=sifchain
+ebrelayer init tcp://localhost:26657 ws://localhost:7545/ 0x30753E4A8aad7F8597332E813735Def5dD395028 user1 --chain-id=akhirachain
 
 ### case 1: lock eth and send to cosmos user2 from eth operator account
 1. check the balance of operator before lock

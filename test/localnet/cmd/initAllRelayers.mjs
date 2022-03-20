@@ -17,7 +17,7 @@ Usage:
 
   yarn initAllRelayers [options]
 
-Initiate all the IBC relayers connected to sifchain.
+Initiate all the IBC relayers connected to akhirachain.
 
 Options:
 

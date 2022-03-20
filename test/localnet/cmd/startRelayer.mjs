@@ -14,7 +14,7 @@ Usage:
 
   yarn startRelayer [options]
 
-Start a relayer locally to pair a foreign IBC chain to sifchain.
+Start a relayer locally to pair a foreign IBC chain to akhirachain.
 
 Options:
 

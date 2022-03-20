@@ -6,7 +6,7 @@
 ### Base URL
 
   ```
-  https://api.sifchain.finance
+  https://api.akhirachain.finance
   ```
 
 

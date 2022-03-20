@@ -6,7 +6,7 @@ import web3
 
 import main
 import eth
-import sifchain
+import akhirachain
 from common import *
 
 
@@ -108,13 +108,13 @@ def get_env_ctx_peggy2():
     assert ctx.eth.fixed_gas_args["gasPrice"] == 1 * eth.GWEI + 7
 
     # Monkeypatching for peggy2 extras
-    # TODO These are set in main.py:Peggy2Environment.init_sifchain(), specifically "akhiranoded tx ethbridge set-cross-chain-fee"
+    # TODO These are set in main.py:Peggy2Environment.init_akhirachain(), specifically "akhiranoded tx ethbridge set-cross-chain-fee"
     # Consider passing them via environment
     ctx.cross_chain_fee_base = 1
     ctx.cross_chain_lock_fee = 1
     ctx.cross_chain_burn_fee = 1
     ctx.ethereum_network_descriptor = ethereum_network_descriptor
-    ctx.ceth_symbol = sifchain.sifchain_denom_hash(ctx.ethereum_network_descriptor, eth.NULL_ADDRESS)
+    ctx.ceth_symbol = akhirachain.akhirachain_denom_hash(ctx.ethereum_network_descriptor, eth.NULL_ADDRESS)
     assert ctx.ceth_symbol == "sif5ebfaf95495ceb5a3efbd0b0c63150676ec71e023b1043c40bcaaf91c00e15b2"
 
     return ctx
@@ -293,7 +293,7 @@ class EnvCtx:
         self.eth = ctx_eth
         self.abi_provider = abi_provider
         self.operator = operator
-        self.sifnode = sifchain.Sifnoded(self.cmd, home=akhiranoded_home)
+        self.sifnode = akhirachain.Sifnoded(self.cmd, home=akhiranoded_home)
         self.sifnode_url = sifnode_url
         self.sifnode_chain_id = sifnode_chain_id
         self.aku_source = aku_source
@@ -507,7 +507,7 @@ class EnvCtx:
         return token_sc.address
 
     # TODO Obsolete, use self.bridge_bank_lock_eth()
-    def send_eth_from_ethereum_to_sifchain(self, from_eth_addr, to_sif_addr, amount):
+    def send_eth_from_ethereum_to_akhirachain(self, from_eth_addr, to_sif_addr, amount):
         # recipient = to_sif_addr.encode("UTF-8")
         # coin_denom = eth.NULL_ADDRESS  # For "eth", otherwise use coin's address
         #
@@ -521,7 +521,7 @@ class EnvCtx:
         assert False  # TODO
 
     # TODO Obsolete, use self.bridge_bank_lock_eth()
-    def send_erc20_from_ethereum_to_sifchain(self, from_eth_addr, dest_sichain_addr, erc20_token_addr, amount):
+    def send_erc20_from_ethereum_to_akhirachain(self, from_eth_addr, dest_sichain_addr, erc20_token_addr, amount):
         # recipient = dest_sichain_addr.encode("UTF-8")
         #
         # max_gas_required = 200000
@@ -542,10 +542,10 @@ class EnvCtx:
         self.approve_erc20_token(token_sc, from_eth_addr, amount)
         self.bridge_bank_lock_eth(from_eth_addr, dest_sichain_addr, amount)
 
-    def send_from_sifchain_to_ethereum(self, from_sif_addr, to_eth_addr, amount, denom):
+    def send_from_akhirachain_to_ethereum(self, from_sif_addr, to_eth_addr, amount, denom):
         """ Sends ETH from Sifchain to Ethereum (burn) """
 
-        # TODO Move to sifchain.py
+        # TODO Move to akhirachain.py
 
         assert on_peggy2_branch, "Only for Peggy2.0"
 
@@ -565,27 +565,27 @@ class EnvCtx:
         assert "failed to execute message" not in result["raw_log"]
         return json.loads(stdout(res))
 
-    def create_sifchain_addr(self, moniker=None, fund_amounts=None):
+    def create_akhirachain_addr(self, moniker=None, fund_amounts=None):
         """
-        Generates a new sifchain address in test keyring. If moniker is given, uses it, otherwise
-        generates a random one 'test-xxx'. If fund_amounts is given, the sifchain funds are transferred
+        Generates a new akhirachain address in test keyring. If moniker is given, uses it, otherwise
+        generates a random one 'test-xxx'. If fund_amounts is given, the akhirachain funds are transferred
         from aku_source to the account before returning.
         """
         moniker = moniker or "test-" + random_string(20)
         acct = self.sifnode.keys_add_1(moniker)
         sif_address = acct["address"]
         if fund_amounts:
-            old_balances = self.get_sifchain_balance(sif_address)
-            self.send_from_sifchain_to_sifchain(self.aku_source, sif_address, fund_amounts)
+            old_balances = self.get_akhirachain_balance(sif_address)
+            self.send_from_akhirachain_to_akhirachain(self.aku_source, sif_address, fund_amounts)
             self.wait_for_sif_balance_change(sif_address, old_balances, min_changes=fund_amounts)
         return sif_address
 
     # smart-contracts/scripts/test/{sendLockTx.js OR sendBurnTx.js}
-    # sendBurnTx is called when sifchain_symbol == "aku", sendLockTx otherwise
-    def send_from_ethereum_to_sifchain(self):
+    # sendBurnTx is called when akhirachain_symbol == "aku", sendLockTx otherwise
+    def send_from_ethereum_to_akhirachain(self):
         assert False,"Not implemented yet"  # TODO
 
-    def send_from_sifchain_to_sifchain(self, from_sif_addr, to_sif_addr, amounts):
+    def send_from_akhirachain_to_akhirachain(self, from_sif_addr, to_sif_addr, amounts):
         amounts_string = ",".join([sif_format_amount(*a) for a in amounts])
         args = ["tx", "bank", "send", from_sif_addr, to_sif_addr, amounts_string] + \
             self._akhiranoded_chain_id_and_node_arg() + \
@@ -600,12 +600,12 @@ class EnvCtx:
 
     # TODO
     # def generate_test_account(self, target_ceth_balance=10**18, target_aku_balance=10**18):
-    #     sifchain_addr = self.create_sifchain_addr()
-    #     self.send_eth_from_ethereum_to_sifchain(self.operator, sifchain_addr, target_ceth_balance)
-    #     self.send_from_sifchain_to_sifchain(self.aku_source, sifchain_addr, target_aku_balance)
-    #     return sifchain_addr
+    #     akhirachain_addr = self.create_akhirachain_addr()
+    #     self.send_eth_from_ethereum_to_akhirachain(self.operator, akhirachain_addr, target_ceth_balance)
+    #     self.send_from_akhirachain_to_akhirachain(self.aku_source, akhirachain_addr, target_aku_balance)
+    #     return akhirachain_addr
 
-    def get_sifchain_balance(self, sif_addr):
+    def get_akhirachain_balance(self, sif_addr):
         args = ["query", "bank", "balances", sif_addr, "--limit", str(100000000), "--output", "json"] + \
             self._akhiranoded_chain_id_and_node_arg()
         res = self.sifnode.akhiranoded_exec(args, akhiranoded_home=self.sifnode.home)
@@ -634,7 +634,7 @@ class EnvCtx:
         start_time = time.time()
         result = None
         while result is None:
-            new_balances = self.get_sifchain_balance(sif_addr)
+            new_balances = self.get_akhirachain_balance(sif_addr)
             if min_changes is not None:
                 have_all = True
                 for amount, denom in min_changes:
@@ -651,7 +651,7 @@ class EnvCtx:
                 raise Exception("Timeout waiting for sif balance to change")
 
     def eth_symbol_to_sif_symbol(self, eth_token_symbol):
-        # TODO sifchain.use sifchain_denom_hash() if on_peggy2_branch
+        # TODO akhirachain.use akhirachain_denom_hash() if on_peggy2_branch
         # E.g. "usdt" -> "cusdt"
         if eth_token_symbol == "eaku":
             return ROWAN
@@ -663,14 +663,14 @@ class EnvCtx:
     def token_registry_register(self, address, symbol, token_name, decimals, from_sif_addr):
         # Check that we have the private key in test keyring. This will throw an exception if we don't.
         self.cmd.akhiranoded_keys_show(from_sif_addr)
-        sifchain_symbol = self.eth_symbol_to_sif_symbol(symbol)
+        akhirachain_symbol = self.eth_symbol_to_sif_symbol(symbol)
         upper_symbol = symbol.upper()  # Like "USDT"
         # See scripts/ibc/tokenregistration for more information and examples.
         # JSON file can be generated with "akhiranoded q tokenregistry generate"
         token_data = {"entries": [{
             "decimals": str(decimals),
-            "denom": sifchain_symbol,
-            "base_denom": sifchain_symbol,
+            "denom": akhirachain_symbol,
+            "base_denom": akhirachain_symbol,
             "path": "",
             "ibc_channel_id": "",
             "ibc_counterparty_channel_id": "",
@@ -721,7 +721,7 @@ class EnvCtx:
     # See https://github.com/AkhiraChain/akhiranode/pull/1802#discussion_r697403408
     # The corresponding denom should be "aku".
     @property
-    def sifchain_fees(self):
+    def akhirachain_fees(self):
         return 200000
 
     def _akhiranoded_fees_arg(self):
@@ -816,7 +816,7 @@ class EnvCtx:
             "ROWAN_SOURCE {}".format(self.aku_source)
         if len(aku_source_account) != 1:
             raise Exception
-        aku_source_balance = self.get_sifchain_balance(self.aku_source).get(ROWAN, 0)
+        aku_source_balance = self.get_akhirachain_balance(self.aku_source).get(ROWAN, 0)
         min_aku_source_balance = 10 * 10**18
         assert aku_source_balance > min_aku_source_balance, "ROWAN_SOURCE should have at least {}aku balance, " \
             "but has only {}aku".format(min_aku_source_balance, aku_source_balance)

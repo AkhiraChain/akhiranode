@@ -22,12 +22,12 @@ export async function initAllRelayers({
     configPath,
   });
   const chainsProps = getChainsProps({ chains, network });
-  const { sifchain: sifChainProps, ...otherChainsProps } = chainsProps;
+  const { akhirachain: sifChainProps, ...otherChainsProps } = chainsProps;
 
   // 1) create global registry for relayers
   await createRelayerRegistry({ chainsProps, registryFrom });
 
-  // 2) create relayer for each single chains connecting to sifchain
+  // 2) create relayer for each single chains connecting to akhirachain
   const createdRelayers = await Promise.all(
     Object.values(otherChainsProps).map(async (otherChainProps) => {
       return createRelayer({ sifChainProps, otherChainProps, registryFrom });

@@ -6,8 +6,8 @@ import { setupRelayerChannelIds } from "../utils/setupRelayerChannelIds.mjs";
 import { send } from "./send.mjs";
 
 export async function initRelayer(props) {
-  // 0) retrieve sifchain props
-  const candidateSifChainProps = getChainProps({ chain: "sifchain" });
+  // 0) retrieve akhirachain props
+  const candidateSifChainProps = getChainProps({ chain: "akhirachain" });
 
   const {
     chainProps: candidateOtherChainProps,

@@ -11,7 +11,7 @@ ENV GOOS=linux
 RUN go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0
 
 #
-# Build: Sifnode
+# Build: Akhiranode
 #
 FROM golang:1.17 AS akhiranode
 
@@ -23,7 +23,7 @@ ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV CHAINNET=$chainnet
 
-WORKDIR /sifchain
+WORKDIR /akhirachain
 COPY go.mod go.sum ./
 RUN go mod download
 

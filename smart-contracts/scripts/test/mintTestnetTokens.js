@@ -3,17 +3,17 @@ const BN = require('bn.js');
 module.exports = async cb => {
     const Web3 = require("web3");
 
-    const sifchainUtilities = require('./sifchainUtilities')
+    const akhirachainUtilities = require('./akhirachainUtilities')
     const contractUtilites = require('./contractUtilities');
 
-    const logging = sifchainUtilities.configureLogging(this);
+    const logging = akhirachainUtilities.configureLogging(this);
 
-    const argv = sifchainUtilities.processArgs(this, {
-        ...sifchainUtilities.sharedYargOptions,
-        ...sifchainUtilities.symbolYargOption,
-        ...sifchainUtilities.amountYargOption,
-        ...sifchainUtilities.ethereumAddressYargOption,
-        ...sifchainUtilities.bridgeBankAddressYargOptions,
+    const argv = akhirachainUtilities.processArgs(this, {
+        ...akhirachainUtilities.sharedYargOptions,
+        ...akhirachainUtilities.symbolYargOption,
+        ...akhirachainUtilities.amountYargOption,
+        ...akhirachainUtilities.ethereumAddressYargOption,
+        ...akhirachainUtilities.bridgeBankAddressYargOptions,
         'operator_address': {
             type: "string",
             demandOption: true,

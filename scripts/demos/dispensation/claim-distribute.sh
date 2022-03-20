@@ -12,7 +12,7 @@ akhiranoded tx dispensation claim ValidatorSubsidy --from sif --keyring-backend 
 sleep 8
 akhiranoded q dispensation claims-by-type ValidatorSubsidy -o json
 sleep 8
-akhiranoded tx dispensation create ValidatorSubsidy output.json ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --gas 200064128 --from ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --keyring-backend test --fees 100000aku --yes --chain-id akhirachain-devnet-042 --node tcp://rpc-devnet-042.sifchain.finance:80
+akhiranoded tx dispensation create ValidatorSubsidy output.json ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --gas 200064128 --from ak1syavy2npfyt9tcncdtsdzf7kny9lh777yqc2nd --keyring-backend test --fees 100000aku --yes --chain-id akhirachain-devnet-042 --node tcp://rpc-devnet-042.akhirachain.finance:80
 
 sleep 8
 akhiranoded q dispensation distributions-all --chain-id localnet -o json

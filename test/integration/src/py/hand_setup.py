@@ -5,7 +5,7 @@ import sys
 import burn_lock_functions
 import test_utilities
 from burn_lock_functions import EthereumToSifchainTransferRequest
-from integration_env_credentials import sifchain_cli_credentials_for_test
+from integration_env_credentials import akhirachain_cli_credentials_for_test
 from test_utilities import get_required_env_var, SifchaincliCredentials, get_optional_env_var, \
     ganache_owner_account
 
@@ -27,11 +27,11 @@ ethereum_address = get_optional_env_var(
 
 def build_request() -> (EthereumToSifchainTransferRequest, SifchaincliCredentials):
     new_account_key = 'user1'
-    credentials = sifchain_cli_credentials_for_test(new_account_key)
+    credentials = akhirachain_cli_credentials_for_test(new_account_key)
     new_addr = burn_lock_functions.create_new_sifaddr(credentials=credentials, keyname=new_account_key)
     credentials.from_key = new_addr["name"]
     request = EthereumToSifchainTransferRequest(
-        sifchain_address=new_addr["address"],
+        akhirachain_address=new_addr["address"],
         smart_contracts_dir=smart_contracts_dir,
         ethereum_address=ethereum_address,
         ethereum_private_key_env_var="ETHEREUM_PRIVATE_KEY",
@@ -49,6 +49,6 @@ try:
 except:
     logging.debug("no key to delete, this is normal in a fresh environment")
 request, credentials = build_request()
-burn_lock_functions.transfer_ethereum_to_sifchain(request)
-test_utilities.get_sifchain_addr_balance(request.sifchain_address, request.akhiranoded_node, "ceth")
+burn_lock_functions.transfer_ethereum_to_akhirachain(request)
+test_utilities.get_akhirachain_addr_balance(request.akhirachain_address, request.akhiranoded_node, "ceth")
 logging.info(f"created account for key {credentials.from_key}")

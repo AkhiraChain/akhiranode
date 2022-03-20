@@ -12,7 +12,7 @@ import {
     setupSifchainMainnetDeployment,
     startImpersonateAccount
 } from "../src/hardhatFunctions"
-import {SifchainAccountsPromise} from "../src/tsyringe/sifchainAccounts";
+import {SifchainAccountsPromise} from "../src/tsyringe/akhirachainAccounts";
 import web3 from "web3";
 import {BigNumber, BigNumberish, ContractTransaction} from "ethers";
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";

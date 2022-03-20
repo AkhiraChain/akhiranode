@@ -17,7 +17,7 @@ export async function startAllRelayers({
     configPath,
   });
   const chainsProps = getChainsProps({ chains, network });
-  const { sifchain: sifChainProps, ...otherChainsProps } = chainsProps;
+  const { akhirachain: sifChainProps, ...otherChainsProps } = chainsProps;
 
   // 1) start relayers
   return Promise.all(

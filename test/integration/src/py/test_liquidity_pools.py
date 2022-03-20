@@ -50,18 +50,18 @@ def create_pool(
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     chain_id_entry = f"--chain-id {transfer_request.chain_id}" if transfer_request.chain_id else ""
     node = f"--node {transfer_request.akhiranoded_node}" if transfer_request.akhiranoded_node else ""
-    sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""
+    akhirachain_fees_entry = f"--fees {transfer_request.akhirachain_fees}" if transfer_request.akhirachain_fees else ""
     cmd = " ".join([
         yes_entry,
         f"{akhiranoded_binary} tx clp create-pool",
-        f"--from {transfer_request.sifchain_address}",
-        f"--symbol {transfer_request.sifchain_symbol}",
+        f"--from {transfer_request.akhirachain_address}",
+        f"--symbol {transfer_request.akhirachain_symbol}",
         f"--nativeAmount {transfer_request.amount}",
         f"--externalAmount {transfer_request.amount}",
         keyring_backend_entry,
         chain_id_entry,
         node,
-        sifchain_fees_entry,
+        akhirachain_fees_entry,
         f"--home {credentials.akhiranoded_homedir} ",
         "-y --output json"
     ])
@@ -77,11 +77,11 @@ def swap_pool(
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     chain_id_entry = f"--chain-id {transfer_request.chain_id}" if transfer_request.chain_id else ""
     node = f"--node {transfer_request.akhiranoded_node}" if transfer_request.akhiranoded_node else ""
-    sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""
+    akhirachain_fees_entry = f"--fees {transfer_request.akhirachain_fees}" if transfer_request.akhirachain_fees else ""
     cmd = " ".join([
         yes_entry,
         f"{akhiranoded_binary} tx clp swap",
-        f"--from {transfer_request.sifchain_address}",
+        f"--from {transfer_request.akhirachain_address}",
         f"--sentSymbol {sent_symbol}",
         f"--receivedSymbol {received_symbol}",
         f"--sentAmount {transfer_request.amount}",
@@ -89,7 +89,7 @@ def swap_pool(
         keyring_backend_entry,
         chain_id_entry,
         node,
-        sifchain_fees_entry,
+        akhirachain_fees_entry,
         f"--home {credentials.akhiranoded_homedir} ",
         "-y --output json"
     ])
@@ -109,18 +109,18 @@ def remove_pool_liquidity(
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     chain_id_entry = f"--chain-id {transfer_request.chain_id}" if transfer_request.chain_id else ""
     node = f"--node {transfer_request.akhiranoded_node}" if transfer_request.akhiranoded_node else ""
-    sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""
+    akhirachain_fees_entry = f"--fees {transfer_request.akhirachain_fees}" if transfer_request.akhirachain_fees else ""
     cmd = " ".join([
         yes_entry,
         f"{akhiranoded_binary} tx clp remove-liquidity",
-        f"--from {transfer_request.sifchain_address}",
-        f"--symbol {transfer_request.sifchain_symbol}",
+        f"--from {transfer_request.akhirachain_address}",
+        f"--symbol {transfer_request.akhirachain_symbol}",
         f"--wBasis {wBasis}",
         f"--asymmetry 0",
         keyring_backend_entry,
         chain_id_entry,
         node,
-        sifchain_fees_entry,
+        akhirachain_fees_entry,
         f"--home {credentials.akhiranoded_homedir} ",
         "-y --output json"
     ])
@@ -139,18 +139,18 @@ def add_pool_liquidity(
     keyring_backend_entry = f"--keyring-backend {credentials.keyring_backend}" if credentials.keyring_backend else ""
     chain_id_entry = f"--chain-id {transfer_request.chain_id}" if transfer_request.chain_id else ""
     node = f"--node {transfer_request.akhiranoded_node}" if transfer_request.akhiranoded_node else ""
-    sifchain_fees_entry = f"--fees {transfer_request.sifchain_fees}" if transfer_request.sifchain_fees else ""
+    akhirachain_fees_entry = f"--fees {transfer_request.akhirachain_fees}" if transfer_request.akhirachain_fees else ""
     cmd = " ".join([
         yes_entry,
         f"{akhiranoded_binary} tx clp add-liquidity",
-        f"--from {transfer_request.sifchain_address}",
-        f"--symbol {transfer_request.sifchain_symbol}",
+        f"--from {transfer_request.akhirachain_address}",
+        f"--symbol {transfer_request.akhirachain_symbol}",
         f"--nativeAmount {transfer_request.amount}",
         f"--externalAmount {transfer_request.amount}",
         keyring_backend_entry,
         chain_id_entry,
         node,
-        sifchain_fees_entry,
+        akhirachain_fees_entry,
         f"--home {credentials.akhiranoded_homedir} ",
         "-y --output json"
     ])
@@ -166,7 +166,7 @@ def test_create_pools(
         source_ethereum_address: str,
         aku_source_integrationtest_env_credentials: SifchaincliCredentials,
         aku_source_integrationtest_env_transfer_request: EthereumToSifchainTransferRequest,
-        sifchain_fees_int
+        akhirachain_fees_int
 ):
     basic_transfer_request.ethereum_address = source_ethereum_address
     basic_transfer_request.check_wait_blocks = True
@@ -180,16 +180,16 @@ def test_create_pools(
         target_aku_balance=target_aku_balance
     )
 
-    sifaddress = request.sifchain_address
+    sifaddress = request.akhirachain_address
     # wait for balance
-    test_utilities.wait_for_sifchain_addr_balance(sifaddress, "aku", target_aku_balance, basic_transfer_request.akhiranoded_node)
-    test_utilities.wait_for_sifchain_addr_balance(sifaddress, "ceth", target_ceth_balance, basic_transfer_request.akhiranoded_node)
+    test_utilities.wait_for_akhirachain_addr_balance(sifaddress, "aku", target_aku_balance, basic_transfer_request.akhiranoded_node)
+    test_utilities.wait_for_akhirachain_addr_balance(sifaddress, "ceth", target_ceth_balance, basic_transfer_request.akhiranoded_node)
 
     pools = get_pools(basic_transfer_request.akhiranoded_node)
     change_amount = 10 ** 18
     basic_transfer_request.amount = change_amount
-    basic_transfer_request.sifchain_symbol = "ceth"
-    basic_transfer_request.sifchain_address = sifaddress
+    basic_transfer_request.akhirachain_symbol = "ceth"
+    basic_transfer_request.akhirachain_address = sifaddress
     current_ceth_balance = target_ceth_balance
     current_aku_balance = target_aku_balance
 
@@ -198,17 +198,17 @@ def test_create_pools(
         create_pool(basic_transfer_request, credentials)
         get_pools(basic_transfer_request.akhiranoded_node)
         current_ceth_balance = current_ceth_balance - change_amount
-        current_aku_balance = current_aku_balance - change_amount - sifchain_fees_int
-        assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-        assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "ceth") == current_ceth_balance)
+        current_aku_balance = current_aku_balance - change_amount - akhirachain_fees_int
+        assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+        assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "ceth") == current_ceth_balance)
 
     # check for failure if we try to create a pool twice
     txn = create_pool(basic_transfer_request, credentials)
     assert(txn["code"] == 14)
     get_pools(basic_transfer_request.akhiranoded_node)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "ceth") == current_ceth_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "ceth") == current_ceth_balance)
 
 # @pytest.mark.skip(reason="not now")
 @pytest.mark.usefixtures("operator_private_key")
@@ -222,7 +222,7 @@ def test_pools(
         operator_address,
         ethereum_network,
         source_ethereum_address,
-        sifchain_fees_int
+        akhirachain_fees_int
 ):
     # max symbol length in clp is 71
     new_currency_symbol = "96D7172B711F7F925DFC7579C6CCC3C80B762187215ABD082CDE99F81153DC80"
@@ -239,7 +239,7 @@ def test_pools(
         operator_address=operator_address,
         ethereum_network=ethereum_network
     )
-    sifchain_symbol = ("c" + new_currency["newtoken_symbol"]).lower()
+    akhirachain_symbol = ("c" + new_currency["newtoken_symbol"]).lower()
 
     basic_transfer_request.ethereum_address = source_ethereum_address
     basic_transfer_request.check_wait_blocks = True
@@ -253,16 +253,16 @@ def test_pools(
         target_aku_balance=target_aku_balance
     )
 
-    logging.info(f"transfer some of the new currency {new_currency_symbol} to the test sifchain address")
+    logging.info(f"transfer some of the new currency {new_currency_symbol} to the test akhirachain address")
     request.ethereum_symbol = new_currency["newtoken_address"]
-    request.sifchain_symbol = sifchain_symbol
+    request.akhirachain_symbol = akhirachain_symbol
     request.amount = target_new_currency_balance
-    burn_lock_functions.transfer_ethereum_to_sifchain(request)
+    burn_lock_functions.transfer_ethereum_to_akhirachain(request)
 
-    sifaddress = request.sifchain_address
+    sifaddress = request.akhirachain_address
     # wait for balance
-    test_utilities.wait_for_sifchain_addr_balance(sifaddress, "aku", target_aku_balance, basic_transfer_request.akhiranoded_node)
-    test_utilities.wait_for_sifchain_addr_balance(sifaddress, sifchain_symbol, target_new_currency_balance, basic_transfer_request.akhiranoded_node)
+    test_utilities.wait_for_akhirachain_addr_balance(sifaddress, "aku", target_aku_balance, basic_transfer_request.akhiranoded_node)
+    test_utilities.wait_for_akhirachain_addr_balance(sifaddress, akhirachain_symbol, target_new_currency_balance, basic_transfer_request.akhiranoded_node)
 
     request2, credentials2 = generate_test_account(
         basic_transfer_request,
@@ -272,20 +272,20 @@ def test_pools(
         target_aku_balance=target_aku_balance
     )
 
-    logging.info(f"transfer some of the new currency {new_currency_symbol} to the test sifchain address")
+    logging.info(f"transfer some of the new currency {new_currency_symbol} to the test akhirachain address")
     request2.ethereum_symbol = new_currency["newtoken_address"]
-    request2.sifchain_symbol = sifchain_symbol
+    request2.akhirachain_symbol = akhirachain_symbol
     request2.amount = target_new_currency_balance
-    burn_lock_functions.transfer_ethereum_to_sifchain(request2)
+    burn_lock_functions.transfer_ethereum_to_akhirachain(request2)
 
-    sifaddress2 = request2.sifchain_address
+    sifaddress2 = request2.akhirachain_address
     # wait for balance
-    test_utilities.wait_for_sifchain_addr_balance(sifaddress2, "aku", target_aku_balance, basic_transfer_request.akhiranoded_node)
-    test_utilities.wait_for_sifchain_addr_balance(sifaddress2, sifchain_symbol, target_new_currency_balance, basic_transfer_request.akhiranoded_node)
+    test_utilities.wait_for_akhirachain_addr_balance(sifaddress2, "aku", target_aku_balance, basic_transfer_request.akhiranoded_node)
+    test_utilities.wait_for_akhirachain_addr_balance(sifaddress2, akhirachain_symbol, target_new_currency_balance, basic_transfer_request.akhiranoded_node)
 
     pools = get_pools(basic_transfer_request.akhiranoded_node)
-    basic_transfer_request.sifchain_symbol = sifchain_symbol
-    basic_transfer_request.sifchain_address = sifaddress
+    basic_transfer_request.akhirachain_symbol = akhirachain_symbol
+    basic_transfer_request.akhirachain_address = sifaddress
     current_coin_balance = target_new_currency_balance
     current_aku_balance = target_aku_balance
 
@@ -294,16 +294,16 @@ def test_pools(
     logging.info("Fail if amount is greater than user has")
     txn = create_pool(basic_transfer_request, credentials)
     assert(txn["code"] == 12)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
 
     change_amount = 10 ** 17
     basic_transfer_request.amount = change_amount
     logging.info("Fail if amount is less than or equal to minimum")
     txn = create_pool(basic_transfer_request, credentials)
     assert(txn["code"] == 7)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
 
     change_amount = 10 ** 18
     basic_transfer_request.amount = change_amount
@@ -312,53 +312,53 @@ def test_pools(
     assert(txn.get("code", 0) == 0)
     get_pools(basic_transfer_request.akhiranoded_node)
     current_coin_balance = current_coin_balance - change_amount
-    current_aku_balance = current_aku_balance - change_amount - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_coin_balance)
+    current_aku_balance = current_aku_balance - change_amount - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_coin_balance)
 
     logging.info("check for failure if we try to create a pool twice")
     txn = create_pool(basic_transfer_request, credentials)
     assert(txn["code"] == 14)
     get_pools(basic_transfer_request.akhiranoded_node)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_coin_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_coin_balance)
 
     logging.info("ensure we can add liquidity, money gets transferred")
     txn = add_pool_liquidity(basic_transfer_request, credentials)
     assert(txn.get("code", 0) == 0)
     get_pools(basic_transfer_request.akhiranoded_node)
     current_coin_balance = current_coin_balance - change_amount
-    current_aku_balance = current_aku_balance - change_amount - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_coin_balance)
+    current_aku_balance = current_aku_balance - change_amount - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_coin_balance)
 
     logging.info("ensure we can remove liquidity, money gets transferred")
     txn = remove_pool_liquidity(basic_transfer_request, credentials, 5000)
     assert(txn.get("code", 0) == 0)
     get_pools(basic_transfer_request.akhiranoded_node)
     current_coin_balance = current_coin_balance + change_amount
-    current_aku_balance = current_aku_balance + change_amount - sifchain_fees_int
+    current_aku_balance = current_aku_balance + change_amount - akhirachain_fees_int
 
     # check for failure if we try to remove more
     txn = remove_pool_liquidity(basic_transfer_request, credentials, 10000)
     assert(txn["code"] == 26)
     get_pools(basic_transfer_request.akhiranoded_node)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_coin_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_coin_balance)
 
-    #assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    #assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_ceth_balance)
+    #assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    #assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_ceth_balance)
     # no slippage if pool is perfectly balanced.
 
     # TODO: compute this precisely?
     slip_pct = 0.01
-    balance = test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku")
+    balance = test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku")
     slip_cost = (slip_pct * current_aku_balance)
     assert(balance >= current_aku_balance - slip_cost and balance <= current_aku_balance + slip_cost )
     current_aku_balance = balance
-    balance = test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol)
+    balance = test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol)
     slip_cost = (slip_pct * current_coin_balance)
     assert(balance >= current_coin_balance - slip_cost and balance <= current_coin_balance + slip_cost)
     current_coin_balance = balance
@@ -368,37 +368,37 @@ def test_pools(
     txn = add_pool_liquidity(basic_transfer_request, credentials)
     assert(txn["code"] == 25)
     get_pools(basic_transfer_request.akhiranoded_node)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_coin_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_coin_balance)
 
     # check for failure if we try to swap too much for user
     basic_transfer_request.amount = 10 ** 19
-    txn = swap_pool(basic_transfer_request, "aku", sifchain_symbol, credentials)
+    txn = swap_pool(basic_transfer_request, "aku", akhirachain_symbol, credentials)
     assert(txn["code"] == 27)
     get_pools(basic_transfer_request.akhiranoded_node)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_coin_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_coin_balance)
 
     # check for failure if we try to swap too much for pool
     basic_transfer_request.amount = 5 * 10 ** 17
-    txn = swap_pool(basic_transfer_request, "aku", sifchain_symbol, credentials)
+    txn = swap_pool(basic_transfer_request, "aku", akhirachain_symbol, credentials)
     assert(txn["code"] == 31)
     get_pools(basic_transfer_request.akhiranoded_node)
-    current_aku_balance = current_aku_balance - sifchain_fees_int
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
-    assert(test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol) == current_coin_balance)
+    current_aku_balance = current_aku_balance - akhirachain_fees_int
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku") == current_aku_balance)
+    assert(test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol) == current_coin_balance)
 
     # now try to do a swap that works
     change_amount = 10 ** 15
     basic_transfer_request.amount = change_amount
-    txn = swap_pool(basic_transfer_request, "aku", sifchain_symbol, credentials)
+    txn = swap_pool(basic_transfer_request, "aku", akhirachain_symbol, credentials)
     # TODO: compute this precisely?
     slip_pct = 0.01
-    balance = test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku")
+    balance = test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, "aku")
     assert(balance < current_aku_balance)
     current_aku_balance = balance
-    balance = test_utilities.get_sifchain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, sifchain_symbol)
+    balance = test_utilities.get_akhirachain_addr_balance(sifaddress, basic_transfer_request.akhiranoded_node, akhirachain_symbol)
     assert(balance > current_coin_balance)
     current_coin_balance = balance

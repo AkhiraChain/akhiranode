@@ -62,7 +62,7 @@ const transactionYargOptions = {
         type: "string",
         demandOption: true
     },
-    'sifchain_address': {
+    'akhirachain_address': {
         describe: "A SifChain address like sif132tc0acwt8klntn53xatchqztl3ajfxxxsawn8",
         demandOption: true
     },
