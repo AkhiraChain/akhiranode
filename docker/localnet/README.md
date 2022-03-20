@@ -2,17 +2,17 @@
 
 This will launch the following:
 
-* Two sifnode instances running independent chains.
+* Two akhiranode instances running independent chains.
 * An [IBC relayer](https://github.com/confio/ts-relayer) to connect both chains.
 
 ## Setup/Build
 
 1. Switch to the `deploy/docker/localnet/ibc` directory.
 
-2. Build a new `sifnode` image:
+2. Build a new `akhiranode` image:
 
 ```bash
-SERVICE=sifnode make build-image
+SERVICE=akhiranode make build-image
 ```
 
 3. Build a new `ts-relayer` image:
@@ -41,19 +41,19 @@ Where:
 
 |Var|Description|
 |---|-----------|
-|`${CHAINNET0}`|The Chain ID of the first sifnode (e.g.: `sifchain-ibc-0`)|
-|`${CHAINNET1}`|The Chain ID of the second sifnode (e.g.: `sifchain-ibc-1`)|
-|`${IPADDR0}`|The IP Address of the first sifnode (e.g.: `192.168.65.2`)|
-|`${IPADDR1}`|The IP Address of the second sifnode (e.g.: `192.168.65.3`)|
+|`${CHAINNET0}`|The Chain ID of the first akhiranode (e.g.: `akhirachain-ibc-0`)|
+|`${CHAINNET1}`|The Chain ID of the second akhiranode (e.g.: `akhirachain-ibc-1`)|
+|`${IPADDR0}`|The IP Address of the first akhiranode (e.g.: `192.168.65.2`)|
+|`${IPADDR1}`|The IP Address of the second akhiranode (e.g.: `192.168.65.3`)|
 |`${IPADDR2}`|The IP Address of the relayer (e.g.: `192.168.65.3`)|
 |`${SUBNET}`|The subnet of the bridged network that Docker needs to create (e.g.: `192.168.65.1/24`)| 
-|`${MNEMONIC}`|The mnemonic both sifnode's will use for their genesis accounts.|
+|`${MNEMONIC}`|The mnemonic both akhiranode's will use for their genesis accounts.|
 
 e.g.:
 
 ```bash
-CHAINNET0=sifchain-ibc-0 \
-CHAINNET1=sifchain-ibc-1 \
+CHAINNET0=akhirachain-ibc-0 \
+CHAINNET1=akhirachain-ibc-1 \
 IPADDR0=192.168.65.2 \
 IPADDR1=192.168.65.3 \
 IPADDR2=192.168.65.4 \

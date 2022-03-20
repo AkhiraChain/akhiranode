@@ -22,11 +22,11 @@ jobs:
       - name: Build docker images
         working-directory: docs/peggy
         run: |
-          docker build -t sifchain/peggy-docs:${{ steps.hash.outputs.sha_short }} .
+          docker build -t akhirachain/peggy-docs:${{ steps.hash.outputs.sha_short }} .
 
       - name: Push docker images
         run: |
-          docker push sifchain/peggy-docs:${{ steps.hash.outputs.sha_short }}
+          docker push akhirachain/peggy-docs:${{ steps.hash.outputs.sha_short }}
 
   deploy:
     needs: build
@@ -35,8 +35,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/checkout@v2
         with:
-          repository: Sifchain/sifchain-devops
-          path: sifchain-devops
+          repository: akhirachain/akhirachain-devops
+          path: akhirachain-devops
           token: "${{ secrets.GIT_PAT }}"
 
       - name: Get commit hash
@@ -45,26 +45,26 @@ jobs:
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Configure AWS Credentials
-        working-directory: sifchain-devops
+        working-directory: akhirachain-devops
         run: |
           AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
           AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
           AWS_REGION=${{ secrets.AWS_REGION }} \
           AWS_ROLE=${{ secrets.AWS_ROLE }} \
-          PROFILE=sifchain-aws-sifchain-data \
+          PROFILE=akhirachain-aws-akhirachain-data \
           make provider-aws-configure
 
       - name: Generate kubernetes config
-        working-directory: sifchain-devops
+        working-directory: akhirachain-devops
         run: |
-          CLUSTER_NAME=sifchain-aws-sifchain-data \
+          CLUSTER_NAME=akhirachain-aws-akhirachain-data \
           AWS_REGION=${{ secrets.AWS_REGION }} \
-          AWS_PROFILE=sifchain-aws-sifchain-data \
+          AWS_PROFILE=akhirachain-aws-akhirachain-data \
           AWS_ROLE=${{ secrets.AWS_ROLE }} \
           make provider-aws-kubeconfig
 
       - name: Deploy peggy docs
-        working-directory: sifchain-devops
+        working-directory: akhirachain-devops
         run: |
           helm upgrade peggy-docs helm/standalone/peggy-docs --install -n peggy-docs \
           --create-namespace \

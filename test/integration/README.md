@@ -22,9 +22,9 @@ Running `make` again will run the tests again in the existing environment.
 To build the docker container, run:
 
 ```
-make sifdocker  # builds the docker image
-make sifdocker-start  # starts the docker container and leaves it running
-make sifdocker-sh     # gives you a shell in the running container
+make akhiradocker  # builds the docker image
+make akhiradocker-start  # starts the docker container and leaves it running
+make akhiradocker-sh     # gives you a shell in the running container
 ```
 ## Execute
 

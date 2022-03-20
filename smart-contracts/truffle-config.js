@@ -10,7 +10,7 @@ module.exports = {
     }
   },
   networks: {
-    sifdocker: {
+    akhiradocker: {
       host: "localhost",
       port: 7546, // Match default network 'ganache'
       network_id: 5777,
