@@ -12,7 +12,7 @@ def akhirachain_denom_hash(network_descriptor, token_contract_address):
     return "sif" + hashlib.sha256(s.encode("UTF-8")).digest().hex()
 
 
-class Sifnoded:
+class Akhiranoded:
     def __init__(self, cmd, home=None):
         self.cmd = cmd
         self.binary = "akhiranoded"

@@ -98,7 +98,7 @@ class Project:
             self.__rm(self.cmd.get_user_home(".npm-global"))
             self.__rm(self.cmd.get_user_home(".cache/yarn"))
             self.__rm(self.cmd.get_user_home(".akhiranoded"))
-            self.__rm(self.cmd.get_user_home(".sifnode-integration"))
+            self.__rm(self.cmd.get_user_home(".akhiranode-integration"))
             self.__rm(project_dir("smart-contracts/node_modules"))
 
             # Peggy2
@@ -169,7 +169,7 @@ class Project:
     def write_vagrantenv_sh(self, state_vars, data_dir, ethereum_websocket_address, chainnet):
         # Trace of test_utilities.py get_required_env_var/get_optional_env_var:
         #
-        # BASEDIR (required), value=/home/jurez/work/projects/sif/sifnode/local
+        # BASEDIR (required), value=/home/jurez/work/projects/sif/akhiranode/local
         # BRIDGE_BANK_ADDRESS (optional), value=0x30753E4A8aad7F8597332E813735Def5dD395028
         # BRIDGE_BANK_ADDRESS (required), value=0x30753E4A8aad7F8597332E813735Def5dD395028
         # BRIDGE_REGISTRY_ADDRESS (required), value=0xf204a4Ef082f5c04bB89F7D5E6568B796096735a
@@ -190,12 +190,12 @@ class Project:
         # OPERATOR_PRIVATE_KEY (optional), value=c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3
         # ROWAN_SOURCE (optional), value=None
         # ROWAN_SOURCE_KEY (optional), value=None
-        # SIFCHAIN_ADMIN_ACCOUNT (required), value=sif1896ner48vrg8m05k48ykc6yydlxc4yvm23hp5m
-        # SIFNODE (optional), value=None
+        # AKHIRACHAIN_ADMIN_ACCOUNT (required), value=sif1896ner48vrg8m05k48ykc6yydlxc4yvm23hp5m
+        # AKHIRANODE (optional), value=None
         # SMART_CONTRACTS_DIR (required), 2x value
         # SMART_CONTRACT_ARTIFACT_DIR (optional), value=None
         # SOLIDITY_JSON_PATH (optional), value=None
-        # TEST_INTEGRATION_DIR (required), value=/home/jurez/work/projects/sif/sifnode/local/test/integration
+        # TEST_INTEGRATION_DIR (required), value=/home/jurez/work/projects/sif/akhiranode/local/test/integration
         # VALIDATOR1_ADDR (optional), 3x value
         # VALIDATOR1_PASSWORD (optional), 3x value
         env = dict_merge(state_vars, {

@@ -6,7 +6,7 @@ from eth import NULL_ADDRESS
 from truffle import Ganache
 from command import Command
 from hardhat import Hardhat
-from akhirachain import Akhgen, Sifnoded, Ebrelayer, akhirachain_denom_hash
+from akhirachain import Akhgen, Akhiranoded, Ebrelayer, akhirachain_denom_hash
 from project import Project, killall, force_kill_processes
 from test_utils import get_env_ctx
 from common import *
@@ -125,60 +125,60 @@ class Integrator(Ganache, Command):
         self.truffle_exec("setTokenLockBurnLimit", str(amount), env=env)
 
     # @TODO Merge
-    def akhirachain_init_integration(self, sifnode, validator_moniker, validator_mnemonic, denom_whitelist_file):
+    def akhirachain_init_integration(self, akhiranode, validator_moniker, validator_mnemonic, denom_whitelist_file):
         # now we have to add the validator key to the test keyring so the tests can send aku from validator1
-        sifnode0 = Sifnoded(self)
-        sifnode0.keys_add(validator_moniker, validator_mnemonic)
-        valoper = sifnode.keys_show(validator_moniker, bech="val")[0]["address"]
-        assert valoper == sifnode0.get_val_address(validator_moniker)  # This does not use "home"; if it the assertion holds it could be grouped with akhirachain_init_peggy
+        akhiranode0 = Akhiranoded(self)
+        akhiranode0.keys_add(validator_moniker, validator_mnemonic)
+        valoper = akhiranode.keys_show(validator_moniker, bech="val")[0]["address"]
+        assert valoper == akhiranode0.get_val_address(validator_moniker)  # This does not use "home"; if it the assertion holds it could be grouped with akhirachain_init_peggy
 
         # This was deleted in commit f00242302dd226bc9c3060fb78b3de771e3ff429 from akhirachain_start_daemon.sh because
         # it was not working. But we assume that we want to keep it.
-        sifnode.akhiranoded_exec(["add-genesis-validators", valoper], akhiranoded_home=sifnode.home)
+        akhiranode.akhiranoded_exec(["add-genesis-validators", valoper], akhiranoded_home=akhiranode.home)
 
-        adminuser_addr = self.akhirachain_init_common(sifnode, denom_whitelist_file)
+        adminuser_addr = self.akhirachain_init_common(akhiranode, denom_whitelist_file)
         return adminuser_addr
 
-    def akhiranoded_peggy2_init_validator(self, sifnode, validator_moniker, validator_mnemonic, evm_network_descriptor, validator_power, chain_dir_base):
+    def akhiranoded_peggy2_init_validator(self, akhiranode, validator_moniker, validator_mnemonic, evm_network_descriptor, validator_power, chain_dir_base):
         # Add validator key to test keyring
         # This effectively copies key for validator_moniker from what akhgen creates in /tmp/akhiranodedNetwork/validators
         # to ~/.akhiranoded (note absence of explicit akhiranoded_home, therefore it's ~/.akhiranoded)
-        sifnode0 = Sifnoded(self)
-        sifnode0.keys_add(validator_moniker, validator_mnemonic)
+        akhiranode0 = Akhiranoded(self)
+        akhiranode0.keys_add(validator_moniker, validator_mnemonic)
 
         # Read valoper key
         # (Since we now copied the key to main keyring we could also read it from there)
-        valoper = sifnode.get_val_address(validator_moniker)
+        valoper = akhiranode.get_val_address(validator_moniker)
 
         # Add genesis validator
-        sifnode.add_genesis_validators_peggy(evm_network_descriptor, valoper, validator_power)
+        akhiranode.add_genesis_validators_peggy(evm_network_descriptor, valoper, validator_power)
 
         # Get whitelisted validator
         # TODO Value is not being used
         # TODO We're using default home here instead of akhiranoded_home above. Does this even work?
-        _whitelisted_validator = sifnode.get_val_address(validator_moniker)
+        _whitelisted_validator = akhiranode.get_val_address(validator_moniker)
         assert valoper == _whitelisted_validator
 
     # TODO Not any longer shared between IntegrationEnvironment and PeggyEnvironment
     # Peggy2Environment calls akhiranoded_peggy2_add_account
-    def akhirachain_init_common(self, sifnode, denom_whitelist_file):
-        # Add sifnodeadmin to ~/.akhiranoded
-        sifnode0 = Sifnoded(self)
-        sifnodeadmin_addr = sifnode0.keys_add_1("sifnodeadmin")["address"]
+    def akhirachain_init_common(self, akhiranode, denom_whitelist_file):
+        # Add akhiranodeadmin to ~/.akhiranoded
+        akhiranode0 = Akhiranoded(self)
+        akhiranodeadmin_addr = akhiranode0.keys_add_1("akhiranodeadmin")["address"]
         tokens = [[10**20, "aku"]]
         # Original from peggy:
         # self.cmd.execst(["akhiranoded", "add-genesis-account", akhiranoded_admin_address, "100000000000000000000aku", "--home", akhiranoded_home])
-        sifnode.add_genesis_account(sifnodeadmin_addr, tokens)
-        sifnode.set_genesis_oracle_admin(sifnodeadmin_addr)
-        sifnode.set_genesis_oracle_admin(sifnodeadmin_addr)
-        sifnode.set_gen_denom_whitelist(denom_whitelist_file)
-        return sifnodeadmin_addr
+        akhiranode.add_genesis_account(akhiranodeadmin_addr, tokens)
+        akhiranode.set_genesis_oracle_admin(akhiranodeadmin_addr)
+        akhiranode.set_genesis_oracle_admin(akhiranodeadmin_addr)
+        akhiranode.set_gen_denom_whitelist(denom_whitelist_file)
+        return akhiranodeadmin_addr
 
     # @TODO Move to Akhgen class
     def akhgen_create_network(self, chain_id, validator_count, networks_dir, network_definition_file, seed_ip_address, mint_amount=None):
         # Old call (no longer works either):
-        # akhgen network create localnet 1 /mnt/shared/work/projects/sif/sifnode/local-tmp/my/deploy/rake/../networks \
-        #     192.168.1.2 /mnt/shared/work/projects/sif/sifnode/local-tmp/my/deploy/rake/../networks/network-definition.yml \
+        # akhgen network create localnet 1 /mnt/shared/work/projects/sif/akhiranode/local-tmp/my/deploy/rake/../networks \
+        #     192.168.1.2 /mnt/shared/work/projects/sif/akhiranode/local-tmp/my/deploy/rake/../networks/network-definition.yml \
         #     --keyring-backend file
         # self.cmd.execst(["akhgen", "network", "create", "localnet", str(validator_count), networks_dir, seed_ip_address,
         #     os.path.join(networks_dir, "network-definition.yml"), "--keyring-backend", "file"])
@@ -224,7 +224,7 @@ class UIStackEnvironment:
         self.keyring_backend = "test"
         self.ganache_db_path = self.cmd.get_user_home(".ganachedb")
         self.akhiranoded_path = self.cmd.get_user_home(".akhiranoded")
-        self.sifnode = Sifnoded(cmd)
+        self.akhiranode = Akhiranoded(cmd)
 
         # From ui/chains/credentials.sh
         self.shadowfiend_name = "shadowfiend"
@@ -266,31 +266,31 @@ class UIStackEnvironment:
         ganache_proc = Ganache.start_ganache_cli(self.cmd, mnemonic=self.ethereum_root_mnemonic, db=self.ganache_db_path,
             port=7545, network_id=self.network_id, gas_price=20000000000, gas_limit=6721975, host=ANY_ADDR)
 
-        sifnode = Sifnoded(self.cmd)
+        akhiranode = Akhiranoded(self.cmd)
         # ui/scripts/stack-launch.sh -> ui/scripts/_sif.sh -> ui/chains/ak/launch.sh
-        sifnode.akhiranoded_init("test", self.chain_id)
+        akhiranode.akhiranoded_init("test", self.chain_id)
         self.cmd.copy_file(project_dir("ui/chains/ak/app.toml"), os.path.join(self.akhiranoded_path, "config/app.toml"))
         log.info(f"Generating deterministic account - {self.shadowfiend_name}...")
         shadowfiend_account = self.cmd.akhiranoded_keys_add(self.shadowfiend_name, self.shadowfiend_mnemonic)
         log.info(f"Generating deterministic account - {self.akasha_name}...")
-        akasha_account = self.sifnode.keys_add(self.akasha_name, self.akasha_mnemonic)
+        akasha_account = self.akhiranode.keys_add(self.akasha_name, self.akasha_mnemonic)
         log.info(f"Generating deterministic account - {self.juniper_name}...")
         juniper_account = self.cmd.akhiranoded_keys_add(self.juniper_name, self.juniper_mnemonic)
         shadowfiend_address = shadowfiend_account["address"]
         akasha_address = akasha_account["address"]
         juniper_address = juniper_account["address"]
-        assert shadowfiend_address == self.sifnode.keys_show(self.shadowfiend_name)[0]["address"]
-        assert akasha_address == self.sifnode.keys_show(self.akasha_name)[0]["address"]
-        assert juniper_address == self.sifnode.keys_show(self.juniper_name)[0]["address"]
+        assert shadowfiend_address == self.akhiranode.keys_show(self.shadowfiend_name)[0]["address"]
+        assert akasha_address == self.akhiranode.keys_show(self.akasha_name)[0]["address"]
+        assert juniper_address == self.akhiranode.keys_show(self.juniper_name)[0]["address"]
 
         tokens_shadowfiend = [[10**29, "aku"], [10**29, "catk"], [10**29, "cbtk"], [10**29, "ceth"], [10**29, "cusdc"], [10**29, "clink"], [10**26, "stake"]]
         tokens_akasha = [[10**29, "aku"], [10**29, "catk"], [10**29, "cbtk"], [10**29, "ceth"], [10**29, "cusdc"], [10**29, "clink"], [10**26, "stake"]]
         tokens_juniper = [[10**22, "aku"], [10**22, "cusdc"], [10**20, "clink"], [10**20, "ceth"]]
-        sifnode.add_genesis_account(shadowfiend_address, tokens_shadowfiend)
-        sifnode.add_genesis_account(akasha_address, tokens_akasha)
-        sifnode.add_genesis_account(juniper_address, tokens_juniper)
+        akhiranode.add_genesis_account(shadowfiend_address, tokens_shadowfiend)
+        akhiranode.add_genesis_account(akasha_address, tokens_akasha)
+        akhiranode.add_genesis_account(juniper_address, tokens_juniper)
 
-        shadowfiend_address_bech_val = sifnode.keys_show(self.shadowfiend_name, bech="val")[0]["address"]
+        shadowfiend_address_bech_val = akhiranode.keys_show(self.shadowfiend_name, bech="val")[0]["address"]
         self.cmd.akhiranoded_add_genesis_validators(shadowfiend_address_bech_val)
 
         amount = sif_format_amount(10**24, "stake")
@@ -319,24 +319,24 @@ class UIStackEnvironment:
         # Original scripts say "if we don't sleep there are issues"
         time.sleep(10)
         log.info("Creating liquidity pool from catk:aku...")
-        sifnode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "catk", [10**5, "aku"], 10**25, 10**25)
+        akhiranode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "catk", [10**5, "aku"], 10**25, 10**25)
         time.sleep(5)
         log.info("Creating liquidity pool from cbtk:aku...")
-        sifnode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "cbtk", [10**5, "aku"], 10**25, 10**25)
+        akhiranode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "cbtk", [10**5, "aku"], 10**25, 10**25)
         # should now be able to swap from catk:cbtk
         time.sleep(5)
         log.info("Creating liquidity pool from ceth:aku...")
-        sifnode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "ceth", [10**5, "aku"], 10**25, 83*10**20)
+        akhiranode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "ceth", [10**5, "aku"], 10**25, 83*10**20)
         # should now be able to swap from x:ceth
         time.sleep(5)
         log.info("Creating liquidity pool from cusdc:aku...")
-        sifnode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "cusdc", [10**5, "aku"], 10**25, 10**25)
+        akhiranode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "cusdc", [10**5, "aku"], 10**25, 10**25)
         time.sleep(5)
         log.info("Creating liquidity pool from clink:aku...")
-        sifnode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "clink", [10**5, "aku"], 10**25, 588235*10**18)
+        akhiranode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "clink", [10**5, "aku"], 10**25, 588235*10**18)
         time.sleep(5)
         log.info("Creating liquidity pool from ctest:aku...")
-        sifnode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "ctest", [10**5, "aku"], 10**25, 10**13)
+        akhiranode.tx_clp_create_pool(self.chain_id, self.keyring_backend, "akasha", "ctest", [10**5, "aku"], 10**25, 10**13)
 
         # ui/scripts/_migrate.sh -> ui/chains/post_migrate.sh
 
@@ -468,14 +468,14 @@ class IntegrationTestsEnvironment:
         # set_persistant_env_var TEST_INTEGRATION_PY_DIR ${BASEDIR}/test/integration/src/py $envexportfile
         # set_persistant_env_var SMART_CONTRACTS_DIR ${BASEDIR}/smart-contracts $envexportfile
         # set_persistant_env_var datadir ${TEST_INTEGRATION_DIR}/vagrant/data $envexportfile
-        # set_persistant_env_var CONTAINER_NAME integration_sifnode1_1 $envexportfile
+        # set_persistant_env_var CONTAINER_NAME integration_akhiranode1_1 $envexportfile
         # set_persistant_env_var NETWORKDIR $BASEDIR/deploy/networks $envexportfile
         # set_persistant_env_var GANACHE_DB_DIR $(mktemp -d /tmp/ganachedb.XXXX) $envexportfile
         # set_persistant_env_var ETHEREUM_WEBSOCKET_ADDRESS ws://localhost:7545/ $envexportfile
         # set_persistant_env_var CHAINNET localnet $envexportfile
         self.network_name = "develop"
         self.network_id = 5777
-        self.peruser_storage_dir = self.cmd.get_user_home(".sifnode-integration")
+        self.peruser_storage_dir = self.cmd.get_user_home(".akhiranode-integration")
         self.state_vars = {}
         self.test_integration_dir = project_dir("test/integration")
         self.data_dir = project_dir("test/integration/vagrant/data")
@@ -494,7 +494,7 @@ class IntegrationTestsEnvironment:
 
         self.prepare()
 
-        log_dir = "/tmp/sifnode"
+        log_dir = "/tmp/akhiranode"
         self.cmd.mkdir(log_dir)
         ganache_log_file = open(os.path.join(log_dir, "ganache.log"), "w")  # TODO close
         akhiranoded_log_file = open(os.path.join(log_dir, "akhiranoded.log"), "w")  # TODO close
@@ -581,13 +581,13 @@ class IntegrationTestsEnvironment:
         denom_whitelist_file = os.path.join(self.test_integration_dir, "whitelisted-denoms.json")
         # SIFNODED_LOG=$datadir/logs/akhiranoded.log
 
-        sifnode = Sifnoded(self.cmd, home=akhiranoded_home)
+        akhiranode = Akhiranoded(self.cmd, home=akhiranoded_home)
 
-        adminuser_addr = self.cmd.akhirachain_init_integration(sifnode, validator1_moniker, validator1_mnemonic,
+        adminuser_addr = self.cmd.akhirachain_init_integration(akhiranode, validator1_moniker, validator1_mnemonic,
             denom_whitelist_file)
 
         # Start akhiranoded
-        akhiranoded_proc = sifnode.akhiranoded_start(tcp_url=self.tcp_url, minimum_gas_prices=[0.5, "aku"],
+        akhiranoded_proc = akhiranode.akhiranoded_start(tcp_url=self.tcp_url, minimum_gas_prices=[0.5, "aku"],
             log_file=akhiranoded_log_file)
 
         # TODO: wait for akhiranoded to come up before continuing
@@ -612,18 +612,18 @@ class IntegrationTestsEnvironment:
             "OWNER": self.owner,
             "PAUSER": self.pauser,
             "BASEDIR": project_dir(),
-            # export SIFCHAIN_BIN="/home/jurez/work/projects/sif/sifnode/local/cmd"
+            # export SIFCHAIN_BIN="/home/jurez/work/projects/sif/akhiranode/local/cmd"
             "envexportfile": vagrantenv_path,
-            # export TEST_INTEGRATION_DIR="/home/jurez/work/projects/sif/sifnode/local/test/integration"
-            # export TEST_INTEGRATION_PY_DIR="/home/jurez/work/projects/sif/sifnode/local/test/integration/src/py"
+            # export TEST_INTEGRATION_DIR="/home/jurez/work/projects/sif/akhiranode/local/test/integration"
+            # export TEST_INTEGRATION_PY_DIR="/home/jurez/work/projects/sif/akhiranode/local/test/integration/src/py"
             "SMART_CONTRACTS_DIR": self.project.smart_contracts_dir,
-            # export datadir="/home/jurez/work/projects/sif/sifnode/local/test/integration/vagrant/data"
-            # export CONTAINER_NAME="integration_sifnode1_1"
+            # export datadir="/home/jurez/work/projects/sif/akhiranode/local/test/integration/vagrant/data"
+            # export CONTAINER_NAME="integration_akhiranode1_1"
             "NETWORKDIR": networks_dir,
             # export ETHEREUM_WEBSOCKET_ADDRESS="ws://localhost:7545/"
             # export CHAINNET="localnet"
             "GANACHE_DB_DIR": ganache_db_path,
-            # export GANACHE_KEYS_JSON="/home/jurez/work/projects/sif/sifnode/local/test/integration/vagrant/data/ganachekeys.json"
+            # export GANACHE_KEYS_JSON="/home/jurez/work/projects/sif/akhiranode/local/test/integration/vagrant/data/ganachekeys.json"
             "EBRELAYER_ETHEREUM_ADDR": ebrelayer_ethereum_addr,
             "EBRELAYER_ETHEREUM_PRIVATE_KEY": ebrelayer_ethereum_private_key,  # Needed by akhirachain_run_ebrelayer.sh
             # # BRIDGE_REGISTRY_ADDRESS and ETHEREUM_CONTRACT_ADDRESS are synonyms
@@ -649,9 +649,9 @@ class IntegrationTestsEnvironment:
         # This is not neccessary during start-integration-env.sh (as the key does not exist yet), but is neccessary
         # during tests that restart ebrelayer
         # res = self.cmd.execst(["akhiranoded", "keys", "delete", moniker, "--keyring-backend", "test"], stdin=["y"])
-        sifnode = Sifnoded(self.cmd)
-        sifnode.keys_delete(moniker)
-        sifnode.keys_add(moniker, mnemonic)
+        akhiranode = Akhiranoded(self.cmd)
+        akhiranode.keys_delete(moniker)
+        akhiranode.keys_add(moniker, mnemonic)
 
     def process_netdef(self, network_definition_file):
         # networks_dir = deploy/networks
@@ -795,7 +795,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
 
         # TODO: where is log watcher?
 
-        log_dir = "/tmp/sifnode"
+        log_dir = "/tmp/akhiranode"
         self.cmd.mkdir(log_dir)
         hardhat_log_file = open(os.path.join(log_dir, "hardhat.log"), "w")  # TODO close + use a different name
         akhiranoded_log_file = open(os.path.join(log_dir, "akhiranoded.log"), "w")  # TODO close
@@ -822,7 +822,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         hardhat_chain_id = 31337
         hardhat_accounts = self.signer_array_to_ethereum_accounts(Hardhat.default_accounts(), hardhat_validator_count)
 
-        admin_account_name = "sifnodeadmin"
+        admin_account_name = "akhiranodeadmin"
         chain_id = "localnet"
         ceth_symbol = akhirachain_denom_hash(hardhat_chain_id, NULL_ADDRESS)
         assert ceth_symbol == "sif5ebfaf95495ceb5a3efbd0b0c63150676ec71e023b1043c40bcaaf91c00e15b2"
@@ -844,8 +844,8 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         akhiranoded_network_dir = "/tmp/akhiranodedNetwork"  # Gets written to .vscode/launch.json
         self.cmd.rmdir(akhiranoded_network_dir)
         self.cmd.mkdir(akhiranoded_network_dir)
-        network_config_file, akhiranoded_exec_args, akhiranoded_proc, tcp_url, admin_account_address, sifnode_validators, \
-            sifnode_relayers, sifnode_witnesses, sifnode_validator0_home, chain_dir = \
+        network_config_file, akhiranoded_exec_args, akhiranoded_proc, tcp_url, admin_account_address, akhiranode_validators, \
+            akhiranode_relayers, akhiranode_witnesses, akhiranode_validator0_home, chain_dir = \
                 self.init_akhirachain(akhiranoded_network_dir, akhiranoded_log_file, chain_id, hardhat_chain_id, mint_amount,
                     validator_power, seed_ip_address, tendermint_port, denom_whitelist_file, tokens, registry_json,
                     admin_account_name)
@@ -857,8 +857,8 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         symbol_translator_file = os.path.join(self.test_integration_dir, "config", "symbol_translator.json")
         [relayer0_exec_args], [witness0_exec_args] = \
         self.start_witnesses_and_relayers(w3_websocket_address, hardhat_chain_id, tcp_url,
-            chain_id, peggy_sc_addrs, hardhat_accounts["validators"], sifnode_validators, sifnode_relayers,
-            sifnode_witnesses, symbol_translator_file)
+            chain_id, peggy_sc_addrs, hardhat_accounts["validators"], akhiranode_validators, akhiranode_relayers,
+            akhiranode_witnesses, symbol_translator_file)
 
         relayer0_proc = self.cmd.spawn_asynchronous_process(relayer0_exec_args, log_file=relayer_log_file)
         witness0_proc = self.cmd.spawn_asynchronous_process(witness0_exec_args, log_file=witness_log_file)
@@ -870,14 +870,14 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             "admin": {
                 "name": admin_account_name,
                 "address": admin_account_address,
-                "home": sifnode_validator0_home,
+                "home": akhiranode_validator0_home,
             },
             "symbol_translator_file": symbol_translator_file,
             "w3_websocket_address": w3_websocket_address,
             "evm_chain_id": hardhat_chain_id,
             "chain_id": chain_id,
-            "validators": sifnode_validators,  # From yaml file generated by akhgen
-            "relayers": sifnode_relayers,
+            "validators": akhiranode_validators,  # From yaml file generated by akhgen
+            "relayers": akhiranode_relayers,
             "smart_contracts": {
                 "BridgeBank": peggy_sc_addrs.bridge_bank,
                 "BridgeRegistry": peggy_sc_addrs.bridge_registry,
@@ -887,8 +887,8 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         }
 
         self.write_env_files(self.project.project_dir(), self.project.go_bin_dir, peggy_sc_addrs, hardhat_accounts,
-            admin_account_name, admin_account_address, sifnode_validator0_home, sifnode_validators, sifnode_relayers,
-            sifnode_witnesses, tcp_url, hardhat_bind_hostname, hardhat_port, hardhat_chain_id, chain_dir,
+            admin_account_name, admin_account_address, akhiranode_validator0_home, akhiranode_validators, akhiranode_relayers,
+            akhiranode_witnesses, tcp_url, hardhat_bind_hostname, hardhat_port, hardhat_chain_id, chain_dir,
             akhiranoded_exec_args, relayer0_exec_args, witness0_exec_args
          )
 
@@ -939,8 +939,8 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             # validator_password = validator["password"]
             evm_network_descriptor = 1  # TODO Why not hardhat_chain_id?
             akhiranoded_home = os.path.join(chain_dir_base, validator_moniker, ".akhiranoded")
-            sifnode = Sifnoded(self.cmd, home=akhiranoded_home)
-            self.cmd.akhiranoded_peggy2_init_validator(sifnode, validator_moniker, validator_mnemonic, evm_network_descriptor, validator_power, chain_dir_base)
+            akhiranode = Akhiranoded(self.cmd, home=akhiranoded_home)
+            self.cmd.akhiranoded_peggy2_init_validator(akhiranode, validator_moniker, validator_mnemonic, evm_network_descriptor, validator_power, chain_dir_base)
 
         # TODO Needs to be fixed when we support more than 1 validator
         validator0 = exactly_one(validators)
@@ -948,10 +948,10 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         validator0_address = validator0["address"]
         chain_dir = os.path.join(chain_dir_base, validator0["moniker"])
 
-        sifnode = Sifnoded(self.cmd, home=validator0_home)
+        akhiranode = Akhiranoded(self.cmd, home=validator0_home)
 
-        # Create an ADMIN account on sifnode with name admin_account_name (e.g. "sifnodeadmin")
-        admin_account_address = sifnode.peggy2_add_account(admin_account_name, tokens, is_admin=True)
+        # Create an ADMIN account on akhiranode with name admin_account_name (e.g. "akhiranodeadmin")
+        admin_account_address = akhiranode.peggy2_add_account(admin_account_name, tokens, is_admin=True)
 
         # TODO Check if akhiranoded_peggy2_add_relayer_witness_account can be executed offline (without akhiranoded running)
         # TODO Check if akhiranoded_peggy2_set_cross_chain_fee can be executed offline (without akhiranoded running)
@@ -960,7 +960,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         # Note: "--home" is shared with akhiranoded's "--home"
         relayers = [{
             "name": name,
-            "address": sifnode.peggy2_add_relayer_witness_account(name, tokens, hardhat_chain_id,
+            "address": akhiranode.peggy2_add_relayer_witness_account(name, tokens, hardhat_chain_id,
                 validator_power, denom_whitelist_file),
             "home": validator0_home,
         } for name in [f"relayer-{i}" for i in range(relayer_count)]]
@@ -969,7 +969,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         # Note: "--home" is shared with akhiranoded's "--home"
         witnesses = [{
             "name": name,
-            "address": sifnode.peggy2_add_relayer_witness_account(name, tokens, hardhat_chain_id,
+            "address": akhiranode.peggy2_add_relayer_witness_account(name, tokens, hardhat_chain_id,
                 validator_power, denom_whitelist_file),
             "home": validator0_home,
             "db_path": project_dir("smart-contracts", "witnessdb"),
@@ -984,7 +984,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         #     --rpc.laddr tcp://0.0.0.0:26657
         #     --home /tmp/akhiranodedNetwork/validators/localnet/xxx-yyy/.akhiranoded
         # @TODO Detect if akhiranoded is already running, for now it fails silently and we wait forever in wait_for_sif_account_up
-        akhiranoded_exec_args = sifnode.build_start_cmd(tcp_url=tcp_url, minimum_gas_prices=[0.5, "aku"],
+        akhiranoded_exec_args = akhiranode.build_start_cmd(tcp_url=tcp_url, minimum_gas_prices=[0.5, "aku"],
             log_format_json=True)
         akhiranoded_proc = self.cmd.spawn_asynchronous_process(akhiranoded_exec_args, log_file=akhiranoded_log_file)
 
@@ -992,7 +992,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
 
         # TODO This command exits with status 0, but looks like there are some errros.
         # The same happens also in devenv.
-        res = sifnode.peggy2_token_registry_register_all(registry_json, [0.5, "aku"], 1.5, admin_account_address,
+        res = akhiranode.peggy2_token_registry_register_all(registry_json, [0.5, "aku"], 1.5, admin_account_address,
             chain_id)
         log.debug("Result from token registry: {}".format(repr(res)))
         assert len(res) == 2
@@ -1005,7 +1005,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
         ethereum_cross_chain_fee_token = akhirachain_denom_hash(hardhat_chain_id, NULL_ADDRESS)
         gas_prices = [0.5, "aku"]
         gas_adjustment = 1.5
-        sifnode.peggy2_set_cross_chain_fee(admin_account_address, hardhat_chain_id,
+        akhiranode.peggy2_set_cross_chain_fee(admin_account_address, hardhat_chain_id,
             ethereum_cross_chain_fee_token, cross_chain_fee_base, cross_chain_lock_fee, cross_chain_burn_fee,
             admin_account_name, chain_id, gas_prices, gas_adjustment)
 
@@ -1013,33 +1013,33 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             relayers, witnesses, validator0_home, chain_dir
 
     def start_witnesses_and_relayers(self, web3_websocket_address, hardhat_chain_id, tcp_url, chain_id, peggy_sc_addrs,
-        evm_validator_accounts, sifnode_validators, sifnode_relayers, sifnode_witnesses, symbol_translator_file
+        evm_validator_accounts, akhiranode_validators, akhiranode_relayers, akhiranode_witnesses, symbol_translator_file
     ):
         # For now we assume a single validator
         evm_validator0_addr, evm_validator0_key = exactly_one(evm_validator_accounts)
 
-        sifnode_validator0 = exactly_one(sifnode_validators)
-        sifnode_validator0_address = sifnode_validator0["address"]
+        akhiranode_validator0 = exactly_one(akhiranode_validators)
+        akhiranode_validator0_address = akhiranode_validator0["address"]
 
-        sifnode_relayer0 = exactly_one(sifnode_relayers)
-        sifnode_relayer0_mnemonic = sifnode_relayer0["name"]
-        sifnode_relayer0_address = sifnode_relayer0["address"]
-        sifnode_relayer0_home = sifnode_relayer0["home"]
+        akhiranode_relayer0 = exactly_one(akhiranode_relayers)
+        akhiranode_relayer0_mnemonic = akhiranode_relayer0["name"]
+        akhiranode_relayer0_address = akhiranode_relayer0["address"]
+        akhiranode_relayer0_home = akhiranode_relayer0["home"]
 
-        sifnode_witness0 = exactly_one(sifnode_witnesses)
-        sifnode_witness0_mnemonic = sifnode_witness0["name"]
-        sifnode_witness0_address = sifnode_witness0["address"]
-        sifnode_witness0_home = sifnode_witness0["home"]
-        sifnode_witness0_db_path = sifnode_witness0["db_path"]
-        self.cmd.rmdir(sifnode_witness0_db_path)
-        self.cmd.mkdir(sifnode_witness0_db_path)
+        akhiranode_witness0 = exactly_one(akhiranode_witnesses)
+        akhiranode_witness0_mnemonic = akhiranode_witness0["name"]
+        akhiranode_witness0_address = akhiranode_witness0["address"]
+        akhiranode_witness0_home = akhiranode_witness0["home"]
+        akhiranode_witness0_db_path = akhiranode_witness0["db_path"]
+        self.cmd.rmdir(akhiranode_witness0_db_path)
+        self.cmd.mkdir(akhiranode_witness0_db_path)
 
         bridge_registry_contract_addr = peggy_sc_addrs.bridge_registry
         # bridge_bank_contract_addr = peggy_sc_addrs.bridge_bank
         # cosmos_bridge_contract_addr = peggy_sc_addrs.cosmos_bridge
         # aku_contract_addr = peggy_sc_addrs.aku
 
-        self.cmd.wait_for_sif_account_up(sifnode_validator0_address, tcp_url=tcp_url)  # Required for both relayer and witness
+        self.cmd.wait_for_sif_account_up(akhiranode_validator0_address, tcp_url=tcp_url)  # Required for both relayer and witness
 
         ebrelayer = Ebrelayer(self.cmd)
 
@@ -1066,15 +1066,15 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             tcp_url,
             web3_websocket_address,
             bridge_registry_contract_addr,
-            sifnode_relayer0_mnemonic,
+            akhiranode_relayer0_mnemonic,
             chain_id=chain_id,
             node=tcp_url,
-            sign_with=sifnode_relayer0_address,
+            sign_with=akhiranode_relayer0_address,
             symbol_translator_file=symbol_translator_file,
             ethereum_address=evm_validator0_addr,
             ethereum_private_key=evm_validator0_key,
             keyring_backend="test",
-            home=sifnode_relayer0_home,
+            home=akhiranode_relayer0_home,
         )
 
         # Example from devenv:
@@ -1099,23 +1099,23 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             tcp_url,
             web3_websocket_address,
             bridge_registry_contract_addr,
-            sifnode_witness0_mnemonic,
+            akhiranode_witness0_mnemonic,
             chain_id=chain_id,
             node=tcp_url,
-            sign_with=sifnode_witness0_address,
+            sign_with=akhiranode_witness0_address,
             symbol_translator_file=symbol_translator_file,
-            relayerdb_path=sifnode_witness0_db_path,
+            relayerdb_path=akhiranode_witness0_db_path,
             ethereum_address=evm_validator0_addr,
             ethereum_private_key=evm_validator0_key,
             keyring_backend="test",
             log_format="json",
-            home=sifnode_witness0_home,
+            home=akhiranode_witness0_home,
         )
 
         return [relayer0_exec_args], [witness0_exec_args]
 
     def write_env_files(self, project_dir, go_bin_dir, evm_smart_contract_addrs, eth_accounts, admin_account_name,
-        admin_account_address, sifnode_validator0_home, sifnode_validators, sifnode_relayers, sifnode_witnesses,
+        admin_account_address, akhiranode_validator0_home, akhiranode_validators, akhiranode_relayers, akhiranode_witnesses,
         tcp_url, hardhat_bind_hostname, hardhat_port, hardhat_chain_id, chain_dir, akhiranoded_exec_args,
         relayer0_exec_args, witness0_exec_args
     ):
@@ -1163,10 +1163,10 @@ class Peggy2Environment(IntegrationTestsEnvironment):
                 "goBin": go_bin_dir
             },
             "sifResults": {
-                "validatorValues": sifnode_validators,
-                "adminAddress": format_sif_account({"address": admin_account_address, "name": admin_account_name, "home": sifnode_validator0_home}),
-                "relayerAddresses": [format_sif_account(a) for a in sifnode_relayers],
-                "witnessAddresses": [format_sif_account(a) for a in sifnode_witnesses],
+                "validatorValues": akhiranode_validators,
+                "adminAddress": format_sif_account({"address": admin_account_address, "name": admin_account_name, "home": akhiranode_validator0_home}),
+                "relayerAddresses": [format_sif_account(a) for a in akhiranode_relayers],
+                "witnessAddresses": [format_sif_account(a) for a in akhiranode_witnesses],
                 # "process": { ... },
                 "tcpurl": tcp_url,
             }
@@ -1199,12 +1199,12 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             "BRIDGE_TOKEN_ADDRESS": evm_smart_contract_addrs.aku,
             "GOBIN": go_bin_dir,
             "TCP_URL": tcp_url,
-            "VALIDATOR_ADDRESS": sifnode_validators[0]["address"],
-            "VALIDATOR_CONSENSUS_ADDRESS": sifnode_validators[0]["validator_consensus_address"],
-            "VALIDATOR_MENOMONIC": sifnode_validators[0]["mnemonic"],
-            "VALIDATOR_MONIKER": sifnode_validators[0]["moniker"],
-            "VALIDATOR_PASSWORD": sifnode_validators[0]["password"],
-            "VALIDATOR_PUB_KEY": sifnode_validators[0]["pub_key"],
+            "VALIDATOR_ADDRESS": akhiranode_validators[0]["address"],
+            "VALIDATOR_CONSENSUS_ADDRESS": akhiranode_validators[0]["validator_consensus_address"],
+            "VALIDATOR_MENOMONIC": akhiranode_validators[0]["mnemonic"],
+            "VALIDATOR_MONIKER": akhiranode_validators[0]["moniker"],
+            "VALIDATOR_PASSWORD": akhiranode_validators[0]["password"],
+            "VALIDATOR_PUB_KEY": akhiranode_validators[0]["pub_key"],
             "ADMIN_ADDRESS": admin_account_address,
             "ADMIN_NAME": admin_account_name,
             "CHAINDIR": chain_dir,
@@ -1222,13 +1222,13 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             f"VALIDATOR_MONIKER_{i}": validator["moniker"],
             f"VALIDATOR_PASSWORD_{i}": validator["password"],
             f"VALIDATOR_PUB_KEY_{i}": validator["pub_key"],
-        } for i, validator in enumerate(sifnode_validators)], *[{
+        } for i, validator in enumerate(akhiranode_validators)], *[{
             f"RELAYER_ADDRESS_{i}": relayer["address"],
             f"RELAYER_NAME_{i}": relayer["name"],
-        } for i, relayer in enumerate(sifnode_relayers)], *[{
+        } for i, relayer in enumerate(akhiranode_relayers)], *[{
             f"WITNESS_ADDRESS_{i}": witness["address"],
             f"WITNESS_NAME_{i}": witness["name"],
-        } for i, witness in enumerate(sifnode_witnesses)])
+        } for i, witness in enumerate(akhiranode_witnesses)])
 
         # launch.json for VS Code
         launch_json = {
@@ -1279,7 +1279,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
                         "--symbol-translator-file", "${workspaceFolder}/test/integration/config/symbol_translator.json",
                         "--home", relayer["home"]
                     ]
-                } for i, relayer in enumerate(sifnode_relayers)], *[{
+                } for i, relayer in enumerate(akhiranode_relayers)], *[{
                     "name": f"Debug Witness-{i}",
                     "type": "go",
                     "request": "launch",
@@ -1309,8 +1309,8 @@ class Peggy2Environment(IntegrationTestsEnvironment):
                         "--relayerdb-path", witness["db_path"],
                         "--home", witness["home"]
                     ]
-                } for i, witness in enumerate(sifnode_witnesses)], {
-                    "name": "Debug Sifnoded",
+                } for i, witness in enumerate(akhiranode_witnesses)], {
+                    "name": "Debug Akhiranoded",
                     "type": "go",
                     "request": "launch",
                     "mode": "debug",
@@ -1325,7 +1325,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
                         "--log_level", "debug",
                         "--minimum-gas-prices", "0.5aku",
                         "--rpc.laddr", tcp_url,
-                        "--home", sifnode_validator0_home
+                        "--home", akhiranode_validator0_home
                     ]
                 }, {
                     "name": "Pytest",
@@ -1358,7 +1358,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
             return [
                 "<component name=\"ProjectRunConfigurationManager\">",
                 "  <configuration default=\"false\" name=\"" + q(name) + "\" type=\"GoApplicationRunConfiguration\" factoryName=\"Go Application\">",
-                "    <module name=\"sifnode\" />",
+                "    <module name=\"akhiranode\" />",
                 "    <working_directory value=\"$PROJECT_DIR$\" />",
                 "    <parameters value=\"" + q(joined_args) + "\" />",
             ] + ((
@@ -1393,7 +1393,7 @@ class Peggy2Environment(IntegrationTestsEnvironment):
                     "github.com/AkhiraChain/akhiranode/cmd/ebrelayer",
                     "$PROJECT_DIR$/cmd/ebrelayer/main.go",
                     {"ETHEREUM_PRIVATE_KEY": dot_env["ETHEREUM_PRIVATE_KEY"]}))
-            elif config["name"].startswith("Debug Sifnoded"):
+            elif config["name"].startswith("Debug Akhiranoded"):
                 intellij_akhiranoded_configs.append(render_intellij_run_xml(
                     "akhiranoded devenv",
                     " ".join(config["args"]),
@@ -1477,7 +1477,7 @@ def main(argv):
             # deploy/networks already included in run()
             processes = env.run()
             # TODO Cleanup:
-            # - rm -rf test/integration/sifnoderelayerdb
+            # - rm -rf test/integration/akhiranoderelayerdb
             # - rm -rf networks/validators/localnet/$moniker/.akhiranoded
             # - If you ran the execute_integration_test_*.sh you need to kill ganache-cli for proper cleanup
             #   as it might have been killed and started outside of our control
