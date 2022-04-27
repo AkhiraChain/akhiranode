@@ -1,6 +1,6 @@
 # akhiranode
 
-Sifchain is the omni-chain solution for DEXes. More performant, more robust crypto-economics for trading and security, more flexible trading capabilities, an extensible omni-chain roadmap and eventual true DAO governance.
+AkhiraChain is the omni-chain solution for DEXes. More performant, more robust crypto-economics for trading and security, more flexible trading capabilities, an extensible omni-chain roadmap and eventual true DAO governance.
 
 Built using the Cosmos SDK and Tendermint, and generated with [Starport](https://github.com/tendermint/starport).
 
